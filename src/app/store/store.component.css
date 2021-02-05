@@ -1,0 +1,79 @@
+.img_productos {
+    width: 100%;
+    height: 280px;
+    border-radius: 8px;
+}
+
+.retangle{
+    width: 310px;
+    height: 412px;
+    border-radius: 28px;
+    -webkit-box-shadow: 0px 0px 120px 0px rgba(16, 42, 67, 0.4);
+    -moz-box-shadow:    0px 0px 120px 0px rgba(16, 42, 67, 0.4);
+    box-shadow:         0px 0px 120px 0px rgba(16, 42, 67, 0.4);
+}
+
+/* .css-mini-retangle:before, .css-mini-retangle:after{ 
+    box-sizing: border-box; 
+}  */
+.css-mini-retangle{ 
+    position: relative; 
+    height: 16px; 
+    width: 14px; 
+    border-top: 10px solid transparent;
+    border-left: 10px solid transparent;
+    border-right: 10px solid #21649e;
+    border-bottom: 10px solid #21649e;
+}
+
+.css-corbata{ 
+    position: relative; 
+    height: 95px; 
+    width: 68px; 
+    border-left: 40px solid #428BCA;
+    border-right: 40px solid #428BCA;
+    border-bottom: 25px solid transparent;
+}
+
+.position-point{
+    position: absolute;
+    top: -20px;
+    right: 15px;
+    z-index: 1;
+}
+
+.position-text-point{
+    position: absolute;
+    top: 18px;
+    right: -50px;
+}
+.span-point{
+    position: absolute;
+    right: 57px;
+    top: 17px;
+}
+
+.font-zise-13{
+    font-size: 13px;
+}
+
+.rectangle-detail{ 
+    position: relative;
+    height: 50px;
+    width: 100%;
+    border-top: 35px solid transparent;
+    border-left: 277px solid #428BCA;
+    border-bottom-right-radius: 4px;
+}
+
+.btn-detalle-product{
+    position: absolute; top: 12px;
+}
+
+.btn-detalle-product:focus {
+    box-shadow: none;
+}
+
+.height-title-product{
+    height: 38px;
+}

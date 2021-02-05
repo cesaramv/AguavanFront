@@ -1,0 +1,13 @@
+<form [formGroup]="form" (ngSubmit)="submit()">
+    <app-profile-form formControlName="profile"></app-profile-form>
+    <app-password-form formControlName="password"></app-password-form>
+    <button>Sign Up</button>
+</form>
+
+<p>
+    Form is {{form.valid ? 'Valid' : 'Invalid'}}
+</p>
+
+<pre>
+    {{form.value | json}}
+</pre>

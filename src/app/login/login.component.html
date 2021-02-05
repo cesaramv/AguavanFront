@@ -1,0 +1,28 @@
+<div class="container body-content">
+    <h2 class="py-3">Iniciar sesión</h2>
+
+    <div class="row">
+        <div class="col-md-8">
+            <h4>Ingrese sus credenciales para iniciar sesión.</h4>
+            <hr />
+            <form [formGroup]="form" class="col-8">
+                <div class="mb-3">
+                    <label for="userName" class="form-label">{{'login.userName' | translate }}</label>
+                    <input type="text" class="form-control" formControlName="userName">
+                    <!-- <div id="userName" class="form-text">We'll never share your email with anyone else.</div> -->
+                </div>
+                <div class="mb-3">
+                    <label for="password" class="form-label">{{'login.password' | translate }}</label>
+                    <input type="password" class="form-control" formControlName="password">
+                </div><br />
+                <button type="submit" class="btn btn-outline-secondary" (click)="iniciarSesion()">{{'login.btnEntrar' | translate }}</button>
+            </form>
+        </div>
+        <div class="col-4">
+            <h4>Ingrese sus credenciales para iniciar sesión.</h4>
+            <hr />
+            <p>Te invitamos a ser parte de la familia Aguavan y empezar a disfrutar de las ventajas que tiene el pertenecer a nuestra corporación</p>
+        </div>
+    </div>
+</div>
+

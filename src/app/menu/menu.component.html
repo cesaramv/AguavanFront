@@ -1,0 +1,75 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-light bg--light">
+  <a class="navbar-brand" href="#">
+    <img src="../../assets/images/AVlogo.png" class="img-center" height="25" width="120" />
+  </a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+    aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      <ng-container *ngFor="let item of listMenu">
+        <li class="nav-item">
+          <a class="nav-link text-center text-light" routerLink="{{item.url}}">
+            <!-- <fa-icon [icon]="['fas', item.icono]" class="fa-1x "></fa-icon> -->
+            <!-- <i class="fas fa-home fa-2x display_block color_Ico"></i> -->
+            <fa-icon [icon]="item.icono" class="fa-1x"></fa-icon>
+            <span class="pl-1">{{item.nombre}}</span>
+          </a>
+        </li>
+      </ng-container>
+
+      <!-- <li class="nav-item">
+          <a class="nav-link" href="#">Link</a>
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Dropdown
+          </a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <a class="dropdown-item" href="#">Action</a>
+            <a class="dropdown-item" href="#">Another action</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="#">Something else here</a>
+          </div>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
+        </li> -->
+    </ul>
+    <ul class="form-inline navbar-nav my-2 my-lg-0">
+      <ng-container *ngFor="let item of listMenuLast">
+        <li class="nav-item">
+          <a class="nav-link text-center text-light" routerLink="{{item.url}}">
+            <fa-icon [icon]="item.icono" class="fa-1x"></fa-icon>
+            <span class="pl-1">{{item.nombre}}</span>
+          </a>
+        </li>
+        <li class="nav-item" *ngIf="!estaIdentificado()">
+          <a class="nav-link text-center text-light" routerLink="/login">
+            <fa-icon [icon]="'sign-in-alt'" class="fa-1x"></fa-icon>
+            <span class="pl-1">Iniciar sesión</span>
+          </a>
+        </li>
+        <li class="nav-item" *ngIf="estaIdentificado()">
+          <a class="nav-link text-center text-light" (click)="cerrarSesion()">
+            <fa-icon [icon]="'power-off'" class="fa-1x"></fa-icon>
+            <span class="pl-1">Cerrar sesión</span>
+          </a>
+        </li>
+        <li class="nav-item dropdown" *ngIf="estaIdentificado()">
+          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Dropdown
+          </a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <a class="dropdown-item" href="#">Action</a>
+            <a class="dropdown-item" href="#">Another action</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="#">Something else here</a>
+          </div>
+        </li>
+      </ng-container>
+    </ul>
+  </div>
+</nav>

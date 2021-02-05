@@ -1,0 +1,7 @@
+{
+    "/connect/*":{
+        "target": "https://siigonube.siigo.com:50050",
+        "secure": false,
+        "changeOrigin": true
+    }
+}

@@ -1,0 +1,10 @@
+.footer {
+    height: 80px;
+    line-height: 20px;
+    border-top: 3px solid #333;
+    padding-top: 10px;
+}
+
+.footer, .footer > div {
+    background-color: #F0F0F0;
+}
