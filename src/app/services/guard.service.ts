@@ -17,7 +17,7 @@ export class GuardService implements CanActivate {
     private readonly router: Router
   ) { }
 
-  canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {debugger
+  canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
     //1) VERIFICAR SI ESTA LOGUEADO
     let rpta = this.loginService.estaLogueado();
     if (!rpta) {
@@ -33,7 +33,7 @@ export class GuardService implements CanActivate {
         //url -> /consulta
         let url = state.url;
         const decodedToken = helper.decodeToken(token);
-        return this.menuService.listarPorUserName(decodedToken.user_name).pipe(map((data: any[]) => {debugger
+        return this.menuService.listarPorUserName(decodedToken.user_name).pipe(map((data: any[]) => {
           this.menuService.setMenuCambio(data);
 
           if(data.find(m => url.startsWith(m.url))){

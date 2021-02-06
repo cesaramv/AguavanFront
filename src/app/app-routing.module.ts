@@ -18,17 +18,17 @@ const routes: Routes = [
   {
     path: '',
     component: HomeComponent,
-    canActivate: [ValidarMenuGuardService]
+    //canActivate: [ValidarMenuGuardService]
   },
   {
     path: 'home',
     component: HomeComponent,
-    canActivate: [ValidarMenuGuardService]
+    //canActivate: [ValidarMenuGuardService]
   },
   {
     path: 'store',
     component: StoreComponent,
-    canActivate: [ValidarMenuGuardService]
+    //canActivate: [ValidarMenuGuardService]
   },
   {
     path: 'login',
@@ -50,6 +50,10 @@ const routes: Routes = [
   {
     path: 'not-404',
     component: Not404Component
+  },
+  {
+    path: 'office',
+    loadChildren: () => import('./office/office.module').then(m => m.OfficeModule)
   },
   {
     path: '',

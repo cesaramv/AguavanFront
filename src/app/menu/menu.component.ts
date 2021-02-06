@@ -21,7 +21,7 @@ export class MenuComponent implements OnInit {
 
   ngOnInit(): void {
     this.menuService.getMenuCambio().subscribe(menus => {
-      this.listMenu = menus.filter(x => x.idMenu !== 6 && x.idMenu !== 7);
+      this.listMenu = menus.filter(x => x.idMenu !== 6 && x.idMenu !== 7 && x.main_menu === true);
       if(!this.loginService.estaLogueado()){
         this.listMenuLast = menus.filter(x => x.idMenu === 6 || x.idMenu === 7);
       }

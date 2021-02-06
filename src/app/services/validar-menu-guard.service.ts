@@ -14,8 +14,9 @@ export class ValidarMenuGuardService implements CanActivate {
     private readonly router: Router
   ) { }
 
-  canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {debugger
+  canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
     //1) VERIFICAR SI ESTA LOGUEADO
+    const aaa = this.loginService.estaLogueado();
     if (this.loginService.estaLogueado()) {
       this.loginService.cerrarSesion(state.url);
       return false;
