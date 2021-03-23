@@ -8,19 +8,19 @@ export const environment = {
   production: false,
   
   //Para el logueo
-  TOKEN_AUTH_USERNAME: 'aguaappred',
-  TOKEN_AUTH_PASSWORD: 'van2017Col',
+  TOKEN_AUTH_USERNAME: 'user123',
+  TOKEN_AUTH_PASSWORD: 'pass123',
   TOKEN_NAME: 'access_token',
   REINTENTOS: 2,
 
-  //Para consumir siigo
-  Authorization: 'Basic U2lpZ29XZWI6QUJBMDhCNkEtQjU2Qy00MEE1LTkwQ0YtN0MxRTU0ODkxQjYx',
+  //Para consumir ###
+  Authorization: 'Basic xjdjjdjflff344',
   'Content-Type': 'application/x-www-form-urlencoded',
   grant_type: 'password',
-  username: 'EMPRESA2CAPACITACION\\empresa2@apionmicrosoft.com',
-  password: 's112pempresa2#',
+  username: 'EMPRESA1\\empleado@ejemplo.com',
+  password: 'D23fkskfhs#',
   scope: 'WebApi',
-  'Ocp-Apim-Subscription-Key': "184165d1878e45f2910bc99e870ac781"
+  'Ocp-Apim-Subscription-Key': "42453rdred665dd6565"
 };
 
 /*
