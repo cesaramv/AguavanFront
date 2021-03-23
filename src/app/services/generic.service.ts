@@ -12,7 +12,7 @@ export class GenericService<T> {
   ) { }
 
   listar(params: any){
-    return this.http.get<T[]>(this.url, {params});
+    return this.http.get<T[]>(`${this.url}`, {params});
   }
 
   listarPorId(codigo: any){
@@ -25,5 +25,9 @@ export class GenericService<T> {
 
   modificar(t: T){
     return this.http.put(this.url, t);
+  }
+
+  eliminar(codigo: any){
+    return this.http.delete<T>(`${this.url}/${codigo}`);
   }
 }

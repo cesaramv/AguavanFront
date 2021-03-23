@@ -1,0 +1,29 @@
+<div class="col-md-12">
+    <h1 class="my-0">
+        <ng-template [ngIf]="esCreacion">
+            Crear departamento
+        </ng-template>
+        <ng-template [ngIf]="!esCreacion">
+            Editar departamento
+        </ng-template>
+    </h1>
+</div>
+
+<div class="col-12">
+    <form class="w-100 py-3 my-3 g-3 card border-0 shadow needs-validation" [formGroup]="form" *ngIf="isForm | async as isForm;">
+        <div class="col-lg-6 col-ms-12">
+            <label for="departamento" class="form-label">Departamento</label>
+            <input type="text" class="form-control" id="departamento" formControlName="name">
+        </div>
+    
+    
+        <div class="fixed-bottom bg-white shadow-lg">
+            <div class="d-flex justify-content-end py-2 px-4">
+                <button type="submit" (click)="saveDepartment()" class="btn btn-primary mr-2">
+                    <fa-icon [icon]="'save'" class="fa-1x pr-1"></fa-icon> Guardar
+                </button>
+            </div>
+        </div>
+    </form>
+</div>
+

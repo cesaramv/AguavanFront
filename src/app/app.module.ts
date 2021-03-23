@@ -33,6 +33,9 @@ import { Not404Component } from './not404/not404.component';
 import { fas } from '@fortawesome/free-solid-svg-icons';
 import { StoreComponent } from './store/store.component';
 import { SharedModule } from './shared/shared.module';
+import { CoreModule } from './core/core.module';
+import { NgxUiLoaderHttpModule, NgxUiLoaderModule, NgxUiLoaderRouterModule } from 'ngx-ui-loader';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 //import { far } from '@fortawesome/free-regular-svg-icons';
 
 export function createTranslateLoader(http: HttpClient) {
@@ -61,6 +64,7 @@ export function tokenGetter() {
   ],
   imports: [
     BrowserModule,
+    BrowserAnimationsModule,
     HttpClientModule,
     TranslateModule.forRoot({
       loader: {
@@ -71,7 +75,26 @@ export function tokenGetter() {
     }),
     ReactiveFormsModule,
     AppRoutingModule,
+    CoreModule,
     FontAwesomeModule,
+    NgxUiLoaderModule.forRoot({
+      bgsColor: '#0f117a',
+      bgsOpacity: 1,
+      bgsPosition: 'center-center',
+      bgsSize: 50,
+      bgsType: 'circle',
+      minTime: 300,
+      pbColor: '#FFF',
+      fgsColor: '#0f117a',
+      overlayColor: 'rgba(40,40,40,0.3)',
+      fgsType: 'circle'
+    }),
+    NgxUiLoaderHttpModule.forRoot({
+      showForeground: true
+    }),
+    NgxUiLoaderRouterModule.forRoot({
+      showForeground: true
+    }),
     JwtModule.forRoot({
       config: {
         tokenGetter: tokenGetter,
@@ -82,6 +105,7 @@ export function tokenGetter() {
     SharedModule.forRoot()
   ],
   providers: [
+    /* { provide: LOCALE_ID, useValue: 'es-CO' }, */
     GenericService, 
     GuardService, 
     MenuService, 

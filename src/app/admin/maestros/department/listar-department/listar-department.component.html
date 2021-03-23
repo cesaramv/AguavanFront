@@ -1,0 +1,18 @@
+<div class="w-100">
+    <h2 class="py-3">
+        {{ 'admin.maestros.department.listDepartmet.title' | translate }}
+    </h2>
+
+    <app-grid [configuracion]="configuracion.gridList" (clickCelda)="clickCelda($event)"
+        (clickPaginador)="clickPaginador($event)"></app-grid>
+
+</div>
+
+<div class="fixed-bottom bg-white shadow-lg">
+    <div class="d-flex justify-content-end p-2">
+        <button type="button" routerLink="crear" class="btn btn-primary mr-2">
+            <fa-icon [icon]="'plus'" class="fa-1x"></fa-icon> 
+            {{ 'global.add' | translate }}
+        </button>
+    </div>
+</div>

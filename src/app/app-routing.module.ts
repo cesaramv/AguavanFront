@@ -56,15 +56,19 @@ const routes: Routes = [
     loadChildren: () => import('./office/office.module').then(m => m.OfficeModule)
   },
   {
+    path: 'admin',
+    loadChildren: () => import('./admin/admin.module').then(m => m.AdminModule)
+  },
+  {
     path: '',
     redirectTo: 'home',
     pathMatch: 'full'
   },
-  {
+  /* {
     path: '**',
     redirectTo: 'not-404',
     pathMatch: 'full'
-  }
+  } */
 ];
 
 @NgModule({

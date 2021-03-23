@@ -1,0 +1,8 @@
+<div class="container">
+    <div class="w-100">
+        <h2 class="text-center py-3">Lista de Usuarios</h2>
+
+        <app-grid [configuracion]="configuracion.gridList" (clickCelda)="clickCelda($event)" (clickPaginador)="clickPaginador($event)"></app-grid>
+
+    </div>
+</div>

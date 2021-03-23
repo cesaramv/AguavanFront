@@ -1,0 +1,52 @@
+<div class="col-md-12">
+    <h1 class="my-0">
+        <ng-template [ngIf]="esCreacion">
+            Crear estado de la ordenes
+        </ng-template>
+        <ng-template [ngIf]="!esCreacion">
+            Editar estado de la ordenes
+        </ng-template>
+    </h1>
+</div>
+
+<div class="col-12">
+    <form class="w-100 py-3 my-3 g-3 card border-0 shadow needs-validation" [formGroup]="form"
+        *ngIf="isForm | async as isForm;">
+        <div class="col-12">
+            <div class="row py-2">
+
+                <div class="col-lg-6 col-ms-12">
+                    <label for="descripcion" class="form-label">Descripción</label>
+                    <input type="text" class="form-control" id="descripcion" formControlName="name">
+                </div>
+
+                <div class="col-lg-6 col-ms-12">
+                    <fieldset class="p-2">
+                        <legend class="px-2 mb-0">Estado del estado de la orden</legend>
+                        <div class="wrapper">
+                            <input type="radio" name="state" id="option-1" formControlName="state" [value]="true" />
+                            <input type="radio" name="state" id="option-2" formControlName="state" [value]="false" />
+                            <label for="option-1" class="option option-1">
+                                <div class="dot"></div>
+                                <span>Activo</span>
+                            </label>
+                            <label for="option-2" class="option option-2">
+                                <div class="dot"></div>
+                                <span>Inactivo</span>
+                            </label>
+                        </div>
+                    </fieldset>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="fixed-bottom bg-white shadow-lg">
+            <div class="d-flex justify-content-end py-2 px-4">
+                <button type="submit" (click)="saveStateOrders()" class="btn btn-primary mr-2">
+                    <fa-icon [icon]="'save'" class="fa-1x pr-1"></fa-icon> Guardar
+                </button>
+            </div>
+        </div>
+    </form>
+</div>

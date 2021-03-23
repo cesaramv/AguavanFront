@@ -12,6 +12,7 @@
   "private": true,
   "dependencies": {
     "@angular/animations": "~10.0.0",
+    "@angular/cdk": "^11.1.2",
     "@angular/common": "~10.0.0",
     "@angular/compiler": "~10.0.0",
     "@angular/core": "~10.0.0",
@@ -27,10 +28,12 @@
     "@ngx-translate/http-loader": "^6.0.0",
     "bootstrap": "^4.5.3",
     "jquery": "^3.5.1",
+    "ngx-ui-loader": "^10.0.0",
     "popper.js": "^1.16.1",
     "primeicons": "^4.1.0",
     "primeng": "^11.2.0",
     "rxjs": "~6.5.5",
+    "sweetalert2": "^10.15.5",
     "tslib": "^2.0.0",
     "zone.js": "~0.10.3"
   },

@@ -1,7 +1,80 @@
 {
+    "title": "Aguavan",
+    "global": {
+        "onDeactivate": "¿Desea salir del formulario y descartar los cambios realizados?",
+        "onCancel": "¿Está seguro de cancelar?",
+        "onDeactive": "¿Desea descartar los cambios?",
+        "validateForm": "Existen campos por completar o alguno de los campos es inválido, por favor verificar",
+        "cancel": "Cancelar",
+        "save": "Guardar",
+        "update": "Actualizar",
+        "edit": "Editar",
+        "delete": "Eliminar",
+        "actions": "Acciones",
+        "previsualizar": "Previsualizar",
+        "registrar": "Registrar",
+        "limpiar": "Limpiar",
+        "send": "Enviar",
+        "required": "El campo {{campo}} es requerido",
+        "erroFormat": "Formato incorrecto",
+        "minCarateresBusqueda": "Para realizar la búsqueda debe tener mínimo {{min}} caracteres",
+        "minCaracteres": "El campo {{campo}} debe tener mínimo {{min}} caracteres",
+        "maxCaracteres": "El campo {{campo}} debe tener máximo {{max}} caracteres",
+        "minValue": "El campo {{campo}} debe ser mínimo de {{min}}",
+        "maxValue": "El campo {{campo}} debe ser máximo de {{max}}",
+        "onlyText": "Formato inválido, no use números ni caracteres especiales",
+        "select": "seleccionar",
+        "selected": "Seleccionados",
+        "admin": "Administrar",
+        "clean": "Limpiar",
+        "search": "Buscar",
+        "general": "General",
+        "add": "Agregar nuevo",
+        "status": "Estado",
+        "si": "Sí",
+        "no": "No",
+        "active": "Activo",
+        "inactive": "Inactivo",
+        "next": "Siguiente",
+        "back": "Atrás",
+        "end": "Finalizar",
+        "na": "N/A",
+        "actualizacionExitosaMensaje": "Se ha actualizado el registro exitosamente",
+        "guardadoExitosoMensaje": "Se ha guardado el registro exitosamente",
+        "deleteRow": "¿Está seguro de eliminar el registro?",
+        "eliminadoExitosoMensaje": "Se ha eliminado el registro exitosamente",
+        "noInternet": "No hay conexión a Internet, por favor validar su conexión",
+        "noSeEncontraronRegistrosMensaje": "No se encontraron registros para los criterios de búsqueda ingresados",
+        "mostrarActivos": "Mostrar solo los activos",
+        "errorGuardar": "Se presento un error al guardar el registro",
+        "errorActualizar": "Se presento un error al actualizar el registro"
+    },
     "login": {
         "userName": "Código empresario",
         "password": "Contraseña",
         "btnEntrar": "Entrar"
+    },
+    "admin": {
+        "maestros": {
+            "categoriesProduct": {
+                "listCategoriesProduct": {
+                    "title": "Lista de categorias de los productos",
+                    "grid": {
+                        "nameCategory": "Categorias de productos",
+                        "state": "Estado"
+                    }
+                }
+            },
+            "department": {
+                "listDepartmet": {
+                    "title": "Lista de Departamentos"
+                }
+            },
+            "city": {
+                "listCities": {
+                    "title": "Lista de Ciudades"
+                }
+            }
+        }
     }
 }

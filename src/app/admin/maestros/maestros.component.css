@@ -1,0 +1,15 @@
+.interlineado-btn{
+    line-height: 1.2em;
+}
+.bg--light {
+    background-color: #2b6095!important;
+}
+
+.active-btn-left, .menu--left a:hover {
+    background: rgb(43,96,149);
+    background: linear-gradient(180deg, rgba(43,96,149,1) 65%, rgba(145,161,197,1) 100%);
+}
+.active-btn-left > *, .menu--left a:hover > * {
+    color: #DDD !important;
+}
+

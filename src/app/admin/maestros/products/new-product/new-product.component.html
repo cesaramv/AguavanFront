@@ -1,0 +1,112 @@
+<div class="col-md-12">
+    <h1 class="my-0">
+        <ng-template [ngIf]="esCreacion">
+            Crear documento
+        </ng-template>
+        <ng-template [ngIf]="!esCreacion">
+            Editar documento
+        </ng-template>
+    </h1>
+</div>
+
+<div class="col-12">
+    <form class="col-12 py-3 my-3 card border-0 shadow needs-validation" [formGroup]="form"
+        *ngIf="isForm | async as isForm;">
+        <div class="col-12">
+            <div class="row pb-2">
+                <div class="col-lg-6 col-ms-12 py-2">
+                    <label for="description" class="form-label">Nombre producto</label>
+                    <input type="text" class="form-control" id="description" formControlName="description" />
+                </div>
+
+                <div class="col-lg-6 col-ms-12 py-2">
+                    <label for="category" class="form-label">Categoria</label>
+                    <p-dropdown [options]="categories" [inputId]="categoryId" [optionLabel]="'descripcion'"
+                        [name]="categoryId" [showClear]="true" placeholder="{{ 'global.select' | translate }}"
+                        [styleClass]="'w-100 p-inputtext-sm'" formControlName="category"></p-dropdown>
+                </div>
+
+                <div class="col-lg-4 col-ms-12 py-2">
+                    <label for="department" class="form-label">Impuesto</label>
+                    <p-dropdown [options]="taxes" [inputId]="taxId" [optionLabel]="'description'"
+                        [name]="taxId" [showClear]="true" placeholder="{{ 'global.select' | translate }}"
+                        [styleClass]="'w-100 p-inputtext-sm'" formControlName="tax"></p-dropdown>
+                </div>
+
+                <div class="col-lg-2 col-ms-6 py-2">
+                    <label for="ratePublic" class="form-label">Tasa publico</label>
+                    <input type="text" class="form-control" id="ratePublic" formControlName="ratePublic" />
+                </div>
+
+                <div class="col-lg-2 col-ms-6 py-2">
+                    <label for="price" class="form-label">Precio</label>
+                    <input type="text" class="form-control" id="price" formControlName="price" />
+                </div>
+
+                <div class="col-lg-2 col-ms-6 py-2">
+                    <label for="cost" class="form-label">Costo</label>
+                    <input type="text" class="form-control" id="cost" formControlName="cost" />
+                </div>
+
+                <div class="col-lg-2 col-ms-6 py-2">
+                    <label for="points" class="form-label">Puntos</label>
+                    <input type="text" class="form-control" id="points" formControlName="points" />
+                </div>
+
+                <div class="col-lg-3 col-ms-6 py-2">
+                    <label for="weight" class="form-label">Peso</label>
+                    <input type="text" class="form-control" id="weight" formControlName="weight" />
+                </div>
+
+                <div class="col-lg-3 col-ms-6 py-2">
+                    <label for="weightContainer" class="form-label">Peso contenedor</label>
+                    <input type="text" class="form-control" id="weightContainer" formControlName="weightContainer" />
+                </div>
+
+                <div class="col-lg-6 col-ms-12 py-2">
+                    <fieldset class="p-2">
+                        <legend class="px-2 mb-0">Estado del documento</legend>
+                        <div class="wrapper">
+                            <input type="radio" name="state" id="option-1" formControlName="state" [value]="true" />
+                            <input type="radio" name="state" id="option-2" formControlName="state" [value]="false" />
+                            <label for="option-1" class="option option-1">
+                                <div class="dot"></div>
+                                <span>Activo</span>
+                            </label>
+                            <label for="option-2" class="option option-2">
+                                <div class="dot"></div>
+                                <span>Inactivo</span>
+                            </label>
+                        </div>
+                    </fieldset>
+                </div>
+
+                <!-- <div class="col-lg-6 col-ms-12 py-2">
+                    <label for="image" class="form-label">Imagen del producto</label>
+                    <p-fileUpload name="myfile[]" url="./upload.php"
+                    chooseLabel="Seleccionar" uploadLabel="Subir" cancelLabel="Cancelar"
+                    styleClass="p-button-sm" [showUploadButton]="false"></p-fileUpload>
+                </div> -->
+                <div class="col-lg-6 col-ms-12 py-2">
+                    <label for="image" class="form-label">Imagen del producto</label>
+                    <img [src]="urlImagen" alt="productos" class="form-control imageProduct p-0">
+                    <span class="imgProduct">
+                        <input type="file" (change)="selectFiles($event)" name="imgProduct" id="imgProduct">
+                    </span>
+                    <label for="imgProduct" class="btn btn-outline-secondary btn-sm mt-2">
+                        <fa-icon [icon]="'image'" class="fa-1x pr-1"></fa-icon>
+                        <span>Seleccionar imagen</span>
+                    </label>
+                </div>
+
+                <div class="fixed-bottom bg-white shadow-lg">
+                    <div class="d-flex justify-content-end py-2 px-4">
+                        <button type="submit" (click)="saveProduct()" class="btn btn-primary mr-2">
+                            <fa-icon [icon]="'save'" class="fa-1x pr-1"></fa-icon> Guardar
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>

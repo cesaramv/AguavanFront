@@ -1,0 +1,50 @@
+<div class="col-md-12">
+    <h1 class="my-0">
+        <ng-template [ngIf]="esCreacion">
+            Crear producto
+        </ng-template>
+        <ng-template [ngIf]="!esCreacion">
+            Editar producto
+        </ng-template>
+    </h1>
+</div>
+
+<div class="col-12">
+    <form class="col-12 py-3 my-3 card border-0 shadow needs-validation" [formGroup]="form"
+        *ngIf="isForm | async as isForm;">
+        <div class="col-12">
+            <div class="row py-2">
+                <div class="col-lg-6 col-ms-12">
+                    <label for="name" class="form-label">Tipo de documento</label>
+                    <input type="text" class="form-control" id="name" formControlName="name" />
+                </div>
+
+                <div class="col-lg-6 col-ms-12">
+                    <fieldset class="p-2">
+                        <legend class="px-2 mb-0">Estado del documento</legend>
+                        <div class="wrapper">
+                            <input type="radio" name="state" id="option-1" formControlName="state" [value]="true" />
+                            <input type="radio" name="state" id="option-2" formControlName="state" [value]="false" />
+                            <label for="option-1" class="option option-1">
+                                <div class="dot"></div>
+                                <span>Activo</span>
+                            </label>
+                            <label for="option-2" class="option option-2">
+                                <div class="dot"></div>
+                                <span>Inactivo</span>
+                            </label>
+                        </div>
+                    </fieldset>
+                </div>
+
+                <div class="fixed-bottom bg-white shadow-lg">
+                    <div class="d-flex justify-content-end py-2 px-4">
+                        <button type="submit" (click)="saveDocument()" class="btn btn-primary mr-2">
+                            <fa-icon [icon]="'save'" class="fa-1x pr-1"></fa-icon> Guardar
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
