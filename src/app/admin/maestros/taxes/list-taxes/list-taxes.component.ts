@@ -25,8 +25,8 @@ export class ListTaxesComponent implements OnInit {
     this.getDatos();
   }
 
-  private getDatos(page = 0, size = 10, addParams?: any) {
-    let params = { page, size };
+  private getDatos(page = 0, size = 10, sort = 'registerDate,desc', addParams?: any) {
+    let params = { page, size, sort, isPaged: true };
     if (addParams) {
       params = { ...params, ...addParams };
     }

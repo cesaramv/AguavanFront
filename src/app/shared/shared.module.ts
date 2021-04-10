@@ -13,10 +13,9 @@ import { DropdownModule } from 'primeng/dropdown';
 import { EmptyPipe } from './pipes/empty.pipe';
 import { DatePickerComponent } from './components/date-picker/date-picker.component';
 import { TranslateModule } from '@ngx-translate/core';
-import { InputSelectComponent } from './components/input-select/input-select.component';
 
 @NgModule({
-  declarations: [CustomCurrencyPipe, NoAplicaPipe, GridComponent, EmptyPipe, DatePickerComponent, InputSelectComponent],
+  declarations: [CustomCurrencyPipe, NoAplicaPipe, GridComponent, EmptyPipe, DatePickerComponent],
   imports: [
     CommonModule,
     FormsModule, 
@@ -32,8 +31,7 @@ import { InputSelectComponent } from './components/input-select/input-select.com
     NoAplicaPipe,
     GridComponent,
     FontAwesomeModule,
-    DatePickerComponent,
-    InputSelectComponent
+    DatePickerComponent
   ]
 })
 export class SharedModule { 

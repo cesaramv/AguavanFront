@@ -1,5 +1,5 @@
-<p-calendar 
-class="calendar-coomeva w-100"
+<!-- <p-calendar 
+class="calendar-app w-100"
 [inputId]="inputId"
 [name]="inputId"
 dateFormat="dd-mm-yy"
@@ -17,4 +17,10 @@ dateFormat="dd-mm-yy"
 [timeOnly]="timeOnly"
 [showSeconds]="showSeconds"
 [disabled]="disabled"
-></p-calendar>
+></p-calendar> -->
+
+<p-calendar class="calendar-app w-100" [inputId]="inputId" [name]="inputId"
+            dateFormat="dd-mm-yy" [monthNavigator]="true" [locale]="es"
+            [yearNavigator]="true" yearRange="1888:2222" [showIcon]="true"
+            [icon]="'icon-calendar'">
+</p-calendar>
