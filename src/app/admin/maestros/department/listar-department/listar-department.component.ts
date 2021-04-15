@@ -14,7 +14,7 @@ export class ListarDepartmentComponent implements OnInit {
 
   listDepartment: any;
   configuracion: ListarDepartmentConfig = new ListarDepartmentConfig();
-
+matrix = 3;
   constructor(
     private readonly router: Router,
     private readonly departmentsService: DepartmentsService,
@@ -24,6 +24,16 @@ export class ListarDepartmentComponent implements OnInit {
 
   ngOnInit(): void {
     this.getDepartmens();
+
+    for(let i=0; i < this.matrix; i++){
+      for(let t=0; t < this.matrix; t++){
+        if(i === t || (t === this.matrix -1)){
+          console.log('x');
+        } else {
+          console.log('_');
+        }
+      }
+    }
   }
 
   async getDepartmens(page = 0, size = 10, sort = 'registerDate,desc', addParams?: any) {

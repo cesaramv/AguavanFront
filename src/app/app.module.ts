@@ -1,5 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import { LOCALE_ID, NgModule } from '@angular/core';
 
 import { AppComponent } from './app.component';
 import { ReusableFormComponent } from './reusable-form/reusable-form.component';
@@ -105,7 +105,7 @@ export function tokenGetter() {
     SharedModule.forRoot()
   ],
   providers: [
-    /* { provide: LOCALE_ID, useValue: 'es-CO' }, */
+    { provide: LOCALE_ID, useValue: 'es-CO' },
     GenericService, 
     GuardService, 
     MenuService, 
