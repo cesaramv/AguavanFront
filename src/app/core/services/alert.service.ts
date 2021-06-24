@@ -10,7 +10,7 @@ export class AlertService {
   private configBase() {
     const options: SweetAlertOptions = {
       customClass: {
-        container: 'z-index-11000',
+        container: 'z-index-99999',
         header: 'bar-model'
       },
       showCloseButton: false,

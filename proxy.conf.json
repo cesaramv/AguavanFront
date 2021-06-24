@@ -1,7 +1,7 @@
 {
     "/connect/*":{
-        "target": "https://siigonube.siigo.com:50050",
+        "target": "http://localhost:8080",
         "secure": false,
-        "changeOrigin": true
+        "logLevel": "debug"
     }
 }

@@ -1,10 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 
 import { ListUsersConfig } from './list-users.config';
-import { UsersService } from '../../../services/users.service';
+import { UsersService } from '../../../../services/users.service';
 import { Router } from '@angular/router';
 import { AlertService } from '@core/services/alert.service';
 import { TranslateService } from '@ngx-translate/core';
+import { Store } from '@ngrx/store';
+import * as usersAction from '../../../../store-redux/actions/index';
+import { AppState } from 'src/app/store-redux/app.reducer';
 
 @Component({
   selector: 'app-list-users',
@@ -15,15 +18,35 @@ export class ListUsersComponent implements OnInit {
 
   listUsers: any;
   configuracion: ListUsersConfig = new ListUsersConfig();
+  loading: boolean = false;
+  error: any;
 
   constructor(
     private readonly router: Router,
     private readonly translate: TranslateService,
     private readonly alertService: AlertService,
-    private readonly usersService: UsersService
+    private readonly usersService: UsersService,
+    private store: Store<AppState>
   ) { }
 
   ngOnInit(): void {
+    this.store.select('users').subscribe(({users, loading, error, totalElements, number, totalPages}) => {
+      //this.listUsers = users;
+      this.listUsers = users;
+      this.loading = loading;
+      this.error = error;
+      if(this.configuracion.gridList.component){
+        this.configuracion.gridList.component.limpliar();
+
+        this.configuracion.gridList.component.cargarDatos(
+          this.listUsers, {
+            totalElements,
+            number,
+            totalPages
+          }
+        );
+      }
+    })
     this.getUsers();
   }
 
@@ -32,14 +55,18 @@ export class ListUsersComponent implements OnInit {
     if (addParams) {
       params = { ...params, ...addParams };
     }
-    this.usersService.listar(params).subscribe((users: any) => {
-      this.listUsers = users.content.map(x => { 
+    this.store.dispatch(usersAction.loadUsers({ filtros: params }));
+    /* this.usersService.listar(params).subscribe((users: any) => {
+      //this.listUsers = users.content.map(x => { 
+      const _data = users.content.map(x => {
         return { 
           ...x,
           email: x.email.toLowerCase(),
           nameFull: (x.firstName + ' ' + x.lastName).toLowerCase() 
         } 
       });
+
+      this.store.dispatch(usersAction.loadUsersSuccess({users: _data}));
 
       this.configuracion.gridList.component.cargarDatos(
         this.listUsers, {
@@ -48,10 +75,10 @@ export class ListUsersComponent implements OnInit {
           totalPages: users.totalPages
         }
       );
-    });
+    }); */
   }
 
-  clickCelda(event){
+  clickCelda(event) {
     if (event.tipeAccion === 'editar') {
       this.router.navigate([`/admin/maestros/usuarios/${event.row.userId}`]);
     } else {
@@ -59,7 +86,7 @@ export class ListUsersComponent implements OnInit {
         this.alertService.confirm(mensaje).then(resp => {
           if (resp) {
             this.usersService.eliminar(event.row.taxId).subscribe(resp => {
-              this.translate.get('global.eliminadoExitosoMensaje').subscribe(menssage => { 
+              this.translate.get('global.eliminadoExitosoMensaje').subscribe(menssage => {
                 this.alertService.success(menssage).then(() => {
                   this.getUsers();
                 });
@@ -71,7 +98,7 @@ export class ListUsersComponent implements OnInit {
     }
   }
 
-  clickPaginador(event){
+  clickPaginador(event) {
     this.getUsers(event);
   }
 

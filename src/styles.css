@@ -200,3 +200,6 @@ legend {
     width: auto;
 }
 /* fin style control estado */
+.z-index-99999 {
+    z-index: 99999 !important;
+  }

@@ -192,7 +192,7 @@ export class NewProductComponent extends FormValidate implements OnInit {
     return !this.isPristine(this.form) && this.form && this.form.dirty;
   }
 
-  selectFiles(event) {debugger
+  selectFiles(event) {
     if(event.target.files){
       for(let i=0; i< File.length - 1; i++){
         const reader = new FileReader();

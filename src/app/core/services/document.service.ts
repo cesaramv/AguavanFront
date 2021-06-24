@@ -1,14 +1,14 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { GenericService } from 'src/app/services/generic.service';
 import { environment } from 'src/environments/environment';
+import { GenericService } from './generic.service';
 
 @Injectable({
   providedIn: 'root'
 })
-export class StateUserService extends GenericService<any> {
+export class DocumentService extends GenericService<any> {
 
   constructor(readonly http: HttpClient) {
-    super(http, `${environment.HOST}/estados_usuarios`);
+    super(http, `${environment.HOST}/documentos`);
   }
 }

@@ -1,0 +1,4 @@
+
+interface AppState{
+    users: any
+}

@@ -16,14 +16,10 @@ import { ProductsModule } from './products/products.module';
 import { StateOrdesModule } from './state-ordes/state-ordes.module';
 import { TaxesModule } from './taxes/taxes.module';
 
-import { DepartmentsService } from './services/departments.service';
-import { CityService } from './services/city.service';
-import { DocumentService } from './services/document.service';
-import { StateUserService } from './services/state-user.service';
 import { StateOrderService } from './services/state-order.service';
 import { TaxService } from './services/tax.service';
 import { CategoryService } from './services/category.service';
-import { ProductService } from './services/product.service';
+//import { ProductService } from '../../core/services/product.service';
 import { from } from 'rxjs';
 
 @NgModule({
@@ -43,14 +39,9 @@ import { from } from 'rxjs';
     TaxesModule
   ],
   providers: [
-    DepartmentsService,
-    CityService, 
-    DocumentService,
-    StateUserService,
     StateOrderService,
     TaxService,
-    CategoryService,
-    ProductService
+    CategoryService
   ]
 })
 export class MaestrosModule { }

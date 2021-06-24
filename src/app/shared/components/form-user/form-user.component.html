@@ -1,0 +1,495 @@
+<div [formGroup]="controlContainer.control">
+    <div class="col-12">
+        <div class="row pb-2">
+
+            <div class="col-lg-6 col-ms-12 py-2">
+                <label for="firstName" class="form-label">Nombre completo</label>
+                <input type="text" class="form-control" id="firstName" formControlName="firstName" />
+            </div>
+
+            <div class="col-lg-6 col-ms-12 py-2">
+                <label for="lastName" class="form-label">Apellido completo</label>
+                <input type="text" class="form-control" id="lastName" formControlName="lastName" />
+            </div>
+
+            <div class="col-lg-6 col-ms-12 py-2">
+                <label for="document" class="form-label">Tipo Documento</label>
+                <p-dropdown [options]="documents" [inputId]="'documentId'" [optionLabel]="'name'" [name]="'documentId'"
+                    [showClear]="true" placeholder="{{ 'global.select' | translate }}"
+                    [styleClass]="'w-100 p-inputtext-sm'" formControlName="document"></p-dropdown>
+            </div>
+
+            <div class="col-lg-3 col-ms-12 py-2">
+                <label for="documentoNumber" class="form-label">Numero documento</label>
+                <input type="text" class="form-control" id="documentoNumber" formControlName="documentoNumber" />
+            </div>
+
+            <div class="col-lg-3 col-ms-12 py-2">
+                <label for="birthDate" class="form-label">Fecha de nacimiento</label>
+                <p-calendar formControlName="birthDate" dateFormat="dd-mm-yy" [monthNavigator]="true"
+                    [yearNavigator]="true" yearRange="1888:2222" locale="es" class="calendar-app w-100"></p-calendar>
+
+                <!-- <app-date-picker class="w-100" formControlName="birthDate" [inputId]="'birthDate'">
+                    </app-date-picker> -->
+                <!-- <app-date-picker class="w-100" [inputId]="'birthDate'" formControlName="birthDate"
+                        >
+                    </app-date-picker> -->
+                <!-- <input type="text" class="form-control" id="birthDate" formControlName="birthDate" /> -->
+            </div>
+
+            <div class="col-lg-3 col-ms-12 py-2">
+                <label for="phoneCell" class="form-label">Celular</label>
+                <input type="text" class="form-control" id="phoneCell" formControlName="phoneCell" />
+            </div>
+
+            <div class="col-lg-3 col-ms-12 py-2">
+                <label for="phone" class="form-label">Telefono</label>
+                <input type="text" class="form-control" id="phone" formControlName="phone" />
+            </div>
+
+            <div class="col-lg-6 col-ms-12 py-2">
+                <label for="address" class="form-label">Direccion</label>
+                <input type="text" class="form-control" id="address" formControlName="address" />
+            </div>
+
+            <div class="col-lg-6 col-ms-12 py-2">
+                <label for="department" class="form-label">Departamento</label>
+                <p-dropdown [options]="departments" [inputId]="'departmentId'" [optionLabel]="'name'"
+                    [name]="'departmentId'" [showClear]="true" placeholder="{{ 'global.select' | translate }}"
+                    [styleClass]="'w-100 p-inputtext-sm'" formControlName="department"></p-dropdown>
+            </div>
+
+            <div class="col-lg-6 col-ms-12 py-2">
+                <label for="city" class="form-label">Ciudad</label>
+                <p-dropdown [options]="cities" [inputId]="'cityId'" [optionLabel]="'name'" [name]="'cityId'"
+                    [showClear]="true" placeholder="{{ 'global.select' | translate }}"
+                    [styleClass]="'w-100 p-inputtext-sm'" formControlName="city"></p-dropdown>
+            </div>
+
+            <div class="col-lg-6 col-ms-12 py-2">
+                <label for="email" class="form-label">Email</label>
+                <input type="text" class="form-control" id="email" formControlName="email"
+                    autocomplete="new-password" />
+            </div>
+
+            <div class="col-lg-6 col-ms-12 py-2" *ngIf="!esCreacion">
+                <label for="stateUser" class="form-label">Estado</label>
+                <p-dropdown [options]="statesUsers" [inputId]="'stateUserId'" [optionLabel]="'name'" [name]="'stateUserId'"
+                    [showClear]="true" placeholder="{{ 'global.select' | translate }}"
+                    [styleClass]="'w-100 p-inputtext-sm'" formControlName="stateUser"></p-dropdown>
+            </div>
+
+            <div class="col-ms-12 py-2" [ngClass]="{'col-lg-3': esCreacion, 'col-lg-6': !esCreacion }">
+                <label for="password" class="form-label">Contraseña</label>
+                <input [type]="esCreacion?'password':'text'" class="form-control" id="password"
+                    formControlName="password" />
+            </div>
+
+            <div class="col-lg-3 col-ms-12 py-2" *ngIf="esCreacion">
+                <label for="description" class="form-label">Confirmar contraseña</label>
+                <input type="password" class="form-control" id="description" autocomplete="new-password" />
+            </div>
+
+            <div class="col-ms-12 py-2" [ngClass]="{'col-lg-3': esCreacion, 'col-lg-6': !esCreacion }">
+                <label for="rut" class="form-label">Rut</label>
+                <input type="text" class="form-control" id="rut" formControlName="rut" />
+            </div>
+
+            <div class="col-ms-12 py-2" [ngClass]="{'col-lg-9': esCreacion, 'col-lg-12': !esCreacion }">
+                <label for="description" class="form-label">Código de su patrocinador {{bloquear}}</label>
+                <div class="input-group">
+                    <input type="text" class="form-control" required formControlName="levelOneId">
+                    <div class="input-group-append">
+                        <button class="btn btn-outline-secondary" type="button" [disabled]="!bloquear && !esCreacion"
+                            (click)="getPatrocinador()">Verificar</button>
+                    </div>
+                </div>
+                <small id="passwordHelpBlock" class="form-text text-muted" *ngIf="patrocinador">
+                    {{patrocinador.firstName + '-' + patrocinador.lastName}}
+                </small>
+            </div>
+
+            <div class="col-12 py-2">
+                <label for="rut" class="form-label">Contrato</label>
+                <div class="form-control divContrato">
+                    <p style="padding:7px; text-align:justify">
+                        CONTRATO QUE SE CELEBRA DE UNA PARTE EL <b>CONGLOMERADO EMPRESARIAL AGUAVAN S.A.S</b>. A QUIEN
+                        EN LO SUCESIVO SE LLAMARA <b>"LA EMPRESA"</b>
+                        Y POR OTRA PARTE LA PERSONA NATURAL O JURIDICA IDENTIFICADA COMO EL SOLICITANTE, A QUIEN EN LO
+                        SUCESIVO SE LE LLAMARA
+                        <b>"VENDEDOR INDEPENDIENTE"</b> DE ACUERDO CON LAS SIGUIENTES DECLARACIONES Y CLAUSULAS, <b>"LA
+                            EMPRESA”</b>, POR MEDIO DE SU
+                        REPRESENTACIÓN DECLARA QUE:<br />
+                        <b> A - "LA EMPRESA"</b> es una <b>SOCIEDAD POR ACCIONES SIMPLIFICADAS (S.A.S.)</b>. Constituida
+                        de acuerdo con las leyes mercantiles de la
+                        república de Colombia, con domicilio en la calle 4 número 2-54 San Pedro Valle del Cauca
+                        Colombia.<br />
+                        <b>B</b> - Su objeto social consiste en la comercialización de productos y/o servicios
+                        establecidos por <b>"LA EMPRESA"</b>, por medio del sistema
+                        de <b>Mercadeo en Red o Multinivel</b>, según <b>Matricula Mercantíl N° 48564-16</b> del 18 de
+                        Mayo del 2012 de Cámara de Comercio
+                        de Buga Valle del Cauca, amparados por la ley 1700 del 2013.<br />
+                        Por su parte el <b>"solicitante"</b> Acepta y acuerda que: el presente tiene por objeto adquirir
+                        el reconocimiento en calidad de
+                        distribuidor como <b>"VENDEDOR INDEPENDIENTE"</b> de los productos y/o servicios que ofrece
+                        <b>"LA EMPRESA"</b>, así mismo
+                        declara lo siguiente:<br />
+
+                        <b>A</b> - Es una persona natural mayor de edad y/o jurídica, con plena capacidad para el
+                        ejercicio del sistema de Mercadeo en Redes o Multinivel,
+                        y que bajo juramento, manifiesta que se encuentra <b>legalmente apto</b> para desempeñar dicha
+                        actividad que es formar redes
+                        de mercadeo independientes. <br />
+                        <b>B</b> - Se encuentra al día en sus obligaciones de inscripción ante la <b>DIAN</b>, en lo que
+                        es aplicable
+                        a las obligaciones fiscales que establece la legislación Colombiana.<br />
+                        <b>C</b> - A la celebración del presente contrato, diligenciado en el portal de <b>"LA
+                            EMPRESA"</b>, el <b>"VENDEDOR INDEPENDIENTE"</b> leyó y aceptó
+                        las disposiciones plasmadas en los manuales de “Ética y Conducta” y “Políticas, Términos y
+                        Condiciones”, los cuales hacen parte
+                        integral de este contrato, en cada una de las prestaciones que se lleven a cabo durante su
+                        vigencia, y obtuvo de forma Gratuita
+                        de parte de <b>"LA EMPRESA"</b> su incorporación como <b>"VENDEDOR INDEPENDIENTE"</b>, en la
+                        república de Colombia.
+                        Expuesto lo anterior, las partes convienen en celebrar el presente Contrato que se regirá acorde
+                        a las siguientes cláusulas:.<br /><br />
+
+                        <b>PRIMERA: OBJETO</b>. El presente contrato tiene como objeto, que el <b>"VENDEDOR
+                            INDEPENDIENTE"</b> refiera e
+                        incorpore a nuevas personas a <b>"LA EMPRESA"</b>, para que estas a su vez incorporen a otras
+                        personas naturales o jurídicas
+                        con el fin último de vender los productos y/o servicios ofertados por <b>“LA EMPRESA”</b>,
+                        recomendar el sistema y formar
+                        su propia red de mercadeo dentro de <b>“LA EMPRESA”</b>. <br />
+                        El <b>"VENDEDOR INDEPENDIENTE"</b> actuará por su propia cuenta, asumiendo
+                        todos los riesgos, gastos y responsabilidades con plena autonomía económica y administrativa,
+                        sin estar sujeto al cumplimiento de horarios,
+                        órdenes de ninguna clase, ni estará subordinado a <b>“LA EMPRESA”</b><br />
+                        De igual manera, el <b>“VENDEDOR INDEPENDIENTE”</b> comprende y acuerda, que el presente
+                        contrato no genera vínculo laboral alguno con la
+                        <b>“EMPRESA”</b> como empleado, ni como representante, agente o franquiciario, de tal manera que
+                        no se crea una relación laboral o de
+                        subordinación entre el <b>“VENDEDOR INDEPENDIENTE”</b> y la <b>“EMPRESA”</b>.<br /><br />
+
+
+                        <b>SEGUNDA: PRESTACIONES</b>. Tanto <b>“LA EMPRESA”</b> como el <b>"VENDEDOR INDEPENDIENTE"</b>,
+                        se comprometen a respetar las disposiciones plasmadas
+                        en el presente contrato, como los manuales de “Ética y Conducta” y “Políticas, Términos y
+                        Condiciones”, los cuales hacen parte integral de
+                        este contrato, en cada una de las prestaciones que se lleven a cabo durante su vigencia.<br />
+                        En este sentido, <b>“LA EMPRESA”</b> pondrá a disposición del <b>"VENDEDOR INDEPENDIENTE"</b>
+                        los productos y/o servicios para su
+                        respectiva compra. Cuando al <b>"VENDEDOR INDEPENDIENTE"</b> inicialmente se le verifique la
+                        orden de pago de su compra, se procederá a
+                        ser registrado en el sistema con su orden de Activación a su favor, y luego al trámite de
+                        despacho de su pedido a su domicilio.
+                        <b>“LA EMPRESA”</b> debe cumplir con la Constitución y las leyes de Colombia; especialmente
+                        aquellas leyes, regulaciones y
+                        reglamentos que se relacionen con la venta directa de los productos de <b>“LA EMPRESA”</b>, en
+                        particular la <b>Ley 1700 del 2013</b>,
+                        la <b>Ley 1480 de 2011</b> (Estatuto de Protección al Consumidor), <b>Ley 1581 de 2011 y Decreto
+                            1377 de 2013</b>.<br />
+                        El <b>"VENDEDOR INDEPENDIENTE"</b> asume los riesgos sobre el cuidado de los productos a partir
+                        de la fecha en que los recibe,
+                        como consecuencia de la compra realizada a <b>"LA EMPRESA"</b> y será el responsable del cobro
+                        de los productos vendidos a terceros.<br />
+                        <b>"LA EMPRESA"</b> no es responsable de la relación comercial entre el <b>“VENDEDOR
+                            INDEPENDIENTE"</b> con terceros.<br />
+                        El <b>“VENDEDOR INDEPENDIENTE"</b> solo podrá realizar publicidad para comercializar los
+                        productos de acuerdo a las directrices dadas por
+                        <b>“LA EMPRESA”</b> y no podrá suplantar la publicidad ni asumirla por su propia cuenta.
+                        <br /><br />
+
+                        <b>TERCERA: PRODUCTOS Y/O SERVICIOS</b>. <b>“LA EMPRESA”</b> dispondrá los productos y/o
+                        servicios tanto en su oficina abierta al público, en su
+                        plataforma virtual www.aguavan.com.co, y en la oficina virtual de cada uno de sus <b>“VENDEDORES
+                            INDEPENDIENTES"</b>, y se
+                        compromete a vender al <b>“VENDEDOR INDEPENDIENTE"</b> siempre y cuando haya stock de inventario
+                        en sus almacenes o bodegas.<br /><br />
+
+                        <b>CUARTA: PLAN DE COMPENSACIÓN. “LA EMPRESA”</b>, en su deseo de estimular la formación de
+                        redes productivas, establece un Plan de
+                        Compensación como se presenta a continuación:<br />
+                    <h2 class="text-center">Plan de Compensación</h2>
+                    <hr />
+
+                    <p style="text-align:justify">
+                        <b>“LA EMPRESA”</b>, en su deseo de estimular la formación de redes productivas, establece un
+                        Plan de Compensación como se presenta a continuación:
+                    </p>
+                    <ol>
+                        <li>Todos los productos o servicios tienen un precio al público y un precio al <b>"VENDEDOR
+                                INDEPENDIENTE”</b> y son valorados en PUNTOS.</li>
+                        <li>Las ganancias se obtienen en puntos, los cuales se redimen a una taza de <b>$2.000.</b> por
+                            punto.</li>
+                        <li>La compra mínima requerida personal para bonificar es de <b>15</b> puntos.</li>
+                        <li>
+                            <b>“LA EMPRESA”</b> te compensará por tus compras, además por las ventas que realice la
+                            compañía a través de la red de <b>“VENDEDORES INDEPENDIENTES"</b>
+                            inscritos a tu red de descendencia hasta el 10 nivel.
+                            <ol type="A">
+                                <li>
+                                    <b>Bonificación por las ventas</b> que realice <b>“LA EMPRESA”</b> a través de la
+                                    red de <b>“VENDEDORES INDEPENDIENTES"</b> inscritos a tu red de descendencia:
+
+                                    <ol>
+                                        <li>En tu primer nivel bonificarás el: 3%.</li>
+                                        <li>En tu segundo nivel bonificarás el 20%.</li>
+                                        <li>
+                                            En tu tercer nivel bonificas desde el 34% hasta el 51% dependiendo tanto de
+                                            la
+                                            compra personal, como la venta en puntos que realice “LA EMPRESA” a través
+                                            de la
+                                            red de “VENDEDORES INDEPENDIENTES&quot; inscritos a tu red de descendencia,
+                                            lo que
+                                            dará acceso a los rangos desde Embajador a Embajador Diamante Royal, y a su
+                                            respectivo plan de premios.
+                                        </li>
+                                        <li>
+                                            En tu cuarto nivel bonificarás el 2%, solo si en tus 3 primeros niveles
+                                            logras ventas
+                                            superiores a 30.000 puntos, además de una compra mínima personal de 125
+                                            puntos.
+                                        </li>
+                                        <li>
+                                            En tu quinto nivel bonificarás el 1.5%, solo si en tus 3 primeros niveles
+                                            logras
+                                            ventas superiores a 55.000 puntos, además de una compra mínima personal de
+                                            170 puntos.
+                                        </li>
+                                        <li>
+                                            En tu sexto nivel bonificarás el 1%, solo si en tus 3 primeros niveles
+                                            logras ventas
+                                            superiores a 80.000 puntos, además de una compra mínima personal de 215
+                                            puntos.
+                                        </li>
+                                        <li>
+                                            En tu séptimo nivel bonificarás el 0.5%, solo si en tus 3 primeros niveles
+                                            logras
+                                            ventas superiores a 105.000 puntos, además de una compra mínima personal de
+                                            300 puntos.
+                                        </li>
+                                        <li>
+                                            En tus octavo, noveno y décimo niveles bonificarás el 0.25%, solo si en tus
+                                            3
+                                            primeros niveles logras ventas superiores a 130.000, 175.000 y 200.000
+                                            puntos
+                                            respectivamente además, de una compra mínima personal de 400, 450 y 470
+                                            puntos respectivamente.
+                                        </li>
+                                    </ol>
+                                </li>
+                            </ol>
+                        </li>
+                    </ol>
+
+
+                    <p style="padding:7px; text-align:center; color:red; font-weight:bold">
+                        Plan de Compensación resumido en la siguiente gráfica:
+                        <img width="100%" src="../../../../../assets/images/plan_comp.png" />
+                    </p>
+
+                    <p style="padding:7px; text-align:justify">
+
+                        <b>QUINTA: PLAN DE PREMIOS. “LA EMPRESA”</b> establece un plan de premios, al que el
+                        <b>“VENDEDOR INDEPENDIENTE"</b>
+                        accederá únicamente cuando cumpla con los requisitos estipulados, publicados en la página de
+                        <b>“LA EMPRESA”</b>
+                        <b style="color: red; font-weight: bold;">Nota:</b> La información plasmada en las clausulas
+                        Segunda, Tercera, Cuarta
+                        y Quinta se encuentran plenamente identificadas en el portal de <b>“LA EMPRESA”</b>.
+                        https://aguavan.com.co/,
+                        en su oficina abierta al público y en la oficina virtual de cada uno de sus <b>“VENDEDORES
+                            INDEPENDIENTES"</b>.<br />
+
+                        Los valores registrados, pueden ser modificados unilateralmente por parte de <b>“LA
+                            EMPRESA”</b>,
+                        sin que con ello se violen los derechos del <b>"VENDEDOR INDEPENDIENTE"</b>. <br />
+
+                        Todo cambio realizado por <b>“LA EMPRESA”</b>, será informado y notificado a través de sus
+                        medios de comunicación
+                        (página web oficial, mailing, redes sociales oficiales de la compañía, etc.) El <b>"VENDEDOR
+                            INDEPENDIENTE"</b>
+                        es responsable de revisar periódicamente los medios de comunicación de <b>“LA EMPRESA”</b> para
+                        informarse de las
+                        novedades o cambios presentados por la compañía.<br />
+
+                        <b>Parágrafo Primero:</b> Todos los pagos efectuados por <b>“LA EMPRESA”</b> a favor del
+                        <b>“VENDEDOR INDEPENDIENTE”</b>;
+                        serán objeto de la deducción de Impuestos de ley.<br />
+
+
+
+                        <b>SEXTA: LIBERTAD DE ACCIÓN COMERCIAL</b>. El presente contrato le permite libertad de acción
+                        al <b>“VENDEDOR INDEPENDIENTE”</b> que se
+                        quiera dedicar a otras empresas de Mercadeo en Redes, siempre y cuando no incurra en actos en
+                        contra de lo dispuesto en los manuales de
+                        “Ética y Conducta” y “Políticas, Términos y Condiciones”, los cuales hacen parte integral de
+                        este contrato. <br /><br />
+
+                        <b>SEPTIMA: MODO, TIEMPO Y LUGAR DE PAGO DE LAS GANANCIAS RESIDUALES</b>. <b>LA EMPRESA</b>
+                        tiene como fecha de cierre mensual el último
+                        día de cada mes a las 12:00 P.M. y paga las ganancias residuales entre el día 15 y el día 30 del
+                        mes siguiente al cierre mensual.<br />
+
+                        <b>Parágrafo Primero:</b> Para la realización del pago de las comisiones con sus Respectivos
+                        descuentos, el <b>“VENDEDOR INDEPENDIENTE”</b>
+                        debe aportar una única vez (i) el <b>Registro Único Tributario</b> (<b>RUT</b>) donde conste
+                        como actividad comercial, la actividad
+                        <b>Nº 8299</b> referente a “Otras Actividades de servicio de apoyo a las Empresas n.c.p.” y (ii)
+                        una fotocopia de la cédula de ciudadanía
+                        ampliada al 150%. Los anteriores documentos se deben enviar de manera física a <b>“LA
+                            EMPRESA”</b>, a la Calle 4 N° 2 - 54 en San Pedro
+                        Valle del Cauca Colombia, o deben ser escaneados y enviarlos vía e-mail al correo
+                        info@aguavan.com.co <br />
+
+                        <b>Parágrafo Segundo:</b> Las partes convienen que los pagos deben efectuarse en una Cuenta
+                        Bancaria del <b>"VENDEDOR INDEPENDIENTE”</b>
+                        en moneda nacional del país donde se desarrolle el negocio de <b>“LA EMPRESA”</b>, o en su
+                        defecto, <b>“LA EMPRESA”</b> buscará los mecanismos
+                        adecuados para dichos trámites previo aviso al <b>"VENDEDOR INDEPENDIENTE”</b> y los costos de
+                        la transacción por los pagos generados de las
+                        ganancias por plan de compensación, serán asumidos por el <b>“VENDEDOR
+                            INDEPENDIENTE”</b>.<br /><br />
+
+                        <b>OCTAVA: PROHIBICIONES. El “VENDEDOR INDEPENDIENTE”</b>, deberá abstenerse de utilizar,
+                        publicar o reproducir para cualquier fin ya sea comercial o no,
+                        sin el consentimiento previo de <b>“LA EMPRESA”</b>, propiedad sea esta intelectual, empresarial
+                        o derechos de autor de <b>“LA EMPRESA”</b>.<br /><br />
+
+                        <b>NOVENA: VIGENCIA DE CONTRATO</b>. Para conservar su código, el, <b>“VENDEDOR
+                            INDEPENDIENTE”</b> debe generar una compra mínima de Cincuenta (50)
+                        Puntos dentro de intervalos que no excedan los (6) meses. En caso de que el <b>“VENDEDOR
+                            INDEPENDIENTE”</b> no cumpla con este requisito,
+                        <b>“LA EMPRESA”</b> procederá a realizar la suspensión definitiva de su código como <b>“VENDEDOR
+                            INDEPENDIENTE”</b>, perdiendo su posición
+                        y la red que haya formado hasta ese momento sin perjuicio de lo dispuesto en el artículo 5
+                        numeral 2 de la Ley 1700 del 2013, pero ofreciéndole
+                        la posibilidad de ingresar nuevamente con un nuevo código de <b>"VENDEDOR INDEPENDIENTE”.</b>
+                        Cumplido el mencionado requisito,
+                        El vínculo comercial entre <b>“LA EMPRESA”</b> y el <b>“VENDEDOR INDEPENDIENTE”</b> establecido
+                        en el presente contrato es indefinido, sin perjuicio de
+                        las causales de terminación del contrato.<br />
+                        El <b>"VENDEDOR INDEPENDIENTE”</b> debe diligenciar en el presente contrato la información del
+                        Co-aplicante o Heredero, quien heredara su código con su
+                        respectiva red en caso de muerte, o podrá ceder el contrato a otra persona ya sea de su grupo
+                        familiar o no, con previo aviso por escrito mínimo 30 días antes,
+                        con la debida aprobación por parte de <b>“LA EMPRESA”.</b><br /><br />
+
+                        <b>DECIMA: CAUSALES Y FORMAS DE TERMINACION DEL CONTRATO.</b> Además de las causales de
+                        terminación establecidas en los manuales
+                        de “Ética y Conducta” y “Políticas, Términos y Condiciones”, los cuales hacen parte integral de
+                        este contrato, <b>“LA EMPRESA”</b>
+                        o el <b>“VENDEDOR INDEPENDIENTE”</b> podrán dar por terminado el presente contrato: (i) en
+                        cualquier momento y de forma unilateral,
+                        mediante aviso a la otra parte, acorde al numeral 5 del artículo 5 de la <b>Ley 1700 de
+                            2013</b>; o (ii) mediante simple notificación,
+                        sin necesidad de resolución judicial alguna y con efectos inmediatos, en caso de incumplimiento
+                        de la otra parte de cualquiera de las
+                        obligaciones a su cargo, emanadas del presente contrato, o los documentos que hacen parte
+                        integral del mismo.<br /><br />
+
+                        <b>DECIMA PRIMERA: LIMITACIONES.</b> Queda claramente expresado y entendido que la relación que
+                        genera este contrato es única y exclusivamente
+                        para el suministro de los productos y/o servicios por parte de <b>“LA EMPRESA”</b> a todos sus
+                        <b>“VENDEDORES INDEPENDIENTES”</b> y
+                        que ninguna de las partes podrá contraer obligación alguna, distintas de las que son materia de
+                        este contrato. La ejecución de los
+                        servicios no genera vínculo laboral alguno entre <b>“LA EMPRESA”</b> y el <b>“VENDEDOR
+                            INDEPENDIENTE”</b>.<br /><br />
+
+                        <b>DÉCIMA SEGUNDA: COBERTURA TERRITORIAL.</b> El presente contrato tendrá validez únicamente
+                        dentro del territorio nacional de la
+                        República de Colombia. Sin embargo el <b>“VENDEDOR INDEPENDIENTE”</b>, podrá cumplir el objeto
+                        contractual de este contrato, en
+                        aquellos territorios extranjeros donde <b>“LA EMPRESA”</b> inicie su negocio de manera legal,
+                        según las normas que rijan en el
+                        país donde haga apertura.<br /><br />
+
+                        <b>DÉCIMA TERCERA: RESOLUCIÒN DE CONTROVERSIAS:</b><br />
+                        <b>Derecho Aplicable:</b> Este Contrato estará regido por las leyes de la República de Colombia.
+                        <br />
+                        <b>Controversias:</b> Cualquier disputa, controversia, reclamo o diferendo relacionado con este
+                        Contrato o cualquier incumplimiento
+                        del mismo, que no pueda ser dirimido mediante el proceso establecido en las cláusulas
+                        precedentes, será dirimido por arbitraje de
+                        acuerdo con las Reglas de Arbitraje de la Cámara de Comercio vigentes en la fecha de este
+                        Contrato, por uno o más árbitros
+                        elegidos de acuerdo con dichas reglas.<br />
+                        <b>Lugar del Arbitraje:</b> Las audiencias del arbitraje se celebrarán en la ciudad de
+                        Guadalajara de Buga Valle del Cauca
+                        o en cualquier otro lugar acordado por las partes. La decisión de él o los árbitros será final y
+                        obligatoria para las
+                        partes. No estará sujeta a apelación y también resolverá las cuestiones relacionadas con los
+                        costos del arbitraje.
+                        Cualquier tribunal competente podrá emitir una sentencia basada en el laudo arbitral, así como
+                        las órdenes para
+                        ejecutar el laudo. Las partes aceptan la competencia de cualquier tribunal en que la ejecución
+                        de un laudo emitido
+                        bajo este artículo pueda ser solicitada.<br /><br />
+
+                        <b>DÉCIMA CUARTA: PRIVACIDAD:</b> Para dar cumplimiento a la <b>Ley 1581 del 2012</b>, el
+                        Decreto Reglamentario <b>1377 del 2013</b>,
+                        el Decreto <b>886 del 2014</b> y la <b>Circular 2 del 2015</b> emanada de la Superintendencia de
+                        Industria y Comercio,
+                        <b>“LA EMPRESA”</b> se compromete a recolectar, tratar, recopilar y salvaguardar la base de
+                        datos de todos sus
+                        <b>“VENDEDORES INDEPENDIENTES”</b> afiliados a <b>“LA EMPRESA”</b>.<br />
+                        <b>DATOS PERSONALES:</b> Una vez firmado el contrato El <b>“VENDEDOR INDEPENDIENTE”</b> autoriza
+                        a la compañía para
+                        obtener, usar, compartir, transferir la información personal contenida en este documento, de
+                        acuerdo a las leyes
+                        vigentes en cuanto a tratamiento de datos.<br />
+                        Las partes aquí citadas adquieren los derechos y contraen las obligaciones de acuerdo con las
+                        disposiciones legales
+                        colombianas vigentes, se comprometen a respetar las disposiciones plasmadas en el presente
+                        contrato, como los manuales
+                        de “Ética y Conducta” y “Políticas, Términos y Condiciones”, los cuales hacen parte integral de
+                        este contrato. <br /> <br />
+
+                        <b>DECIMA QUINTA: DOCUMENTOS QUE HACEN PARTE INTEGRAL DEL PRESENTE CONTRATO:</b> Para efectos
+                        del presente contrato,
+                        las partes convienen que hacen parte integral del presente contrato el manual de “Ética y
+                        Conducta” y el manual de
+                        “Políticas, “Términos y Condiciones”, los cuales, las partes declaran que conocen a cabalidad en
+                        su contenido, en
+                        especial lo respectivo a: (i) los derechos y obligaciones de las partes, (ii) las causales y
+                        formas de terminación
+                        del contrato, (iii) los mecanismos de solución de controversias, y (iiii) los demás requisitos
+                        mínimos contractuales
+                        que consagra la Ley 1700 de 2013 para los contratos con compañías multinivel, que se encuentran
+                        en los mencionados documentos.<br /><br />
+
+
+                        <b>DECIMA SEXTA: DECLARACIÓN: El “VENDEDOR INDEPENDIENTE”</b>, declara que ha leído y entendido
+                        el significado del presente
+                        contrato, y manifiesta que como persona natural mayor de edad y/o jurídica, estar de acuerdo con
+                        su contenido y actuar
+                        con la mejor integridad, veracidad y ética como <b>“VENDEDOR INDEPENDIENTE”</b>.
+                    </p>
+                </div>
+            </div>
+
+            <div class="col-12 py-2">
+                <!-- <label for="contract" class="form-label">Contrato</label> -->
+                <!-- <input type="text" class="form-control" id="contract" formControlName="contract" /> -->
+                <fieldset class="py-2 px-3">
+                    <legend class="px-2 mb-0">Acepto contrato</legend>
+                    <div class="form-group">
+                        <div class="form-check d-flex align-items-center">
+                            <input class="form-check-input" type="checkbox" value="" formControlName="contract"
+                                required>
+                            <label class="form-check-label text-muted" for="invalidCheck">
+                                Al marcar esta casilla, indico que conozco, he leído y acepto las cláusulas
+                                y condiciones de AguaVan.S.A.S.
+                            </label>
+                        </div>
+                    </div>
+                </fieldset>
+            </div>
+
+            
+
+        </div>
+    </div>
+</div>

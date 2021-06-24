@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { GenericService } from './generic.service';
+import { GenericService } from '../core/services/generic.service';
 import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 import { Subject } from 'rxjs';

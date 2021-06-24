@@ -5,7 +5,7 @@ import { AlertService } from '@core/services/alert.service';
 import { TranslateService } from '@ngx-translate/core';
 import { FormValidate } from '@shared/util/form-validate';
 import { Observable } from 'rxjs/internal/Observable';
-import { DocumentService } from '../../services/document.service';
+import { DocumentService } from '@core/services/document.service';
 
 @Component({
   selector: 'app-new-documets',

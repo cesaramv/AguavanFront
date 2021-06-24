@@ -1,9 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { ListProductsConfig } from './list-products.config';
-import { ProductService } from '../../services/product.service';
+import { ProductService } from '@core/services/product.service';
 import { Router } from '@angular/router';
 import { AlertService } from '@core/services/alert.service';
 import { TranslateService } from '@ngx-translate/core';
+import * as actionsProducts from '../../../../store-redux/actions/products.actions';
+import { Store } from '@ngrx/store';
+import { AppState } from 'src/app/store-redux/app.reducer';
 
 @Component({
   selector: 'app-list-products',
@@ -18,10 +21,20 @@ export class ListProductsComponent implements OnInit {
     private readonly router: Router,
     private readonly translate: TranslateService,
     private readonly alertService: AlertService,
-    private readonly productService: ProductService
+    private readonly productService: ProductService,
+    private readonly store: Store<AppState>
   ) { }
 
   ngOnInit(): void {
+    this.store.select('products').subscribe(({loaded, products, totalElements, number, totalPages}) => {
+      
+      if(loaded){
+        const data = products.map(x => { return {...x, _state: x.state ? 'Si' : 'No' } });
+        this.configuracion.gridList.component.cargarDatos(
+          data, { totalElements, number, totalPages }
+        );
+      }
+    })
     this.getDatos();
   }
 
@@ -30,7 +43,8 @@ export class ListProductsComponent implements OnInit {
     if (addParams) {
       params = { ...params, ...addParams };
     }
-    this.productService.listar(params).subscribe((datos: any) => {
+    this.store.dispatch(actionsProducts.loadProducts({filtros: params}));
+    /* this.productService.listar(params).subscribe((datos: any) => {
       const data = datos.content.map(x => { return {...x, _state: x.state ? 'Si' : 'No' } });
       this.configuracion.gridList.component.cargarDatos(
         data, {
@@ -39,7 +53,7 @@ export class ListProductsComponent implements OnInit {
           totalPages: datos.totalPages
         }
       );
-    });
+    }); */
   }
 
   clickCelda(event){

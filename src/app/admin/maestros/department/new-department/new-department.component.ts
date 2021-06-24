@@ -5,7 +5,7 @@ import { AlertService } from '@core/services/alert.service';
 import { TranslateService } from '@ngx-translate/core';
 import { FormValidate } from '@shared/util/form-validate';
 import { Observable } from 'rxjs';
-import { DepartmentsService } from '../../services/departments.service';
+import { DepartmentsService } from '@core/services/departments.service';
 
 @Component({
   selector: 'app-new-department',

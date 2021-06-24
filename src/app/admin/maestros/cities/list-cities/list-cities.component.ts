@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AlertService } from '@core/services/alert.service';
-import { CityService } from '../../services/city.service';
+import { CityService } from '@core/services/city.service';
 import { ListCitiesConfig } from './list-cities.config';
 
 @Component({

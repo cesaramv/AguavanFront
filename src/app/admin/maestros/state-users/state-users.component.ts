@@ -5,7 +5,7 @@ import { AlertService } from '@core/services/alert.service';
 import { TranslateService } from '@ngx-translate/core';
 import { FormValidate } from '@shared/util/form-validate';
 import { Observable } from 'rxjs/internal/Observable';
-import { StateUserService } from '../services/state-user.service';
+import { StateUserService } from '@core/services/state-user.service';
 
 @Component({
   selector: 'app-state-users',

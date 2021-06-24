@@ -1,8 +1,11 @@
 import { NgModule, Optional, SkipSelf } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { AlertService } from './services/alert.service';
 import { CanDeactivateGuard } from './guards/can-deactivate.guard';
-import { CalculationService } from './services/calculation.service';
+import { GenericService } from './services/generic.service';
+import { 
+  AlertService, ProductService, CalculationService, DepartmentsService,
+  DocumentService, CityService, StateUserService
+} from './services/index';
 
 
 @NgModule({
@@ -13,7 +16,13 @@ import { CalculationService } from './services/calculation.service';
   providers: [ 
     AlertService,
     CanDeactivateGuard,
-    CalculationService
+    GenericService,
+    CalculationService,
+    DepartmentsService,
+    DocumentService,
+    CityService,
+    StateUserService,
+    ProductService
   ]
 })
 export class CoreModule {

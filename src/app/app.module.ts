@@ -4,6 +4,14 @@ import { LOCALE_ID, NgModule } from '@angular/core';
 import { AppComponent } from './app.component';
 import { ReusableFormComponent } from './reusable-form/reusable-form.component';
 import { ReactiveFormsModule } from '@angular/forms';
+
+import { StoreModule } from '@ngrx/store';
+import { EffectsModule } from '@ngrx/effects';
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+
+import { appReducers } from './store-redux/app.reducer'
+import { EffectsArray } from './store-redux/effects/index';
+
 import { ProfileFormComponent } from './profile-form/profile-form.component';
 import { PasswordFormComponent } from './password-form/password-form.component';
 import { TokenComponent } from './token/token.component';
@@ -13,7 +21,6 @@ import { HttpClientModule, HttpClient } from '@angular/common/http';
 import { RolService } from './services/rol.service';
 import { LoginService } from './services/login.service';
 import { RolesComponent } from './roles/roles.component';
-import { GenericService } from './services/generic.service';
 import { HomeComponent } from './home/home.component';
 import { LoginComponent } from './login/login.component';
 import { FontAwesomeModule, FaIconLibrary } from '@fortawesome/angular-fontawesome';
@@ -66,6 +73,8 @@ export function tokenGetter() {
     BrowserModule,
     BrowserAnimationsModule,
     HttpClientModule,
+    StoreModule.forRoot( appReducers ),
+    EffectsModule.forRoot( EffectsArray ),
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,
@@ -102,11 +111,14 @@ export function tokenGetter() {
         disallowedRoutes: [`http://${environment.HOST.substring(7)}/login/enviarCorreo`],
       },
     }),
-    SharedModule.forRoot()
+    SharedModule.forRoot(),
+    StoreDevtoolsModule.instrument({
+      maxAge: 25,
+      logOnly: environment.production
+    })
   ],
   providers: [
     { provide: LOCALE_ID, useValue: 'es-CO' },
-    GenericService, 
     GuardService, 
     MenuService, 
     LoginService, 

@@ -5,7 +5,7 @@ import { CustomCurrencyPipe } from './pipes/custom-currency.pipe';
 import { NoAplicaPipe } from './pipes/no-aplica.pipe';
 import { FontAwesomeModule, FaIconLibrary } from '@fortawesome/angular-fontawesome';
 import { fas, faCoffee } from '@fortawesome/free-solid-svg-icons';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { GridComponent } from './components/grid/grid.component';
 import { TableModule } from 'primeng/table';
 import { CalendarModule } from 'primeng/calendar';
@@ -13,12 +13,21 @@ import { DropdownModule } from 'primeng/dropdown';
 import { EmptyPipe } from './pipes/empty.pipe';
 import { DatePickerComponent } from './components/date-picker/date-picker.component';
 import { TranslateModule } from '@ngx-translate/core';
+import { FormUserComponent } from './components/form-user/form-user.component';
 
 @NgModule({
-  declarations: [CustomCurrencyPipe, NoAplicaPipe, GridComponent, EmptyPipe, DatePickerComponent],
+  declarations: [
+    CustomCurrencyPipe, 
+    NoAplicaPipe, 
+    GridComponent, 
+    EmptyPipe, 
+    DatePickerComponent, 
+    FormUserComponent
+  ],
   imports: [
     CommonModule,
     FormsModule, 
+    ReactiveFormsModule,
     TranslateModule,
     TableModule,
     CalendarModule,
@@ -31,7 +40,8 @@ import { TranslateModule } from '@ngx-translate/core';
     NoAplicaPipe,
     GridComponent,
     FontAwesomeModule,
-    DatePickerComponent
+    DatePickerComponent,
+    FormUserComponent
   ]
 })
 export class SharedModule { 
