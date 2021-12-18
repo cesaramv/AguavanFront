@@ -1,3 +1,4 @@
+import { PointsProduct } from './../../../../shared/calculations/points-product';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
@@ -30,6 +31,8 @@ export class NewProductComponent extends FormValidate implements OnInit {
   urlImagen: any;
   extencionesPermitidas = ['jpg', 'png'];
   selectedImage: any;
+
+  pointsProduct = new PointsProduct();
   
   constructor(
     private readonly router: Router,
@@ -91,7 +94,7 @@ export class NewProductComponent extends FormValidate implements OnInit {
     if(!this.esCreacion && params.image){
       this.urlImagen = `../../../../assets/images/productos/${params.image}`;
     }
-
+    this.form.disable();
     this.changePriceOrCost();
   }
 
@@ -107,14 +110,16 @@ export class NewProductComponent extends FormValidate implements OnInit {
     this.form.controls.price.valueChanges.subscribe(item => {
       const _cost = this.form.controls.cost.value;
       if(item && _cost){
-        this.form.controls.points.setValue(this.calculationService.getPoint(item, _cost, 1).point);
+        //this.form.controls.points.setValue(this.calculationService.getPoint(item, _cost, 1).point);
+        this.form.controls.points.setValue(this.pointsProduct.poinstP1(item, _cost, 1).points.toFixed(2));
       }
     });
 
     this.form.controls.cost.valueChanges.subscribe(item => {
       const _price = this.form.controls.price.value;
       if(item && _price){
-        this.form.controls.points.setValue(this.calculationService.getPoint(_price, item, 1).point);
+        //this.form.controls.points.setValue(this.calculationService.getPoint(_price, item, 1).point);
+        this.form.controls.points.setValue(this.pointsProduct.poinstP1(_price, item, 1).points.toFixed(2));
       }
     });
   }

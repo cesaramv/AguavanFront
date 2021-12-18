@@ -14,6 +14,7 @@ import { EmptyPipe } from './pipes/empty.pipe';
 import { DatePickerComponent } from './components/date-picker/date-picker.component';
 import { TranslateModule } from '@ngx-translate/core';
 import { FormUserComponent } from './components/form-user/form-user.component';
+import { OrderDetailTotalComponent } from './components/order-detail-total/order-detail-total.component';
 
 @NgModule({
   declarations: [
@@ -22,7 +23,8 @@ import { FormUserComponent } from './components/form-user/form-user.component';
     GridComponent, 
     EmptyPipe, 
     DatePickerComponent, 
-    FormUserComponent
+    FormUserComponent, 
+    OrderDetailTotalComponent
   ],
   imports: [
     CommonModule,
@@ -41,7 +43,8 @@ import { FormUserComponent } from './components/form-user/form-user.component';
     GridComponent,
     FontAwesomeModule,
     DatePickerComponent,
-    FormUserComponent
+    FormUserComponent,
+    OrderDetailTotalComponent
   ]
 })
 export class SharedModule { 

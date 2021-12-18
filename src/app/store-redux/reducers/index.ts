@@ -6,3 +6,6 @@ export * from './cities.reducer';
 export * from './cities-by-department.reducer';
 export * from './patrocinador.reducer';
 export * from './products.reducer';
+export * from './products-selected.reducer';
+export * from './orders.reducer';
+export * from './order-detail.reducer';

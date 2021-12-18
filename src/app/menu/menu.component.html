@@ -52,6 +52,12 @@
             <span class="pl-1">Iniciar sesión</span>
           </a>
         </li>
+        <li class="nav-item" *ngIf="!estaIdentificado()">
+          <a class="nav-link text-center text-light" routerLink="/store/order-detail">
+            <fa-icon [icon]="'sign-in-alt'" class="fa-1x"></fa-icon>
+            <span class="pl-1">Carrito</span>
+          </a>
+        </li>
         <li class="nav-item" *ngIf="estaIdentificado()">
           <a class="nav-link text-center text-light" (click)="cerrarSesion()">
             <fa-icon [icon]="'power-off'" class="fa-1x"></fa-icon>

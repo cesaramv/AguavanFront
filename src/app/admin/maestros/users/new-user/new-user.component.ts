@@ -1,3 +1,4 @@
+import { getPaymentMethodsList } from './../../../../store-redux/selectors/user.selectors';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
@@ -68,9 +69,15 @@ export class NewUserComponent extends FormValidate implements OnInit {
     this.userId = Number(this.activatedRouter.snapshot.paramMap.get('id'));
     this.esCreacion = this.userId ? false : true;
 
+    //TODO: Esto creo que lo puedo hacer con selectores
     this.store.select<any, any>('user', 'citiesBydepartment').subscribe((resp: any) => { console.log('respuesta ', resp);
 
     })
+
+    this.store.select(getPaymentMethodsList).subscribe(resp => {
+      debugger
+    })
+
     //TODO: Pendiente de que seleccione la ciudad en el control list cities
 
     this.store.select('user').subscribe(({
@@ -94,8 +101,8 @@ export class NewUserComponent extends FormValidate implements OnInit {
       }
     });
 
-    this.store.dispatch(actionsUser.loadUser({ userId: this.userId }));
-    /* forkJoin({
+   // this.store.dispatch(actionsUser.loadUser({ userId: this.userId }));
+    forkJoin({
       _documents: this.documentService.listar({ state: true }),
       _departments: this.departmentService.listar({ state: true }),
       //_cities: this.cityService.listar({ state: true }),
@@ -111,7 +118,7 @@ export class NewUserComponent extends FormValidate implements OnInit {
       } else {
         this.formInit();
       }
-    }); */
+    });
   }
 
   private formInit(params?: any) {

@@ -10,7 +10,10 @@ export interface AppState {
     cities: reducers.citiesState,
     citiesBydepartment: reducers.citiesByDepartmentState,
     patrocinador: reducers.patrocinadorState,
-    products: reducers.ProductsState
+    products: reducers.ProductsState,
+    productsSelected: reducers.productsSelectedState,
+    orders: reducers.ordersState,
+    orderDetail: reducers.orderDetailState
 }
 
 export const appReducers: ActionReducerMap<AppState> = {
@@ -21,5 +24,8 @@ export const appReducers: ActionReducerMap<AppState> = {
     cities: reducers.citiesReducer,
     citiesBydepartment: reducers.citiesByDepartmentReducer,
     patrocinador: reducers.patrocinadorReducer,
-    products: reducers.productsReducer
+    products: reducers.productsReducer,
+    productsSelected: reducers.productsSelectedReducer,
+    orders: reducers.ordersReducer,
+    orderDetail: reducers.orderDetailReducer
 }

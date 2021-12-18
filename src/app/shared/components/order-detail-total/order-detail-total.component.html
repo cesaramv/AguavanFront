@@ -1,0 +1,67 @@
+<table id="Table1" class="table table-bordered">
+    <tbody>
+        <tr>
+            <td colspan="5" class="bg_secondary text-right font-weight-bold" style="font-size:x-large;">
+                Total Factura…
+            </td>
+            <td colspan="2" class="text-right font-weight-bold" style="font-size:x-large;">
+                <label class="ValorOrder">{{orderData?.totalOrder | customCurrency}}</label>
+            </td>
+            <td class="bg_secondary text-center font-weight-bold" style="font-size:medium;">
+                Total Puntos
+            </td>
+            <td class="text-center font-weight-bold" style="font-size:x-large;">
+                {{orderData?.totalPoints?.toFixed(2).replace('.', ',')}}
+            </td>
+        </tr>
+
+        <tr>
+            <td colspan="2" class="bg_secondary text-center font-weight-bold" style="font-size:medium;">
+                Base Gravada
+            </td>
+            <td colspan="5" class="bg_secondary text-center font-weight-bold" style="font-size:medium;">
+                Total I.V.A.
+            </td>
+            <td class="bg_secondary text-center font-weight-bold" style="font-size:medium;">
+                Subtotal Peso (Kg)
+            </td>
+            <td class="text-center font-weight-bold" style="font-size:x-large;">0,75</td>
+        </tr>
+        <tr>
+            <td colspan="1" class="text-center font-weight-bold" style="font-size:medium;">19%
+            </td>
+            <td colspan="1" class="text-center font-weight-bold" style="font-size:medium;">5%</td>
+            <td colspan="3" class="text-center font-weight-bold" style="font-size:medium;">19%
+            </td>
+            <td colspan="2" class="text-center font-weight-bold" style="font-size:medium;">5%</td>
+
+            <td colspan="1" class="bg_secondary text-center font-weight-bold" style="font-size:medium;">
+                V/Exento</td>
+            <td colspan="1" class="bg_secondary text-center font-weight-bold" style="font-size:medium;">
+                V/Excluido</td>
+        </tr>
+        <tr>
+            <td colspan="1" class="text-right font-weight-bold" style="font-size:medium;">
+                {{orderData?.totalBaseGravada19 | customCurrency}}
+            </td>
+            <td colspan="1" class="text-right font-weight-bold" style="font-size:medium;">
+                {{orderData?.totalBaseGravada5 | customCurrency}}
+            </td>
+
+            <td colspan="3" class="text-right font-weight-bold" style="font-size:medium;">
+                {{orderData?.totalIva19 | customCurrency}}
+            </td>
+            <td colspan="2" class="text-right font-weight-bold" style="font-size:medium;">
+                {{orderData?.totalIva5 | customCurrency}}
+            </td>
+
+            <td colspan="1" class="text-center font-weight-bold" style="font-size:medium;">
+                {{orderData?.totalValorExcento | customCurrency}}
+            </td>
+            <td colspan="1" class="text-center font-weight-bold" style="font-size:medium;">
+                {{orderData?.totalValorExcluido | customCurrency}}
+            </td>
+
+        </tr>
+    </tbody>
+</table>

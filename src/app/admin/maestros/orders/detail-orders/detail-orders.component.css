@@ -1,0 +1,23 @@
+.containerNumberOrderAndPin{
+    border: solid 2px #dc1515;
+}
+.orderNumber{
+    display: flex;
+    flex-direction: column;
+    font-size: 24px;
+    font-weight: 600;
+    color: #eee;
+    background-color: red;
+}
+.pinNumber{
+
+}
+.lbl{
+    color: #2b6095;
+    font-size: 0.825rem;
+}
+
+.lblValuer{
+    color: #575859;
+    font-size: 1.025rem;
+}

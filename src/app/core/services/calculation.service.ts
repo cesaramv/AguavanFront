@@ -12,10 +12,10 @@ export class CalculationService {
     const ivaEfecty = price * (2.6 / 100) * 19 / 100;
     const comisionBanco = price * (0.4 / 100);
     const industriaComencio = price * (0.8 / 100);
-    const equipoDesrrollo = (price - cost) * 10 / 100;
+    const equipoDesrrollo = (price - cost) * 11 / 100;
 
     const priceUnit = price - efecty - ivaEfecty - comisionBanco - industriaComencio -
-      cost - this.costTransporte(quantity) - equipoDesrrollo;
+      cost - this.costTransporte(quantity) - equipoDesrrollo  - 2000;
 
     const uma = priceUnit / 8300;
     let porcGenan = (priceUnit / cost) * 100;

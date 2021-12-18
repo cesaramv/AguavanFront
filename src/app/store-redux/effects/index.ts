@@ -1,3 +1,5 @@
+import { OrdersEffects } from './orders.effects';
+import { ProductsSelectedEffects } from './products-selected.effects';
 import { ProductsEffects } from './products.effects';
 import { PatrocinadorEffects } from './patrocinador.effects';
 import { CitiesByDepartmentEffects } from './cities-by-department.effects';
@@ -15,5 +17,7 @@ export const EffectsArray: any[] = [
     CitiesEffects,
     CitiesByDepartmentEffects,
     PatrocinadorEffects,
-    ProductsEffects
+    ProductsEffects,
+    ProductsSelectedEffects,
+    OrdersEffects
 ]

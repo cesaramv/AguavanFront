@@ -1,3 +1,10 @@
 .page-item a {
     cursor: pointer;
 }
+
+.p-datatable .p-datatable-thead > tr > th {
+    font-size: 11px;
+}
+.p-datatable .p-datatable-tbody > tr > td{
+    font-size: 0.825rem;
+}

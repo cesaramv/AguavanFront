@@ -20,13 +20,13 @@
                             </button>
                         </div>
                     </div>
-                    <div *ngSwitchCase="'currency'" class="justify-content-end text-muted">
+                    <div *ngSwitchCase="'currency'" class="text-right text-muted">
                         {{ getValue(rowData, col.field) | customCurrency }}
                     </div>
-                    <div *ngSwitchCase="'percent'" class="justify-content-end text-muted">
+                    <div *ngSwitchCase="'percent'" class="text-right text-muted">
                         {{ getValue(rowData, col.field) }}%
                     </div>
-                    <div *ngSwitchCase="'number'" class="justify-content-end text-muted">
+                    <div *ngSwitchCase="'number'" class="text-right text-muted">
                         {{ getValue(rowData, col.field) | number:'1.2-2' }}
                     </div>
                     <div *ngSwitchDefault class="text-muted">

@@ -38,7 +38,6 @@ import { ValidarMenuGuardService } from './services/validar-menu-guard.service';
 import { Not403Component } from './not403/not403.component';
 import { Not404Component } from './not404/not404.component';
 import { fas } from '@fortawesome/free-solid-svg-icons';
-import { StoreComponent } from './store/store.component';
 import { SharedModule } from './shared/shared.module';
 import { CoreModule } from './core/core.module';
 import { NgxUiLoaderHttpModule, NgxUiLoaderModule, NgxUiLoaderRouterModule } from 'ngx-ui-loader';
@@ -66,8 +65,7 @@ export function tokenGetter() {
     MenuComponent,
     FooterComponent,
     Not403Component,
-    Not404Component,
-    StoreComponent
+    Not404Component
   ],
   imports: [
     BrowserModule,

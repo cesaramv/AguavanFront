@@ -6,3 +6,5 @@ export * from './cities.actions';
 export * from './cities-by-department.actions';
 export * from './patrocinador.actions';
 export * from './products.actions';
+export * from './products-selected.actions';
+export * from './order.actions';

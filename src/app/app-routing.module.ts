@@ -26,11 +26,6 @@ const routes: Routes = [
     //canActivate: [ValidarMenuGuardService]
   },
   {
-    path: 'store',
-    component: StoreComponent,
-    //canActivate: [ValidarMenuGuardService]
-  },
-  {
     path: 'login',
     component: LoginComponent
   },
@@ -50,6 +45,10 @@ const routes: Routes = [
   {
     path: 'not-404',
     component: Not404Component
+  },
+  {
+    path: 'store',
+    loadChildren: () => import('./store/store.module').then(m => m.StoreModule)
   },
   {
     path: 'office',

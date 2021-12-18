@@ -3,9 +3,7 @@ import { Injectable } from '@angular/core';
 import { GenericService } from './generic.service';
 import { environment } from 'src/environments/environment';
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable()
 export class CityService extends GenericService<any> {
 
   constructor(readonly http: HttpClient) {

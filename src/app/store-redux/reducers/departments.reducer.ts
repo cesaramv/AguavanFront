@@ -6,7 +6,7 @@ export interface DepartmentsState {
     loaded: boolean,
     loading: boolean,
     error: any,
-    filtros: any
+    filtros: any,
     totalElements: number,
     number: number,
     totalPages: number

@@ -72,6 +72,10 @@ body {
     background-color: #f6f6f6;
 }
 
+.bg_secondary{
+    background-color: #eee;
+}
+
 .text_blue1 {
     color: #0064f7;
 }

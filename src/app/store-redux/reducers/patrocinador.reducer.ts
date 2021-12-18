@@ -21,7 +21,7 @@ const _patrocinadorReducer = createReducer(patrocinadorInitialState,
 
     on(loadPatrocinador, (state, { filtros }) => ( { ...state, loading: true, filtros })),
 
-    on(loadPatrocinadorSuccess, (state, { patrocinador }) => {debugger
+    on(loadPatrocinadorSuccess, (state, { patrocinador }) => {
         return({
         ...state,
         loading: false,

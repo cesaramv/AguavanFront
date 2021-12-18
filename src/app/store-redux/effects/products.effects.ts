@@ -3,6 +3,7 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { of } from 'rxjs';
 import { map, mergeMap, catchError } from 'rxjs/operators';
 import * as productsActions from '../actions/products.actions';
+import * as productsSelectedActions from '../actions/products-selected.actions';
 //import { CityService } from '../../core/services/city.service';
 import { ProductService } from '../../core/services/product.service';
 
@@ -30,4 +31,5 @@ export class ProductsEffects {
             )
         )
     ));
+
 }
