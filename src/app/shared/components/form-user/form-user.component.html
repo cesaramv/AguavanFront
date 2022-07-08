@@ -14,14 +14,14 @@
 
             <div class="col-lg-6 col-ms-12 py-2">
                 <label for="document" class="form-label">Tipo Documento</label>
-                <p-dropdown [options]="documents" [inputId]="'documentId'" [optionLabel]="'name'" [name]="'documentId'"
+                <p-dropdown [options]="documents$ | async" [inputId]="'documentId'" [optionLabel]="'name'" [name]="'documentId'"
                     [showClear]="true" placeholder="{{ 'global.select' | translate }}"
                     [styleClass]="'w-100 p-inputtext-sm'" formControlName="document"></p-dropdown>
             </div>
 
             <div class="col-lg-3 col-ms-12 py-2">
-                <label for="documentoNumber" class="form-label">Numero documento</label>
-                <input type="text" class="form-control" id="documentoNumber" formControlName="documentoNumber" />
+                <label for="documentNumber" class="form-label">Numero documento</label>
+                <input type="text" class="form-control" id="documentNumber" formControlName="documentNumber" />
             </div>
 
             <div class="col-lg-3 col-ms-12 py-2">
@@ -54,14 +54,14 @@
 
             <div class="col-lg-6 col-ms-12 py-2">
                 <label for="department" class="form-label">Departamento</label>
-                <p-dropdown [options]="departments" [inputId]="'departmentId'" [optionLabel]="'name'"
+                <p-dropdown [options]="departments$ | async" [inputId]="'departmentId'" [optionLabel]="'name'"
                     [name]="'departmentId'" [showClear]="true" placeholder="{{ 'global.select' | translate }}"
                     [styleClass]="'w-100 p-inputtext-sm'" formControlName="department"></p-dropdown>
             </div>
 
             <div class="col-lg-6 col-ms-12 py-2">
                 <label for="city" class="form-label">Ciudad</label>
-                <p-dropdown [options]="cities" [inputId]="'cityId'" [optionLabel]="'name'" [name]="'cityId'"
+                <p-dropdown [options]="cities$ | async" [inputId]="'cityId'" [optionLabel]="'name'" [name]="'cityId'"
                     [showClear]="true" placeholder="{{ 'global.select' | translate }}"
                     [styleClass]="'w-100 p-inputtext-sm'" formControlName="city"></p-dropdown>
             </div>
@@ -74,7 +74,7 @@
 
             <div class="col-lg-6 col-ms-12 py-2" *ngIf="!esCreacion">
                 <label for="stateUser" class="form-label">Estado</label>
-                <p-dropdown [options]="statesUsers" [inputId]="'stateUserId'" [optionLabel]="'name'" [name]="'stateUserId'"
+                <p-dropdown [options]="statesUser$ | async" [inputId]="'stateUserId'" [optionLabel]="'name'" [name]="'stateUserId'"
                     [showClear]="true" placeholder="{{ 'global.select' | translate }}"
                     [styleClass]="'w-100 p-inputtext-sm'" formControlName="stateUser"></p-dropdown>
             </div>
@@ -95,7 +95,7 @@
                 <input type="text" class="form-control" id="rut" formControlName="rut" />
             </div>
 
-            <div class="col-ms-12 py-2" [ngClass]="{'col-lg-9': esCreacion, 'col-lg-12': !esCreacion }">
+            <!-- <div class="col-ms-12 py-2" [ngClass]="{'col-lg-9': esCreacion, 'col-lg-12': !esCreacion }">
                 <label for="description" class="form-label">Código de su patrocinador {{bloquear}}</label>
                 <div class="input-group">
                     <input type="text" class="form-control" required formControlName="levelOneId">
@@ -107,7 +107,7 @@
                 <small id="passwordHelpBlock" class="form-text text-muted" *ngIf="patrocinador">
                     {{patrocinador.firstName + '-' + patrocinador.lastName}}
                 </small>
-            </div>
+            </div> -->
 
             <div class="col-12 py-2">
                 <label for="rut" class="form-label">Contrato</label>

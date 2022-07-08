@@ -24,13 +24,13 @@
                         {{ getValue(rowData, col.field) | customCurrency }}
                     </div>
                     <div *ngSwitchCase="'percent'" class="text-right text-muted">
-                        {{ getValue(rowData, col.field) }}%
+                        {{ getValue(rowData, col.field) | cmPercent }}
                     </div>
-                    <div *ngSwitchCase="'number'" class="text-right text-muted">
+                    <div *ngSwitchCase="'numbesr'" class="text-right text-muted">
                         {{ getValue(rowData, col.field) | number:'1.2-2' }}
                     </div>
                     <div *ngSwitchDefault class="text-muted">
-                        {{ getValue(rowData, col.field) }}
+                        {{ getValue(rowData, col.field) | titlecase }}
                     </div>
 
                 </div>
@@ -41,7 +41,7 @@
 </p-table>
 
 <div class="d-flex pt-1">
-    <p class="mr-auto d-flex align-items-center">Mostrando registros del {{ firstRange }} al {{ lastRange }} de un total de {{ totalRecords }} registros</p>
+    <p class="mr-auto d-flex align-items-center">Mostrando registros del {{ firstRange }} al {{ lastRange }} de un total de {{ pagination?.totalElements }} registros</p>
     
     <nav aria-label="...">
         <ul class="pagination">
@@ -57,8 +57,8 @@
                     <span class="sr-only">Previous</span>
                 </a>
             </li>
-            <li class="page-item" *ngFor="let page of pages" [class.active]="page - 1 === numberPage">
-                <a class="page-link" (click)="irPage(page - 1)">{{page}}</a>
+            <li class="page-item" *ngFor="let page of pages" [class.active]="page === pagination?.page">
+                <a class="page-link" (click)="irPage(page)">{{page}}</a>
             </li>
             <li class="page-item" [class.disabled]="isLastPage()">
                 <a class="page-link" (click)="next()" aria-label="Next">

@@ -35,3 +35,8 @@ export const ES = {
     dateFormat: 'dd-mm-yy',
     weekHeader: 'Sm'
   };
+
+  export const ROLES = {
+    ADMIN: 'ADMIN_ROLE',
+    USER: 'USER_ROLE'
+  }

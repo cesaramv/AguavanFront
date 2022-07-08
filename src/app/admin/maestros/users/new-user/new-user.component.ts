@@ -1,24 +1,35 @@
+import { 
+  getCitiesSelector, 
+  getDepartmentsSelector, 
+  getDocumentsSelector, 
+  getUserByIdSelector, 
+  getUserStatesSelector 
+} from './../../../../store-redux/selectors/master.selectors';
 import { getPaymentMethodsList } from './../../../../store-redux/selectors/user.selectors';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
-import { AlertService } from '@core/services/alert.service';
 import { TranslateService } from '@ngx-translate/core';
 import { FormValidate } from '@shared/util/form-validate';
 import { Observable } from 'rxjs/internal/Observable';
 import { forkJoin } from 'rxjs/internal/observable/forkJoin';
 import { UsersService } from '../../../../services/users.service';
-import { ProductoService } from 'src/app/services/producto.service';
-import { CityService } from '@core/services/city.service';
-import { DepartmentsService } from '@core/services/departments.service';
-import { DocumentService } from '@core/services/document.service';
-import { StateUserService } from '@core/services/state-user.service';
+import { 
+  AlertService,
+  CityService, 
+  DepartmentsService, 
+  DocumentService, 
+  StateUserService,
+  
+} from '@core/services';
 import { DateUtil } from '@shared/util/date.util';
 import { ES } from '@shared/util/constantes/generales';
 import { Store } from '@ngrx/store';
 import { AppState } from 'src/app/store-redux/app.reducer';
 import * as actionsUser from '../../../../store-redux/actions/user.actions';
 import * as citiesByDepartmentActions from '../../../../store-redux/actions/cities-by-department.actions';
+import { filter } from 'rxjs/operators';
+import { combineLatest } from 'rxjs';
 
 @Component({
   selector: 'app-new-user',
@@ -30,15 +41,15 @@ export class NewUserComponent extends FormValidate implements OnInit {
   esCreacion: boolean;
   userId: number;
   itemUser: any;
-  documents: any;
-  departments: any;
-  cities: any;
-  statesUsers: any;
+  documents$: Observable<any>;
+  departments$: Observable<any>;
+  cities$: Observable<any>;
+  stateUser$: Observable<any>
 
   form: FormGroup;
   isForm: Promise<any>;
 
-  patrocinador: any;
+  //patrocinador: any;
   bloquear: boolean;
 
   es = ES;
@@ -57,68 +68,44 @@ export class NewUserComponent extends FormValidate implements OnInit {
     private readonly store: Store<AppState>
   ) {
     super();
-    this.esCreacion = true;
-    this.bloquear = false;
-    this.documents = [];
-    this.departments = [];
-    this.cities = [];
-    this.statesUsers = [];
   }
 
   ngOnInit(): void {
-    this.userId = Number(this.activatedRouter.snapshot.paramMap.get('id'));
-    this.esCreacion = this.userId ? false : true;
+    this.userId = this.activatedRouter.snapshot.params.id;
+    this.esCreacion = !this.userId;
+    this.formInit();
 
-    //TODO: Esto creo que lo puedo hacer con selectores
-    this.store.select<any, any>('user', 'citiesBydepartment').subscribe((resp: any) => { console.log('respuesta ', resp);
+    this.departments$ = this.store.select(getDepartmentsSelector);
+    this.documents$ = this.store.select(getDocumentsSelector);
+    this.cities$ = this.store.select(getCitiesSelector);
+    this.stateUser$ = this.store.select(getUserStatesSelector);
 
-    })
+    
+    
+    if (!this.esCreacion) {
+      combineLatest([this.departments$, this.documents$, this.stateUser$]).pipe(
+        filter(data => !!data[0] && !!data[1] && !!data[2]),
+      ).subscribe(this.getData.bind(this));
+    }
+  }
 
-    this.store.select(getPaymentMethodsList).subscribe(resp => {
-      debugger
-    })
+  private getData(params: any) {
+    this.store.select(getUserByIdSelector, this.userId).pipe(
+      filter(user => !!user)
+    ).subscribe(this.preloadData.bind(this))
+  }
 
-    //TODO: Pendiente de que seleccione la ciudad en el control list cities
+  private preloadData(params: any) {
+    this.form.controls.userForm.patchValue(params);
+    const { _id, ...department } = params.department;
+    department.uid = _id;
+    const control = this.form.controls.userForm['controls'];
+    control.department.setValue(department);
 
-    this.store.select('user').subscribe(({
-      loaded, documentsType, departments, statesUsers, user: itemUser
-    }) => {
-      if(loaded){
-        this.documents = documentsType;
-        this.departments = departments;
-        this.statesUsers = statesUsers;
-        this.itemUser = itemUser;
-        this.formInit(this.itemUser);
-      }
-    });
-
-    this.store.select('citiesBydepartment').subscribe(({ loaded, cities }) => {
-      if(loaded){
-        this.cities = cities; 
-        if (!this.esCreacion) {
-          this.selectedCity(this.itemUser.city.cityId);
-        }
-      }
-    });
-
-   // this.store.dispatch(actionsUser.loadUser({ userId: this.userId }));
-    forkJoin({
-      _documents: this.documentService.listar({ state: true }),
-      _departments: this.departmentService.listar({ state: true }),
-      //_cities: this.cityService.listar({ state: true }),
-      _statesUsers: this.stateUserService.listar({ state: true }),
-    }).subscribe(async (resp: any) => {
-      this.documents = resp._documents.content;
-      this.departments = resp._departments.content;
-      //this.cities = resp._cities.content;
-      this.statesUsers = resp._statesUsers.content;
-      if (this.userId) {
-        this.itemUser = await this.userService.listarPorId(this.userId).toPromise();
-        this.formInit(this.itemUser);
-      } else {
-        this.formInit();
-      }
-    });
+    const { __v, _id: uid, ...document } = params.document;
+    document.uid = uid;
+    document._state = document.state ? 'Si': 'No';
+    control.document.setValue(document);
   }
 
   private formInit(params?: any) {
@@ -127,16 +114,16 @@ export class NewUserComponent extends FormValidate implements OnInit {
         userForm: this.formBuilder.group({
           firstName: [params ? params.firstName : null, [Validators.required]],
           lastName: [params ? params.lastName : null, [Validators.required]],
-          document: [params ? this.selectedDocument(params.document.documentId) : null, [Validators.required]],
-          documentoNumber: [params ? params.documentoNumber : null, [Validators.required]],
+          document: [null, [Validators.required]],
+          documentNumber: [params ? params.documentNumber : null, [Validators.required]],
           birthDate: [params ? this.birthDateSelected(params.birthDate) : null, [Validators.required]],
           phoneCell: [params ? params.phoneCell : null, [Validators.required]],
           phone: [params ? params.phone : null],
           address: [params ? params.address : null, [Validators.required]],
           department: [null, [Validators.required]],
-          city: [null, [Validators.required]],
+          city: [{value:null, disabled: true}, [Validators.required]],
           email: [params ? params.email : null, [Validators.required]],
-          stateUser: [params ? this.selectedStateUser(params.stateUser.stateUserId) : null, [Validators.required]],
+          userStates: [null, [Validators.required]],
           password: [params ? params.password : null, [Validators.required]],
           rut: [params ? params.rut : null],
           levelOneId: [params ? params.levelOneId : null, [Validators.required]],
@@ -149,21 +136,21 @@ export class NewUserComponent extends FormValidate implements OnInit {
       this.getCitiesByDepartment(itemSelected.departmentId);
     });
 
-    if (!this.esCreacion) {
+    /* if (!this.esCreacion) {
       this.bloquear = true;
       this.form.controls.userForm['controls'].levelOneId.disable();
       this.form.controls.userForm['controls'].password.disable();
       this.selectedDepartment(params.city.department.departmentId);
-      this.getPatrocinador();
-    }
+      //this.getPatrocinador();
+    } */
 
   }
 
-  private selectedDocument(codigo: number) {
+  /* private selectedDocument(codigo: number) {
     return this.documents.find(x => x.documentId === codigo);
-  }
+  } */
 
-  private selectedDepartment(codigo: number) {
+  /* private selectedDepartment(codigo: number) {
     this.form.controls.userForm['controls'].department.setValue(this.departments.find(x => x.departmentId === codigo));
   }
 
@@ -173,7 +160,7 @@ export class NewUserComponent extends FormValidate implements OnInit {
 
   private selectedStateUser(codigo: number) {
     return this.statesUsers.find(x => x.stateUserId === codigo);
-  }
+  } */
 
   birthDateSelected(birthDate: any) {
     return DateUtil.stringToDate(birthDate);
@@ -190,11 +177,11 @@ export class NewUserComponent extends FormValidate implements OnInit {
 
     const params = {
       ...this.form.value,
-      levelOneId: this.patrocinador ? this.patrocinador.username : '0',
+      /* levelOneId: this.patrocinador ? this.patrocinador.username : '0',
       levelTwoId: this.patrocinador ? this.patrocinador.levelOneId : '0',
       levelThreeId: this.patrocinador ? this.patrocinador.levelTwoId : '0',
       levelFourId: this.patrocinador && this.patrocinador.levelThreeId ? this.patrocinador.levelThreeId : '0',
-      levelFiveId: this.patrocinador && this.patrocinador.levelFourId ? this.patrocinador.levelFourId : '0'
+      levelFiveId: this.patrocinador && this.patrocinador.levelFourId ? this.patrocinador.levelFourId : '0' */
     }
 
     if (this.esCreacion) {
@@ -239,7 +226,7 @@ export class NewUserComponent extends FormValidate implements OnInit {
     return !this.isPristine(this.form) && this.form && this.form.dirty;
   }
 
-  getPatrocinador() {
+  /* getPatrocinador() {
     this.bloquear = true;
     const _form = this.form.getRawValue();
     this.userService.getUserByUsername(_form.userForm.levelOneId).subscribe((resp: any) => {
@@ -253,7 +240,7 @@ export class NewUserComponent extends FormValidate implements OnInit {
       });
     });
 
-  }
+  } */
 
   private getCitiesByDepartment(idDepartment: number) {
     

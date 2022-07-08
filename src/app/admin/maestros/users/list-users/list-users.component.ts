@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 
 import { ListUsersConfig } from './list-users.config';
 import { UsersService } from '../../../../services/users.service';
@@ -8,18 +8,22 @@ import { TranslateService } from '@ngx-translate/core';
 import { Store } from '@ngrx/store';
 import * as usersAction from '../../../../store-redux/actions/index';
 import { AppState } from 'src/app/store-redux/app.reducer';
+import { Subscription } from 'rxjs/internal/Subscription';
+import { filter, tap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-list-users',
   templateUrl: './list-users.component.html',
   styleUrls: ['./list-users.component.css']
 })
-export class ListUsersComponent implements OnInit {
+export class ListUsersComponent implements OnInit, OnDestroy {
 
   listUsers: any;
   configuracion: ListUsersConfig = new ListUsersConfig();
   loading: boolean = false;
   error: any;
+  subscription: Subscription[] = [];
+  pageCuerrent: number = 1;
 
   constructor(
     private readonly router: Router,
@@ -30,65 +34,41 @@ export class ListUsersComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.store.select('users').subscribe(({users, loading, error, totalElements, number, totalPages}) => {
-      //this.listUsers = users;
-      this.listUsers = users;
-      this.loading = loading;
-      this.error = error;
-      if(this.configuracion.gridList.component){
-        this.configuracion.gridList.component.limpliar();
-
-        this.configuracion.gridList.component.cargarDatos(
-          this.listUsers, {
-            totalElements,
-            number,
-            totalPages
-          }
-        );
-      }
-    })
+    this.subscription.push(
+      this.store.select('users').pipe(
+        filter(data => !!data && !!this.configuracion.gridList.component),
+        tap(this.handlerGrid.bind(this))
+      ).subscribe()
+    );
     this.getUsers();
   }
 
-  private getUsers(page = 0, size = 10, stateUser = 2, roles = 2, sort = 'registerDate,desc', addParams?: any) {
+  private handlerGrid({ users, pagination }) {
+    this.configuracion.gridList.component.limpliar();
+    this.configuracion.gridList.component.cargarDatos(
+      users, pagination
+    );
+  }
+
+  private getUsers(page = 1, size = 10, stateUser = 2, roles = 2, sort = 'registerDate,desc', addParams?: any) {
     let params = { page, size, sort, isPaged: true, 'stateUser.stateUserId': stateUser, 'roles.idRol': roles };
     if (addParams) {
       params = { ...params, ...addParams };
     }
     this.store.dispatch(usersAction.loadUsers({ filtros: params }));
-    /* this.usersService.listar(params).subscribe((users: any) => {
-      //this.listUsers = users.content.map(x => { 
-      const _data = users.content.map(x => {
-        return { 
-          ...x,
-          email: x.email.toLowerCase(),
-          nameFull: (x.firstName + ' ' + x.lastName).toLowerCase() 
-        } 
-      });
-
-      this.store.dispatch(usersAction.loadUsersSuccess({users: _data}));
-
-      this.configuracion.gridList.component.cargarDatos(
-        this.listUsers, {
-          totalElements: users.totalElements,
-          number: users.number,
-          totalPages: users.totalPages
-        }
-      );
-    }); */
   }
 
   clickCelda(event) {
     if (event.tipeAccion === 'editar') {
-      this.router.navigate([`/admin/maestros/usuarios/${event.row.userId}`]);
+      this.router.navigate([`/admin/maestros/usuarios/${event.row.uid}`]);
     } else {
       this.translate.get('global.deleteRow').subscribe(mensaje => {
         this.alertService.confirm(mensaje).then(resp => {
           if (resp) {
-            this.usersService.eliminar(event.row.taxId).subscribe(resp => {
+            this.usersService.eliminar(event.row.uid).subscribe(resp => {
               this.translate.get('global.eliminadoExitosoMensaje').subscribe(menssage => {
                 this.alertService.success(menssage).then(() => {
-                  this.getUsers();
+                  this.getUsers(this.pageCuerrent);
                 });
               });
             });
@@ -99,7 +79,12 @@ export class ListUsersComponent implements OnInit {
   }
 
   clickPaginador(event) {
+    this.pageCuerrent = event;
     this.getUsers(event);
+  }
+
+  ngOnDestroy(): void {
+    this.subscription.forEach(x => x.unsubscribe());
   }
 
 }

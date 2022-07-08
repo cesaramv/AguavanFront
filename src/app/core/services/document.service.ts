@@ -7,6 +7,6 @@ import { GenericService } from './generic.service';
 export class DocumentService extends GenericService<any> {
 
   constructor(readonly http: HttpClient) {
-    super(http, `${environment.HOST}/documentos`);
+    super(http, `${environment.HOST}/documents`);
   }
 }

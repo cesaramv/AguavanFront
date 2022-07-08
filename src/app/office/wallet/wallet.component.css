@@ -1,0 +1,14 @@
+.ganancias {
+    border: solid 1px #ccc;
+}
+.ganancias thead tr > th {
+    border-right: solid 1px #ccc;
+    background-color: #f0f0f0;
+}
+.ganancias tbody tr > td {
+    border-right: solid 1px #ccc;
+}
+.ganancias tfoot tr > td:first-child {
+    border-right: solid 1px #ccc;
+    background-color: #f0f0f0;
+}

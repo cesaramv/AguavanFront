@@ -14,7 +14,7 @@ export class ListarDocumentsConfig{
             },
             {
                 title: 'Activo',
-                field: 'state',
+                field: '_state',
                 configCelda: {
                     width: '100px'
                 }

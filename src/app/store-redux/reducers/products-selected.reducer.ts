@@ -59,7 +59,7 @@ const _productsSelectedReducer = createReducer(productsSelectedInitialState,
     on(loadProductSelected, (state, { product }) => ({ ...state, loading: true, filtros: product })),
 
     on(removeProductSelected, (state, { product }) => {
-        const _products = [...state.products.filter(x => x.productId !== product.productId)];
+        const _products = [...state.products.filter(x => x.uid !== product.uid)];
         const _totalQuantity = _products.map(x => x.quantity).reduce(_quantity);
         const _discount = discounts.discountD1(_totalQuantity);
 
@@ -94,7 +94,7 @@ const _productsSelectedReducer = createReducer(productsSelectedInitialState,
     on(addProductSelected, (state, { product }) => {
         let products = []; //state.products.length > 0 ? state.products : product;
         if(state.products.length > 0){
-            products = state.products.filter(x => product.find(t => t.productId !== x.productId) );
+            products = state.products.filter(x => product.find(t => t.uid !== x.uid) );
             products = [...products, ...product];
         }else{
             products = product;
@@ -123,7 +123,7 @@ const _productsSelectedReducer = createReducer(productsSelectedInitialState,
 
 function sessionStorageProduct(_products: any) {
     sessionStorage.setItem('products', JSON.stringify(_products.map(x => {
-        return { code: x.productId, quantity: x.quantity }
+        return { code: x.uid, quantity: x.quantity }
     })));
 }
 
@@ -133,7 +133,7 @@ function buildObjctProducts(products: any, productAdd: any) {
     const _discountedUnitValue = productAdd.price - (productAdd.price * _discount / 100);
     const taxes = new Taxes(productAdd.price, productAdd.cost, productAdd.quantity, productAdd.tax.rate);
     return [
-        ...products.filter(x => x.productId !== productAdd.productId),
+        ...products.filter(x => x.uid !== productAdd.uid),
         {
             ...productAdd,
             discount: _discount,
@@ -153,7 +153,7 @@ function buildObjctProducts(products: any, productAdd: any) {
 function totalQuantityProducts(products: any, productAdd: any) {
     let _totalQuantity = 0;
     if (products.length > 1) {
-        const _productExist = products.filter(x => x.productId !== productAdd.productId);
+        const _productExist = products.filter(x => x.uid !== productAdd.uid);
         _totalQuantity = productAdd.quantity + (_productExist.map(x => x.quantity).reduce(_quantity));
     } else {
         _totalQuantity = productAdd.quantity;

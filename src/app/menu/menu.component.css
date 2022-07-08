@@ -1,3 +1,14 @@
 .bg--light {
-    background-color: #2b6095!important;
+    background-color: #2b6095 !important;
+}
+
+.products__number {
+    position: relative;
+    left: -5px;
+    top: -13px;
+}
+
+.dropdown-menu__navbar {
+    left: auto;
+    right: 0;
 }

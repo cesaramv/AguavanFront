@@ -5,33 +5,25 @@ export class ListProductsConfig{
 
     constructor() {
         this.gridList.columnas = [
-            {
+           /*  {
                 title: 'Categoria',
                 field: 'category.descripcion',
                 configCelda: {
                     width: '160px'
                 }
-            },
-            {
-                title: 'Impuesto',
-                field: 'tax.description',
-                configCelda: {
-                    width: '90px'
-                }
-            },
+            }, */
             {
                 title: 'Producto',
-                field: 'description',
+                field: 'name',
                 configCelda: {
                     width: '200px'
                 }
             },
             {
-                title: 'Puntos',
-                field: 'points',
+                title: 'Impuesto',
+                field: 'tax.name',
                 configCelda: {
-                    width: '70px',
-                    type: 'number'
+                    width: '90px'
                 }
             },
             {

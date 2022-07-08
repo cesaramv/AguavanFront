@@ -1,5 +1,6 @@
 import { createReducer, on } from '@ngrx/store';
 import { loadCities, loadCitiesSuccess, loadCitiesError } from '../actions';
+import { pagination, paginationInit } from '../models/pagination';
 
 export interface citiesState {
     cities: any[];
@@ -7,9 +8,7 @@ export interface citiesState {
     loading: boolean,
     error: any,
     filtros: any,
-    totalElements: number,
-    number: number,
-    totalPages: number
+    pagination: pagination
 }
 
 export const citiesInitialState: citiesState = {
@@ -18,23 +17,19 @@ export const citiesInitialState: citiesState = {
     loading: false,
     error: null,
     filtros: null,
-    totalElements: 0,
-    number: 0,
-    totalPages: 0
+    pagination: paginationInit
 }
 
 const _citiesReducer = createReducer(citiesInitialState,
 
     on(loadCities, (state, { filtros }) => ({ ...state, loading: true, filtros })),
 
-    on(loadCitiesSuccess, (state, { cities, totalElements, number, totalPages }) => ({
+    on(loadCitiesSuccess, (state, { cities, pagination }) => ({
         ...state,
         loading: false,
         loaded: true,
         cities: [...cities],
-        totalElements,
-        number,
-        totalPages
+        pagination: {...pagination}
     })),
 
     on(loadCitiesError, (state, { payload }) => ({

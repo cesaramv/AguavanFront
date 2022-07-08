@@ -11,7 +11,14 @@
     flex-wrap: wrap;
 }
 
-.text-center-bottom{
+.text-center-bottom {
     align-items: center;
-    align-self:flex-end;
+    align-self: flex-end;
+}
+
+.icons-align {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    top: 15%;
 }

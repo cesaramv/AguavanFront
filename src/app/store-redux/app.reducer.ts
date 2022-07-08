@@ -1,31 +1,42 @@
 import { ActionReducerMap } from '@ngrx/store';
 import * as reducers from './reducers';
 
-
 export interface AppState {
-    users: reducers.UsersState,
-    user: reducers.UserState,
-    documentsType: reducers.DocumentsTypeState,
-    departments: reducers.DepartmentsState,
+    auth: reducers.AuthState,
     cities: reducers.citiesState,
     citiesBydepartment: reducers.citiesByDepartmentState,
-    patrocinador: reducers.patrocinadorState,
-    products: reducers.ProductsState,
-    productsSelected: reducers.productsSelectedState,
+    documentsType: reducers.DocumentsTypeState,
+    departments: reducers.DepartmentsState,
+    menus: reducers.MenusState,
+    orderStates: reducers.OrderStatesState,
     orders: reducers.ordersState,
-    orderDetail: reducers.orderDetailState
+    orderDetail: reducers.orderDetailState,
+    patrocinador: reducers.patrocinadorState,
+    productCategories: reducers.ProductCategoriesState,
+    productsSelected: reducers.productsSelectedState,
+    products: reducers.ProductsState,
+    taxes: reducers.TaxesState,
+    userStates: reducers.UserStatesState,
+    user: reducers.UserState,
+    users: reducers.UsersState,
 }
 
 export const appReducers: ActionReducerMap<AppState> = {
-    users: reducers.usersReducer,
-    user: reducers.userReducer,
-    documentsType: reducers.documentsTypeReducer,
-    departments: reducers.departmentsReducer,
+    auth: reducers.authReducer,
     cities: reducers.citiesReducer,
     citiesBydepartment: reducers.citiesByDepartmentReducer,
-    patrocinador: reducers.patrocinadorReducer,
-    products: reducers.productsReducer,
-    productsSelected: reducers.productsSelectedReducer,
+    documentsType: reducers.documentsTypeReducer,
+    departments: reducers.departmentsReducer,
+    menus: reducers.menusReducer,
+    orderStates: reducers.orderStatesReducer,
     orders: reducers.ordersReducer,
-    orderDetail: reducers.orderDetailReducer
+    orderDetail: reducers.orderDetailReducer,
+    patrocinador: reducers.patrocinadorReducer,
+    productsSelected: reducers.productsSelectedReducer,
+    productCategories: reducers.productCategoriesReducer,
+    products: reducers.productsReducer,
+    taxes: reducers.taxesReducer,
+    userStates: reducers.userStatesReducer,
+    user: reducers.userReducer,
+    users: reducers.usersReducer,
 }

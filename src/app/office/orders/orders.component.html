@@ -1,0 +1,7 @@
+<div class="w-100">
+    <h2 class="text-center py-3">Lista de ordenes</h2>
+
+    <app-grid [configuracion]="configuracion.gridList" (clickCelda)="clickCelda($event)"
+        (clickPaginador)="clickPaginador($event)"></app-grid>
+
+</div>

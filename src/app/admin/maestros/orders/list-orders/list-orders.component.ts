@@ -47,7 +47,7 @@ export class ListOrdersComponent implements OnInit {
     this.store.dispatch(orderActions.loadOrder({filtros: params}));
   }
 
-  clickCelda(event){debugger
+  clickCelda(event){
     if (event.tipeAccion === 'detalle') {
       this.store.dispatch(loadOrderByIdSuccess({order: event.row }));
       this.router.navigate([`/admin/maestros/ordenes/${event.row.orderId}`]);

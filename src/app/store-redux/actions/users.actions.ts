@@ -1,4 +1,5 @@
 import { createAction, props } from '@ngrx/store';
+import { pagination } from '../models/pagination';
 
 export const loadUsers = createAction(
     '[Admin Users Component] loader users',
@@ -8,9 +9,7 @@ export const loadUsersSuccess = createAction(
     '[Admin Users Component] List users',
     props<{
         users: any[],
-        totalElements: number,
-        number: number,
-        totalPages: number
+        pagination: pagination
     }>()
 );
 

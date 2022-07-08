@@ -1,5 +1,5 @@
 <div class="d-inline-flex w-100">
-    <div class="nav p-4 flex-column nav-pills menu--office" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+    <div class="nav p-4 col-3 flex-column nav-pills menu--office" id="v-pills-tab" role="tablist" aria-orientation="vertical">
         <!-- <ng-container *ngFor="let item of listMenu">
             <a class="nav-link mb-2" routerLink="{{item.url}}" routerLinkActive="active-btn-office">
                 <div class="d-inline-flex w-100 d-flex align-items-center color--primary">
@@ -24,6 +24,24 @@
             <div class="d-inline-flex w-100 d-flex align-items-center color--primary">
                 <fa-icon [icon]="'money-check-alt'" class="fa-1x"></fa-icon> 
                 <span class="interlineado-btn pl-2">Resumen de ganancias</span> 
+            </div>
+        </a>
+        <a class="nav-link mb-2" routerLink="/user-file" routerLinkActive="active-link">
+            <div class="d-inline-flex w-100 d-flex align-items-center color--primary">
+                <fa-icon [icon]="'shopping-bag'" class="fa-1x"></fa-icon> 
+                <span class="interlineado-btn pl-2">Documentos</span>
+            </div>
+        </a>
+        <a class="nav-link mb-2" routerLink="/change-password" routerLinkActive="active-link">
+            <div class="d-inline-flex w-100 d-flex align-items-center color--primary">
+                <fa-icon [icon]="'shopping-bag'" class="fa-1x"></fa-icon> 
+                <span class="interlineado-btn pl-2">Cambiar contraseña</span>
+            </div>
+        </a>
+        <a class="nav-link mb-2" routerLink="/change-address" routerLinkActive="active-link">
+            <div class="d-inline-flex w-100 d-flex align-items-center color--primary">
+                <fa-icon [icon]="'shopping-bag'" class="fa-1x"></fa-icon> 
+                <span class="interlineado-btn pl-2">Cambiar dirección</span>
             </div>
         </a>
         <a class="nav-link mb-2" routerLink="/order" routerLinkActive="active-link">

@@ -7,29 +7,29 @@ export class ListTaxesConfig{
         this.gridList.columnas = [
             {
                 title: 'Impuestos',
-                field: 'description',
+                field: 'name',
                 configCelda: {
                     width: '250px'
                 }
             },
             {
                 title: 'Tasa',
-                field: 'rate',
+                field: 'iva',
                 configCelda: {
                     width: '250px',
                     type: 'percent'
                 }
             },
-            {
+          /*   {
                 title: 'Tasa publico',
                 field: 'ratePublic',
                 configCelda: {
                     width: '150px'
                 }
-            },
+            }, */
             {
                 title: 'Activo',
-                field: 'state',
+                field: '_state',
                 configCelda: {
                     width: '100px'
                 }

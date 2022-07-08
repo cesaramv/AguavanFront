@@ -7,6 +7,6 @@ import { environment } from 'src/environments/environment';
 export class CityService extends GenericService<any> {
 
   constructor(readonly http: HttpClient) {
-    super(http, `${environment.HOST}/ciudades`);
+    super(http, `${environment.HOST}/cities`);
   }
 }

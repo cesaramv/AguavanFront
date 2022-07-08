@@ -1,3 +1,4 @@
+import { pagination, paginationInit } from './../models/pagination';
 import { createReducer, on } from '@ngrx/store';
 import { loadDepartments, loadDepartmentsSuccess, loadDepartmentsError } from '../actions';
 
@@ -7,9 +8,7 @@ export interface DepartmentsState {
     loading: boolean,
     error: any,
     filtros: any,
-    totalElements: number,
-    number: number,
-    totalPages: number
+    pagination: pagination
 }
 
 export const departmentsInitialState: DepartmentsState = {
@@ -18,23 +17,19 @@ export const departmentsInitialState: DepartmentsState = {
     loading: false,
     error: null,
     filtros: null,
-    totalElements: 0,
-    number: 0,
-    totalPages: 0
+    pagination: paginationInit
 }
 
 const _departmentsReducer = createReducer(departmentsInitialState,
 
     on(loadDepartments, (state, { filtros }) => ({ ...state, loading: true, filtros })),
 
-    on(loadDepartmentsSuccess, (state, { departments, totalElements, number, totalPages }) => ({
+    on(loadDepartmentsSuccess, (state, { departments, pagination }) => ({
         ...state,
         loading: false,
         loaded: true,
         departments: [...departments],
-        totalElements,
-        number,
-        totalPages
+        pagination: {...pagination}
     })),
 
     on(loadDepartmentsError, (state, { payload }) => ({

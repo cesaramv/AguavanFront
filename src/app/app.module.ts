@@ -1,3 +1,4 @@
+import { authInterceptorProviders } from './core/interceptors/auth.interceptor';
 import { BrowserModule } from '@angular/platform-browser';
 import { LOCALE_ID, NgModule } from '@angular/core';
 
@@ -27,10 +28,9 @@ import { FontAwesomeModule, FaIconLibrary } from '@fortawesome/angular-fontaweso
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import {TranslateHttpLoader} from '@ngx-translate/http-loader';
 import { environment } from 'src/environments/environment';
-import { JwtModule } from '@auth0/angular-jwt';
+//import { JwtModule } from '@auth0/angular-jwt';
 import { MenuComponent } from './menu/menu.component';
 import { MenuService } from './services/menu.service';
-import { ProductoService } from './services/producto.service';
 import { FooterComponent } from './footer/footer.component';
 import { from } from 'rxjs';
 import { GuardService } from './services/guard.service';
@@ -42,6 +42,9 @@ import { SharedModule } from './shared/shared.module';
 import { CoreModule } from './core/core.module';
 import { NgxUiLoaderHttpModule, NgxUiLoaderModule, NgxUiLoaderRouterModule } from 'ngx-ui-loader';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { UsersService } from './services/users.service';
+import { ContactComponent } from './contact/contact.component';
+//import { OAuthModule } from 'angular-oauth2-oidc';
 //import { far } from '@fortawesome/free-regular-svg-icons';
 
 export function createTranslateLoader(http: HttpClient) {
@@ -65,7 +68,8 @@ export function tokenGetter() {
     MenuComponent,
     FooterComponent,
     Not403Component,
-    Not404Component
+    Not404Component,
+    ContactComponent
   ],
   imports: [
     BrowserModule,
@@ -102,18 +106,19 @@ export function tokenGetter() {
     NgxUiLoaderRouterModule.forRoot({
       showForeground: true
     }),
-    JwtModule.forRoot({
+    /* JwtModule.forRoot({
       config: {
         tokenGetter: tokenGetter,
         allowedDomains: [environment.HOST.substring(7)],
         disallowedRoutes: [`http://${environment.HOST.substring(7)}/login/enviarCorreo`],
       },
-    }),
+    }), */
     SharedModule.forRoot(),
     StoreDevtoolsModule.instrument({
       maxAge: 25,
       logOnly: environment.production
-    })
+    }),
+    //OAuthModule.forRoot()
   ],
   providers: [
     { provide: LOCALE_ID, useValue: 'es-CO' },
@@ -122,8 +127,9 @@ export function tokenGetter() {
     LoginService, 
     TokenService, 
     RolService,
-    ProductoService,
-    ValidarMenuGuardService
+    UsersService,
+    ValidarMenuGuardService,
+    authInterceptorProviders
   ],
   bootstrap: [AppComponent]
 })

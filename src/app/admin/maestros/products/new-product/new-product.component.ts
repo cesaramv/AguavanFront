@@ -1,16 +1,29 @@
+import {
+  getProductByIdSelector,
+  getProductCategoriesSelector,
+  getProductCategoriesState,
+  getTaxesSelector,
+  getTaxesState
+} from './../../../../store-redux/selectors/master.selectors';
+import { AppState } from './../../../../store-redux/app.reducer';
 import { PointsProduct } from './../../../../shared/calculations/points-product';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
-import { AlertService } from '@core/services/alert.service';
-import { CalculationService } from '@core/services/calculation.service';
 import { TranslateService } from '@ngx-translate/core';
 import { FormValidate } from '@shared/util/form-validate';
-import { forkJoin } from 'rxjs';
+import { combineLatest, forkJoin } from 'rxjs';
 import { Observable } from 'rxjs/internal/Observable';
-import { ProductoService } from 'src/app/services/producto.service';
-import { CategoryService } from '../../services/category.service';
-import { TaxService } from '../../services/tax.service';
+import { ProductService, ProductCategoryService } from '../../../../core/services';
+import {
+  AlertService,
+  CalculationService,
+  TaxService,
+} from '../../../../core/services';
+import { Store } from '@ngrx/store';
+import { filter } from 'rxjs/internal/operators/filter';
+import { loadProductCategories, loadTaxes } from '../../../../store-redux/actions';
+import { DomSanitizer } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-new-product',
@@ -22,8 +35,8 @@ export class NewProductComponent extends FormValidate implements OnInit {
   esCreacion: boolean;
   productId: number;
   itemProduct: any;
-  categories: any;
-  taxes: any;
+  categories$: Observable<any>;
+  taxes$: Observable<any>;
 
   form: FormGroup;
   isForm: Promise<any>;
@@ -33,121 +46,109 @@ export class NewProductComponent extends FormValidate implements OnInit {
   selectedImage: any;
 
   pointsProduct = new PointsProduct();
-  
+
   constructor(
     private readonly router: Router,
     private readonly activatedRouter: ActivatedRoute,
     private readonly formBuilder: FormBuilder,
     private readonly translate: TranslateService,
     private readonly alertService: AlertService,
-    private readonly productService: ProductoService,
-    private readonly categoryService: CategoryService,
+    private readonly productService: ProductService,
+    private readonly categoryService: ProductCategoryService,
     private readonly taxService: TaxService,
-    private readonly calculationService: CalculationService
+    private readonly calculationService: CalculationService,
+    private readonly store: Store<AppState>
   ) {
     super();
-    this.esCreacion = true;
-    this.categories = [];
-    this.taxes = [];
   }
 
   ngOnInit(): void {
-    this.activatedRouter.params.subscribe(params => {
-      this.productId = params.id || null;
-      forkJoin({ 
-        _categories: this.categoryService.listar({}),
-        _taxes: this.taxService.listar({})
-      }).subscribe(async (resp: any) => {
-        this.categories = resp._categories.content;
-        this.taxes = resp._taxes.content;
-        if(this.productId){
-          this.esCreacion = false;
-          const itemProduct = await this.productService.listarPorId(this.productId).toPromise();
-          this.formInit(itemProduct);
-        } else {
-          this.esCreacion = true;
-          this.formInit();
-        }
-      });
-    });
+    this.productId = this.activatedRouter.snapshot.params.id;
+    this.esCreacion = !this.productId;
+    this.formInit();
+
+    this.categories$ = this.store.select(getProductCategoriesSelector);
+    this.taxes$ = this.store.select(getTaxesSelector);
+
+    const params = { page: 1, size: 10, isPaged: false };
+    this.store.dispatch(loadProductCategories({ filtros: params }));
+    this.store.dispatch(loadTaxes({ filtros: params }));
+
+    if (!this.esCreacion) {
+      combineLatest([this.categories$, this.taxes$]).pipe(
+        filter(data => !!data[0] && !!data[1]),
+      ).subscribe(this.getData.bind(this));
+    }
   }
 
-  private formInit(params?: any){
+  private getCategory() {
+    return this.form.get('category').value;
+  }
+
+  private getData(params: any) {
+    this.store.select(getProductByIdSelector, this.productId).pipe(
+      filter(documentsType => !!documentsType)
+    ).subscribe(this.preloadData.bind(this))
+  }
+
+  private preloadData(params: any) {
+    this.form.patchValue(params);
+    const { __v, _id, ...category } = params.category;
+    this.urlImagen = params.img;
+    category.uid = _id;
+    category._state = category.state ? 'Si': 'No';
+    this.form.controls.category.setValue(category);
+    if(params.tax){
+      const { __v: vs, _id: uid, _state: st, createdAt, updatedAt, ...tax } = params.tax;
+      tax.uid = uid;
+      tax._state = tax.state ? 'Si': 'No';
+      this.form.controls.tax.setValue(tax);
+    }
+  }
+
+  private formInit(params?: any) {
     this.isForm = Promise.resolve(
       this.form = this.formBuilder.group({
-        description: [params ? params.description : null, [Validators.required]],
-        category: [params ? this.selectedCategory(params.category.categoryId): null, [Validators.required]],
-        tax: [params ? this.selectedTax(params.tax.taxId): null, [Validators.required]],
-        ratePublic: [params ? params.ratePublic: null],
+        name: [params ? params.name : null, [Validators.required]],
+        category: [null, [Validators.required]],
+        tax: [null, [Validators.required]],
+        detail: [params ? params.detail : null],
         price: [params ? params.price : null, [Validators.required]],
         cost: [params ? params.cost : null, [Validators.required]],
-        points: [params ? params.points : 0],
         weight: [params ? params.weight : null, [Validators.required]],
-        weightContainer: [params ? params.weightContainer : null],
+        containerWeith: [params ? params.containerWeith : null],
         image: [params ? params.image : null],
         remarks: [params ? params.remarks : null],
         state: [params ? params.state : true, [Validators.required]]
       })
     );
-    this.form.controls.points.disable();
     this.urlImagen = '../../../../assets/images/productos/default.png';
-    if(!this.esCreacion && params.image){
+    /* if (this.esCreacion && params.image) {
       this.urlImagen = `../../../../assets/images/productos/${params.image}`;
-    }
-    this.form.disable();
-    this.changePriceOrCost();
-  }
-
-  private selectedCategory(codigo: number){
-    return this.categories.find(x => x.categoryId === codigo);
-  }
-
-  private selectedTax(codigo: number){
-    return this.taxes.find(x => x.taxId === codigo);
-  }
-
-  private changePriceOrCost(){
-    this.form.controls.price.valueChanges.subscribe(item => {
-      const _cost = this.form.controls.cost.value;
-      if(item && _cost){
-        //this.form.controls.points.setValue(this.calculationService.getPoint(item, _cost, 1).point);
-        this.form.controls.points.setValue(this.pointsProduct.poinstP1(item, _cost, 1).points.toFixed(2));
-      }
-    });
-
-    this.form.controls.cost.valueChanges.subscribe(item => {
-      const _price = this.form.controls.price.value;
-      if(item && _price){
-        //this.form.controls.points.setValue(this.calculationService.getPoint(_price, item, 1).point);
-        this.form.controls.points.setValue(this.pointsProduct.poinstP1(_price, item, 1).points.toFixed(2));
-      }
-    });
-  }
-
-  private getName() {
-    return this.form.get('name').value;
+    } */
+    //this.form.disable();
   }
 
   saveProduct() {
-    if(this.form.invalid){
+    if (this.form.invalid) {
       return;
     }
     const uploadImageData = new FormData();
     const _form = this.form.getRawValue();
-    uploadImageData.append('imageFile', this.selectedImage, this.setNameImage());
-    uploadImageData.append('description', _form.description);
-    uploadImageData.append('category', _form.category.descripcion);
-    uploadImageData.append('tax', _form.tax);
-    uploadImageData.append('ratePublic', _form.ratePublic);
+    //uploadImageData.append('img', this.selectedImage, this.setNameImage());
+    uploadImageData.append('img', this.urlImagen);
+    uploadImageData.append('name', _form.name);
+    uploadImageData.append('category', _form.category.uid);
+    uploadImageData.append('tax', _form.tax.uid);
+    uploadImageData.append('detail', _form.detail);
     uploadImageData.append('price', _form.price);
     uploadImageData.append('cost', _form.cost);
-    uploadImageData.append('points', _form.points);
     uploadImageData.append('weight', _form.weight);
-    uploadImageData.append('weightContainer', _form.weightContainer);
+    uploadImageData.append('containerWeith', _form.containerWeith);
     uploadImageData.append('remarks', _form.remarks);
     uploadImageData.append('state', _form.state)
 
-    if(this.esCreacion){
+    if (this.esCreacion) {
       this.createItem(uploadImageData);
     } else {
       this.updateItem(uploadImageData);
@@ -156,13 +157,13 @@ export class NewProductComponent extends FormValidate implements OnInit {
 
   private setNameImage() {
     const _form = this.form.getRawValue();
-    const category = _form.category.descripcion.replace(/\s/g, '-');
-    const description = _form.description.replace(/\s/g, '-');
-    return `${category}-${description}`;
+    const category = _form.category.name.replace(/\s/g, '-');
+    const name = _form.name.replace(/\s/g, '-');
+    return `${category}-${name}`;
     //_form.image.setValue(`${category}-${description}`);
   }
 
-  private createItem(params: any){
+  private createItem(params: any) {
     this.productService.crear(params).subscribe(resp => {
       this.translate.get('global.guardadoExitosoMensaje').subscribe(mensaje => {
         this.alertService.success(mensaje).then(() => {
@@ -177,20 +178,19 @@ export class NewProductComponent extends FormValidate implements OnInit {
     });
   }
 
-  private updateItem(params: any){
-    params['productId'] = this.productId;
-      this.productService.modificar(params).subscribe(resp => {
-        this.translate.get('global.actualizacionExitosaMensaje').subscribe(mensaje => {
-          this.alertService.success(mensaje).then(() => {
-            this.form.reset();
-            this.router.navigate(['/admin/maestros/productos']);
-          });
-        });
-      }, err => { 
-        this.translate.get('global.errorActualizar').subscribe(mensaje => {
-          this.alertService.error(mensaje);
+  private updateItem(params: any) {
+    this.productService.modificar(this.productId, params).subscribe(resp => {
+      this.translate.get('global.actualizacionExitosaMensaje').subscribe(mensaje => {
+        this.alertService.success(mensaje).then(() => {
+          this.form.reset();
+          this.router.navigate(['/admin/maestros/productos']);
         });
       });
+    }, err => {
+      this.translate.get('global.errorActualizar').subscribe(mensaje => {
+        this.alertService.error(mensaje);
+      });
+    });
   }
 
   hasChanges(): Observable<boolean> | Promise<boolean> | boolean {
@@ -198,8 +198,8 @@ export class NewProductComponent extends FormValidate implements OnInit {
   }
 
   selectFiles(event) {
-    if(event.target.files){
-      for(let i=0; i< File.length - 1; i++){
+    if (event.target.files) {
+      for (let i = 0; i < File.length - 1; i++) {
         const reader = new FileReader();
         reader.readAsDataURL(event.target.files[i]);
         if (event.target.files[i].type.match('image.*')) {
@@ -207,11 +207,10 @@ export class NewProductComponent extends FormValidate implements OnInit {
           reader.onload = (event: any) => {
             this.urlImagen = event.target.result;
           }
-        }else {
+        } else {
           this.alertService.info('Formato no valido');
         }
       }
     }
   }
-
 }

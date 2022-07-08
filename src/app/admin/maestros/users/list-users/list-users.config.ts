@@ -5,13 +5,13 @@ export class ListUsersConfig {
 
     constructor() {
         this.gridList.columnas = [
-            {
+            /* {
                 title: 'Usuario',
                 field: 'username',
                 configCelda: {
                     width: '100px'
                 }
-            },
+            }, */
             {
                 title: 'Nombre completo',
                 field: 'nameFull',
@@ -27,8 +27,8 @@ export class ListUsersConfig {
                 }
             },
             {
-                title: 'Patrocinador',
-                field: 'levelOneId',
+                title: 'Estado',
+                field: '_state',
                 configCelda: {
                     width: '100px'
                 }

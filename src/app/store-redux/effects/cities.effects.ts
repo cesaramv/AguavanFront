@@ -15,14 +15,23 @@ export class CitiesEffects {
 
     loadMovies$ = createEffect(() => this.actions$.pipe(
         ofType(citiesActions.loadCities),
-        mergeMap(({ filtros }) =>this.cityService.listar(filtros)
+        mergeMap(({ filtros }) => this.cityService.listar(filtros)
             .pipe(
-                map(( datos: any ) => {
+                map((datos: any) => {
                     return citiesActions.loadCitiesSuccess({
-                        cities: datos.content,
-                        totalElements : datos.totalElements,
-                        number : datos.number,
-                        totalPages : datos.totalPages
+                        cities: datos.content.map(x => {
+                            return { ...x, _specialCity: x.specialCity ? 'Si' : 'No' }
+                        }),
+                        pagination: {
+                            hasNextPage: datos.hasNextPage,
+                            hasPrevPage: datos.hasPrevPage,
+                            next: datos.next,
+                            page: datos.page,
+                            pagingCounter: datos.pagingCounter,
+                            prev: datos.prev,
+                            totalElements: datos.totalElements,
+                            totalPages: datos.totalPages,
+                        },
                     })
                 }),
                 catchError(err => of(citiesActions.loadCitiesError({ payload: err })))

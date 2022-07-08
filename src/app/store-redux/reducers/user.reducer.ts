@@ -2,47 +2,47 @@ import { createReducer, on } from '@ngrx/store';
 import { loadUser, loadUserSuccess, loadUserError } from '../actions';
 
 export interface UserState {
-    user          : any,
-    documentsType : any,
-    departments   : any,
+    user: any,
+    /* documentsType: any,
+    departments: any,
     //cities        : any,
-    statesUsers   : any,
-    loaded        : boolean,
-    loading       : boolean,
-    error         : any
+    statesUsers: any, */
+    loaded: boolean,
+    loading: boolean,
+    error: any
 }
 
 export const userInitialState: UserState = {
-    user           : null,
-    documentsType  : null,
-    departments    : null,
+    user: null,
+    /* documentsType: null,
+    departments: null,
     //cities         : null,
-    statesUsers    : null,
-    loaded         : false,
-    loading        : false,
-    error          : null
+    statesUsers: null, */
+    loaded: false,
+    loading: false,
+    error: null
 }
 
 const _userReducer = createReducer(userInitialState,
 
-    on(loadUser, ( state, { userId }) => ({ ...state, loading: true, userId })),
+    on(loadUser, (state, { userId }) => ({ ...state, loading: true, userId })),
 
-    on(loadUserSuccess, (state, { user, documentsType, departments, statesUsers }) => ({ 
-        ...state, 
-        loading : false,
-        loaded  : true,
-        user   : {...user},
-        documentsType,
+    on(loadUserSuccess, (state, { user }) => ({ //, documentsType, departments, statesUsers
+        ...state,
+        loading: false,
+        loaded: true,
+        user: { ...user },
+        /* documentsType,
         departments,
         //cities,
-        statesUsers
+        statesUsers */
     })),
 
-    on(loadUserError, (state, { payload }) => ({ 
-        ...state, 
-        loading : false,
-        loaded  : false,
-        error   : payload
+    on(loadUserError, (state, { payload }) => ({
+        ...state,
+        loading: false,
+        loaded: false,
+        error: payload
     })),
 );
 

@@ -1,3 +1,4 @@
+import { filter } from 'rxjs/operators';
 import { getProductDetailSelected, getProductLoadingSelected, getProductSelected } from './../../store-redux/selectors/order.selectors';
 import { AlertService } from '@core/services/alert.service';
 import { TranslateService } from '@ngx-translate/core';
@@ -23,6 +24,8 @@ export class OrderDetailComponent implements OnInit {
   //productsSelected: any;
   //order: OrderModel;
   //detail: OrderDetailModel;
+  order: any;
+  detail: any[];
 
   /* totalOrder: number;
   totalPoints: number;
@@ -33,7 +36,7 @@ export class OrderDetailComponent implements OnInit {
   totalIva19: number;
   totalVExcento: number;
   totalVExcluido: number; */
-  costTotal = (accumulator, currentValue) => accumulator + currentValue;
+  getTotal = (accumulator, currentValue) => accumulator + currentValue;
   //orderDetail: Observable<any>;
 
   constructor(
@@ -58,9 +61,14 @@ export class OrderDetailComponent implements OnInit {
   ngOnInit(): void {
     //this.order$ = this.store.select('productsSelected');
     this.order$ = this.store.select(getProductSelected);
+    this.order$.pipe(filter(item => !!item)).subscribe(item => this.order = item);
     this.orderDetail$ = this.store.select(getProductDetailSelected);
+    this.orderDetail$.pipe(filter(items => !!items && items.length > 0)).subscribe(items => {
+      debugger
+      this.detail = items
+    });
     this.store.select(getProductLoadingSelected).subscribe(resp => {
-      if(resp){
+      if (resp) {
         const _products = sessionStorage.getItem('products');
         if (_products) {
           const productsSession = JSON.parse(_products);
@@ -75,7 +83,7 @@ export class OrderDetailComponent implements OnInit {
         }
       }
     })
-   
+
     /* this.store.select(getProductSelected).subscribe(resp => {
       debugger
     }) */
@@ -177,23 +185,26 @@ export class OrderDetailComponent implements OnInit {
   }
 
   async saveOrder() {
-    const order = await this.order$;
-    const orderDetail: any = await this.orderDetail$;
+    const valueSend = this.getValueSend(1);
+    const totalCost = this.detail.map(x => x.cost * x.quantity).reduce(this.getTotal);
+    const totalPrice = this.detail.map(x => x.price * x.quantity).reduce(this.getTotal);
     const params = {
-      ...order,
-      costo: orderDetail.map(x => x.cost * x.quantity).reduce(this.costTotal),
-      users: 4,
-      stateOrder: 1,
-      fechaLimitePago: DateUtil.stringToDate('23-10-2021'), 
-      formatPay: 1,
-      valorEnvio: 100,
+      ...this.order,
+      totalCost,
+      totalPrice,
+      orderState: '61ef28a4c170243bd144881a',
+      dateLimtPay: DateUtil.stringToDate('23-10-2021'),
+      formatPay: '1',
+      valueSend,
+      weightTotal: 1,
+      subValor: totalPrice + valueSend,
       red: 1500,
       valorConsignacion: 3000,
-      detail: orderDetail
+      detail: this.detail
     }
     //const formOrder = this.form
     //console.log('order ->', this.order);
-    this.orderService.crear(params).subscribe(resp => {debugger
+    this.orderService.crear(params).subscribe(resp => {
       this.translate.get('global.guardadoExitosoMensaje').subscribe(mensaje => {
         this.alertService.success(mensaje).then(() => {
           //this.form.reset();
@@ -205,5 +216,9 @@ export class OrderDetailComponent implements OnInit {
         this.alertService.error(mensaje);
       });
     });
+  }
+
+  getValueSend(weightTotal: number) {
+    return weightTotal * 100;
   }
 }

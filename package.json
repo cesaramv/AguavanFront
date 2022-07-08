@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve --proxy-config proxy.conf.json",
+    "start": "ng serve",
     "build": "ng build",
     "test": "ng test",
     "test:coverage": "ng test --code-coverage --browsers=Chrome",
@@ -18,9 +18,10 @@
     "lint:sass": "stylelint \"src/**/*.scss\"",
     "e2e": "ng e2e",
     "compodoc": "npx compodoc -p stc/tsconfig.app.json",
-    "customScript": "cp dist/appaguavan/index.html dist/index.html",
+    "customScript": "cp dist/appaguavan/index.html dist/insdex.html",
     "localserver": "nodemon mockserver/index.js",
-    "sonar-scanner": "node_modules/sonar-scanner/bin/sonar-scanner"
+    "sonar-scanner": "node_modules/sonar-scanner/bin/sonar-scanner",
+    "deploy-front": "aws s3 sync dist/appaguavan s3://fe-aguavan --acl public-read"
   },
   "private": true,
   "dependencies": {
@@ -42,8 +43,11 @@
     "@ngrx/store-devtools": "^11.1.1",
     "@ngx-translate/core": "^13.0.0",
     "@ngx-translate/http-loader": "^6.0.0",
+    "angular-oauth2-oidc": "^13.0.1",
     "bootstrap": "^4.5.3",
     "jquery": "^3.5.1",
+    "js-sha512": "^0.8.0",
+    "jsencrypt": "^3.2.1",
     "ngx-ui-loader": "^10.0.0",
     "popper.js": "^1.16.1",
     "primeicons": "^4.1.0",
@@ -51,6 +55,7 @@
     "rxjs": "~6.5.5",
     "sweetalert2": "^10.15.5",
     "tslib": "^2.0.0",
+    "utf8": "^3.0.0",
     "zone.js": "~0.11.4"
   },
   "devDependencies": {

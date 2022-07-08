@@ -1,3 +1,4 @@
+import { UserModel } from './../../shared/models/user.model';
 import { createAction, props } from '@ngrx/store';
 
 export const loadUser = createAction(
@@ -7,11 +8,11 @@ export const loadUser = createAction(
 export const loadUserSuccess = createAction(
     '[Admin User Component] user by id',
     props<{
-        user: any,
-        documentsType: any,
+        user: UserModel,
+        /* documentsType: any,
         departments: any,
         //cities: any,
-        statesUsers: any
+        statesUsers: any */
     }>()
 );
 

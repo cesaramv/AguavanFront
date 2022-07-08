@@ -1,11 +1,16 @@
+import { percentageToDecimal, decimaltoPercentage } from './../../../../shared/util/util';
+import { getTaxByIdSelector } from './../../../../store-redux/selectors/master.selectors';
+import { AppState } from './../../../../store-redux/app.reducer';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { AlertService } from '@core/services/alert.service';
+import { Store } from '@ngrx/store';
 import { TranslateService } from '@ngx-translate/core';
 import { FormValidate } from '@shared/util/form-validate';
 import { Observable } from 'rxjs/internal/Observable';
-import { TaxService } from '../../services/tax.service';
+import { filter } from 'rxjs/operators';
+import { TaxService } from '../../../../core/services/tax.service';
 
 @Component({
   selector: 'app-new-taxes',
@@ -19,39 +24,41 @@ export class NewTaxesComponent extends FormValidate implements OnInit {
 
   form: FormGroup;
   isForm: Promise<any>;
-  
+
   constructor(
     private readonly router: Router,
     private readonly activatedRouter: ActivatedRoute,
     private readonly formBuilder: FormBuilder,
     private readonly translate: TranslateService,
     private readonly alertService: AlertService,
-    private readonly taxService: TaxService
-  ) { 
+    private readonly taxService: TaxService,
+    private readonly store: Store<AppState>
+  ) {
     super();
     this.esCreacion = true;
   }
 
   ngOnInit(): void {
-    this.activatedRouter.params.subscribe(async params => {
-      this.taxId = params.id || null;
-      if(this.taxId){
-        this.esCreacion = false;
-        const rowCategory = await this.taxService.listarPorId(this.taxId).toPromise();
-        this.formInit(rowCategory);
-      } else {
-        this.esCreacion = true;
-        this.formInit();
-      }
-    });
+    this.taxId = this.activatedRouter.snapshot.params.id;
+    this.esCreacion = !this.taxId;
+    this.formInit();
+    if (!this.esCreacion) {
+      this.store.select(getTaxByIdSelector, this.taxId).pipe(
+        filter(documentsType => !!documentsType)
+      ).subscribe(this.preloadData.bind(this))
+    }
   }
 
-  private formInit(params?: any){
+  private preloadData(params: any) {
+    this.form.patchValue(params);
+    this.form.controls.iva.setValue(decimaltoPercentage(params.iva, 0));
+  }
+
+  private formInit(params?: any) {
     this.isForm = Promise.resolve(
       this.form = this.formBuilder.group({
-        description: [params ? params.description : null, [Validators.required]],
-        rate: [params ? params.rate : null, [Validators.required]],
-        ratePublic: [params ? params.ratePublic : null, [Validators.required]],
+        name: [params ? params.name : null, [Validators.required]],
+        iva: [params ? params.iva : null, [Validators.required]],
         state: [params ? params.state : true, [Validators.required]]
       })
     );
@@ -62,24 +69,19 @@ export class NewTaxesComponent extends FormValidate implements OnInit {
   }
 
   saveTaxe() {
-    if(this.form.invalid){
+    if (this.form.invalid) {
       return;
     }
-    const _form = this.form.getRawValue();
-    const params = {
-      description: this.getDescription(),
-      rate: _form.rate,
-      ratePublic: _form.ratePublic,
-      state: _form.state
-    }
-    if(this.esCreacion){
+    const {iva, ...params} = this.form.value;
+    params.iva = percentageToDecimal(parseFloat(iva), 2)
+    if (this.esCreacion) {
       this.createItem(params);
     } else {
       this.updateItem(params);
     }
   }
 
-  private createItem(params: any){
+  private createItem(params: any) {
     this.taxService.crear(params).subscribe(resp => {
       this.translate.get('global.guardadoExitosoMensaje').subscribe(mensaje => {
         this.alertService.success(mensaje).then(() => {
@@ -94,20 +96,19 @@ export class NewTaxesComponent extends FormValidate implements OnInit {
     });
   }
 
-  private updateItem(params: any){
-    params['taxId'] = this.taxId;
-      this.taxService.modificar(params).subscribe(resp => {
-        this.translate.get('global.actualizacionExitosaMensaje').subscribe(mensaje => {
-          this.alertService.success(mensaje).then(() => {
-            this.form.reset();
-            this.router.navigate(['/admin/maestros/impuestos']);
-          });
-        });
-      }, err => { 
-        this.translate.get('global.errorActualizar').subscribe(mensaje => {
-          this.alertService.error(mensaje);
+  private updateItem(params: any) {
+    this.taxService.modificar(this.taxId, params).subscribe(resp => {
+      this.translate.get('global.actualizacionExitosaMensaje').subscribe(mensaje => {
+        this.alertService.success(mensaje).then(() => {
+          this.form.reset();
+          this.router.navigate(['/admin/maestros/impuestos']);
         });
       });
+    }, err => {
+      this.translate.get('global.errorActualizar').subscribe(mensaje => {
+        this.alertService.error(mensaje);
+      });
+    });
   }
 
   hasChanges(): Observable<boolean> | Promise<boolean> | boolean {

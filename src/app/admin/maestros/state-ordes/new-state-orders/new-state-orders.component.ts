@@ -1,11 +1,15 @@
+import { getOrderStateByIdSelector } from './../../../../store-redux/selectors/master.selectors';
+import { AppState } from './../../../../store-redux/app.reducer';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { AlertService } from '@core/services/alert.service';
+import { Store } from '@ngrx/store';
 import { TranslateService } from '@ngx-translate/core';
 import { FormValidate } from '@shared/util/form-validate';
 import { Observable } from 'rxjs/internal/Observable';
-import { StateOrderService } from '../../services/state-order.service';
+import { OrderStateService } from '../../../../core/services';
+import { filter } from 'rxjs/operators';
 
 @Component({
   selector: 'app-new-state-orders',
@@ -19,34 +23,36 @@ export class NewStateOrdersComponent extends FormValidate implements OnInit {
 
   form: FormGroup;
   isForm: Promise<any>;
-  
+
   constructor(
     private readonly router: Router,
     private readonly activatedRouter: ActivatedRoute,
     private readonly formBuilder: FormBuilder,
     private readonly translate: TranslateService,
     private readonly alertService: AlertService,
-    private readonly stateOrderService: StateOrderService
-  ) { 
+    private readonly stateOrderService: OrderStateService,
+    private readonly store: Store<AppState>
+  ) {
     super();
     this.esCreacion = true;
   }
 
   ngOnInit(): void {
-    this.activatedRouter.params.subscribe(async params => {
-      this.stateOrderId = params.id || null;
-      if(this.stateOrderId){
-        this.esCreacion = false;
-        const rowCategory = await this.stateOrderService.listarPorId(this.stateOrderId).toPromise();
-        this.formInit(rowCategory);
-      } else {
-        this.esCreacion = true;
-        this.formInit();
-      }
-    });
+    this.stateOrderId = this.activatedRouter.snapshot.params.id;
+    this.esCreacion = !this.stateOrderId;
+    this.formInit();
+    if (!this.esCreacion) {
+      this.store.select(getOrderStateByIdSelector, this.stateOrderId).pipe(
+        filter(documentsType => !!documentsType)
+      ).subscribe(this.preloadData.bind(this))
+    }
   }
 
-  private formInit(params?: any){
+  private preloadData(params: any) {
+    this.form.patchValue(params);
+  }
+
+  private formInit(params?: any) {
     this.isForm = Promise.resolve(
       this.form = this.formBuilder.group({
         name: [params ? params.name : null, [Validators.required]],
@@ -60,22 +66,17 @@ export class NewStateOrdersComponent extends FormValidate implements OnInit {
   }
 
   saveStateOrders() {
-    if(this.form.invalid){
+    if (this.form.invalid) {
       return;
     }
-    const _form = this.form.getRawValue();
-    const params = {
-      name: this.getName(),
-      state: _form.state
-    }
-    if(this.esCreacion){
-      this.createItem(params);
+    if (this.esCreacion) {
+      this.createItem(this.form.value);
     } else {
-      this.updateItem(params);
+      this.updateItem(this.form.value);
     }
   }
 
-  private createItem(params: any){
+  private createItem(params: any) {
     this.stateOrderService.crear(params).subscribe(resp => {
       this.translate.get('global.guardadoExitosoMensaje').subscribe(mensaje => {
         this.alertService.success(mensaje).then(() => {
@@ -90,20 +91,19 @@ export class NewStateOrdersComponent extends FormValidate implements OnInit {
     });
   }
 
-  private updateItem(params: any){
-    params['stateOrderId'] = this.stateOrderId;
-      this.stateOrderService.modificar(params).subscribe(resp => {
-        this.translate.get('global.actualizacionExitosaMensaje').subscribe(mensaje => {
-          this.alertService.success(mensaje).then(() => {
-            this.form.reset();
-            this.router.navigate(['/admin/maestros/estados_ordenes']);
-          });
-        });
-      }, err => { 
-        this.translate.get('global.errorActualizar').subscribe(mensaje => {
-          this.alertService.error(mensaje);
+  private updateItem(params: any) {
+    this.stateOrderService.modificar(this.stateOrderId, params).subscribe(resp => {
+      this.translate.get('global.actualizacionExitosaMensaje').subscribe(mensaje => {
+        this.alertService.success(mensaje).then(() => {
+          this.form.reset();
+          this.router.navigate(['/admin/maestros/estados_ordenes']);
         });
       });
+    }, err => {
+      this.translate.get('global.errorActualizar').subscribe(mensaje => {
+        this.alertService.error(mensaje);
+      });
+    });
   }
 
   hasChanges(): Observable<boolean> | Promise<boolean> | boolean {

@@ -1,28 +1,39 @@
+// import { AuthenticationService } from './services/authentication/authentication.service';
 import { NgModule, Optional, SkipSelf } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { CanDeactivateGuard } from './guards/can-deactivate.guard';
 import { GenericService } from './services/generic.service';
 import { 
   AlertService, ProductService, CalculationService, DepartmentsService,
-  DocumentService, CityService, StateUserService
+  DocumentService, CityService, StateUserService, MenuService, AuthService,
+  OrderService, OrderStateService, TaxService, ProductCategoryService
 } from './services/index';
+// import { OAuthModule } from 'angular-oauth2-oidc';
 
 
 @NgModule({
   declarations: [],
   imports: [
-    CommonModule
+    CommonModule,
+    //OAuthModule.forRoot()
   ],
   providers: [ 
     AlertService,
+    AuthService,
     CanDeactivateGuard,
-    GenericService,
     CalculationService,
+    CityService,
     DepartmentsService,
     DocumentService,
-    CityService,
+    GenericService,
+    MenuService,
+    OrderStateService,
+    OrderService,
+    ProductCategoryService,
+    ProductService,
     StateUserService,
-    ProductService
+    TaxService,
+    // AuthenticationService
   ]
 })
 export class CoreModule {

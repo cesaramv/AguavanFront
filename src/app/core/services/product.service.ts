@@ -10,7 +10,7 @@ export class ProductService extends GenericService<any> {
   private urlCotenidoPublico = `${environment.HOST}/contenido_publico`;
 
   constructor(readonly http: HttpClient) {
-    super(http, `${environment.HOST}/productos`);
+    super(http, `${environment.HOST}/products`);
   }
 
   listarProductos(): Observable<any>{

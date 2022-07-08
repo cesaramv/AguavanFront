@@ -15,16 +15,18 @@ import { DatePickerComponent } from './components/date-picker/date-picker.compon
 import { TranslateModule } from '@ngx-translate/core';
 import { FormUserComponent } from './components/form-user/form-user.component';
 import { OrderDetailTotalComponent } from './components/order-detail-total/order-detail-total.component';
+import { CmPercentPipe } from './pipes/cm-percent/cm-percent.pipe';
 
 @NgModule({
   declarations: [
     CustomCurrencyPipe, 
     NoAplicaPipe, 
+    CmPercentPipe,
     GridComponent, 
     EmptyPipe, 
     DatePickerComponent, 
     FormUserComponent, 
-    OrderDetailTotalComponent
+    OrderDetailTotalComponent, CmPercentPipe
   ],
   imports: [
     CommonModule,
@@ -38,6 +40,7 @@ import { OrderDetailTotalComponent } from './components/order-detail-total/order
   ],
   exports: [
     CustomCurrencyPipe,
+    CmPercentPipe,
     TranslateModule,
     NoAplicaPipe,
     GridComponent,
@@ -60,7 +63,8 @@ export class SharedModule {
         CurrencyPipe,
         //EmptyPipe,
         NoAplicaPipe,
-        CustomCurrencyPipe
+        CustomCurrencyPipe,
+        CmPercentPipe
       ]
     }
   }

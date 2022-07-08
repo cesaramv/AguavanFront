@@ -1,4 +1,5 @@
 export * from './alert.service';
+export * from './auth.service';
 export * from './calculation.service';
 export * from './city.service';
 export * from './departments.service';
@@ -6,5 +7,10 @@ export * from './document.service';
 export * from './generic.service';
 export * from './state-user.service';
 export * from './order.service';
+export * from './order-state.service';
+export * from './product-category.service';
 export * from './product.service';
 export * from './state-user.service';
+export * from './tax.service';
+export * from './menu.service';
+//export * from './authentication/authentication.service'

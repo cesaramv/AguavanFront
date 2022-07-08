@@ -1,0 +1,18 @@
+<div class="container-fluid">
+    <div class="col-md-12">
+        <h2 class="text-center pt-3">{{ product?.name | titlecase }}</h2>
+        <hr class="pb-4" />
+
+        <div class="container-detail">
+            <img class="img_productos px-2" [src]="product?.img" />
+            <p class="text-justify px-2">
+                {{product?.detail}}
+            </p>
+        </div>
+
+        <div class="col-12 text-right py-2">
+            <button type="button" class="btn btn-danger" (click)="selectedProduct(product)"
+                style="position: absolute; right: 10px; top: 10px;">Agregar al carrito</button>
+        </div>
+    </div>
+</div>

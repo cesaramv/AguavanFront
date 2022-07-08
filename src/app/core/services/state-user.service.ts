@@ -9,6 +9,6 @@ import { environment } from 'src/environments/environment';
 export class StateUserService extends GenericService<any> {
 
   constructor(readonly http: HttpClient) {
-    super(http, `${environment.HOST}/estados_usuarios`);
+    super(http, `${environment.HOST}/user-states`);
   }
 }

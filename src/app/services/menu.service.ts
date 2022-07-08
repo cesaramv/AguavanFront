@@ -2,14 +2,15 @@ import { Injectable } from '@angular/core';
 import { GenericService } from '../core/services/generic.service';
 import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
-import { Subject } from 'rxjs';
+import { Subject, Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class MenuService extends GenericService<any> {
 
-  private urlCotenidoPublico = `${environment.HOST}/contenido_publico`;
+  private urlCotenidoPublico = `${environment.HOST}`;
+  //private urlMenu = `${environment.HOST}/menus`;
   private menuCambio = new Subject<any[]>();
 
   constructor(readonly http: HttpClient) {
@@ -20,11 +21,11 @@ export class MenuService extends GenericService<any> {
     return this.http.post(`${this.url}/usuario`, userName)
   }
 
-  listarPorIdRol(){
-    return this.http.get(`${this.urlCotenidoPublico}/menu_rol`)
-  }
+  /* listarPorIdRol(){
+    return this.http.get(`${this.url}`)
+  } */
 
-  getMenuCambio() {
+  getMenuCambio(): Observable<any> {
     return this.menuCambio.asObservable();
   }
 

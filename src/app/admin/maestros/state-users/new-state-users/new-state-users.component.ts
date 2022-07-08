@@ -1,11 +1,17 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
-import { AlertService } from '@core/services/alert.service';
+import { Observable } from 'rxjs/internal/Observable';
 import { TranslateService } from '@ngx-translate/core';
 import { FormValidate } from '@shared/util/form-validate';
-import { Observable } from 'rxjs/internal/Observable';
+
+import { Store } from '@ngrx/store';
+import { AppState } from './../../../../store-redux/app.reducer';
+import { getUserStateByIdSelector } from './../../../../store-redux/selectors/master.selectors';
+
 import { StateUserService } from '@core/services/state-user.service';
+import { AlertService } from '@core/services/alert.service';
+import { filter } from 'rxjs/operators';
 
 @Component({
   selector: 'app-new-state-users',
@@ -19,34 +25,36 @@ export class NewStateUsersComponent extends FormValidate implements OnInit {
 
   form: FormGroup;
   isForm: Promise<any>;
-  
+
   constructor(
     private readonly router: Router,
     private readonly activatedRouter: ActivatedRoute,
     private readonly formBuilder: FormBuilder,
     private readonly translate: TranslateService,
     private readonly alertService: AlertService,
-    private readonly stateUserService: StateUserService
-  ) { 
+    private readonly stateUserService: StateUserService,
+    private readonly store: Store<AppState>
+  ) {
     super();
     this.esCreacion = true;
   }
 
   ngOnInit(): void {
-    this.activatedRouter.params.subscribe(async params => {
-      this.stateUserId = params.id || null;
-      if(this.stateUserId){
-        this.esCreacion = false;
-        const rowCategory = await this.stateUserService.listarPorId(this.stateUserId).toPromise();
-        this.formInit(rowCategory);
-      } else {
-        this.esCreacion = true;
-        this.formInit();
-      }
-    });
+    this.stateUserId = this.activatedRouter.snapshot.params.id;
+    this.esCreacion = !this.stateUserId;
+    this.formInit();
+    if (!this.esCreacion) {
+      this.store.select(getUserStateByIdSelector, this.stateUserId).pipe(
+        filter(documentsType => !!documentsType)
+      ).subscribe(this.preloadData.bind(this))
+    }
   }
 
-  private formInit(params?: any){
+  private preloadData(params: any) {
+    this.form.patchValue(params);
+  }
+
+  private formInit(params?: any) {
     this.isForm = Promise.resolve(
       this.form = this.formBuilder.group({
         name: [params ? params.name : null, [Validators.required]],
@@ -60,22 +68,17 @@ export class NewStateUsersComponent extends FormValidate implements OnInit {
   }
 
   saveStateUser() {
-    if(this.form.invalid){
+    if (this.form.invalid) {
       return;
     }
-    const _form = this.form.getRawValue();
-    const params = {
-      name: this.getName(),
-      state: _form.state
-    }
-    if(this.esCreacion){
-      this.createItem(params);
+    if (this.esCreacion) {
+      this.createItem(this.form.value);
     } else {
-      this.updateItem(params);
+      this.updateItem(this.form.value);
     }
   }
 
-  private createItem(params: any){
+  private createItem(params: any) {
     this.stateUserService.crear(params).subscribe(resp => {
       this.translate.get('global.guardadoExitosoMensaje').subscribe(mensaje => {
         this.alertService.success(mensaje).then(() => {
@@ -90,20 +93,19 @@ export class NewStateUsersComponent extends FormValidate implements OnInit {
     });
   }
 
-  private updateItem(params: any){
-    params['stateUserId'] = this.stateUserId;
-      this.stateUserService.modificar(params).subscribe(resp => {
-        this.translate.get('global.actualizacionExitosaMensaje').subscribe(mensaje => {
-          this.alertService.success(mensaje).then(() => {
-            this.form.reset();
-            this.router.navigate(['/admin/maestros/estados_usuarios']);
-          });
-        });
-      }, err => { 
-        this.translate.get('global.errorActualizar').subscribe(mensaje => {
-          this.alertService.error(mensaje);
+  private updateItem(params: any) {
+    this.stateUserService.modificar(this.stateUserId, params).subscribe(resp => {
+      this.translate.get('global.actualizacionExitosaMensaje').subscribe(mensaje => {
+        this.alertService.success(mensaje).then(() => {
+          this.form.reset();
+          this.router.navigate(['/admin/maestros/estados_usuarios']);
         });
       });
+    }, err => {
+      this.translate.get('global.errorActualizar').subscribe(mensaje => {
+        this.alertService.error(mensaje);
+      });
+    });
   }
 
   hasChanges(): Observable<boolean> | Promise<boolean> | boolean {

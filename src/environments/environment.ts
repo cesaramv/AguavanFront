@@ -3,7 +3,7 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  HOST: 'http://localhost:8080',
+  HOST: 'http://localhost:3000',
 
   production: false,
   
@@ -19,8 +19,18 @@ export const environment = {
   grant_type: 'password',
   username: 'EMPRESA1\\empleado@ejemplo.com',
   password: 'D23fkskfhs#',
-  scope: 'WebApi',
-  'Ocp-Apim-Subscription-Key': "42453rdred665dd6565"
+  //scope: 'WebApi',
+  'Ocp-Apim-Subscription-Key': "42453rdred665dd6565",
+
+  authUrl: 'http://localhost:3000',
+  redirectUri: 'http://localhost:4200/login',
+  clientId: 'C3s4r_*10C0l0mb14',
+  scope: 'openid email phone profile',
+  responseType: 'TOKEN',
+  customQueryParams: { identity_provider: 'NoLoSe' },
+  showDebugInformation: true,
+  sessionChecksEnabled: false,
+  postLogoutRedirectUri: 'http://localhost:4200/office'
 };
 
 /*

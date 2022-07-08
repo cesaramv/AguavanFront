@@ -15,8 +15,8 @@
                             <th class="align-middle" scope="col">Valor Unit.</th>
                             <th class="align-middle" scope="col">Descuento</th>
                             <th class="align-middle" scope="col">Valor Unit. <br> con descuento</th>
-                            <th class="align-middle" scope="col">Ptos. Unit.</th>
-                            <th class="align-middle" scope="col">Total Ptos.</th>
+                            <!-- <th class="align-middle" scope="col">Ptos. Unit.</th>
+                            <th class="align-middle" scope="col">Total Ptos.</th> -->
                             <th class="align-middle" scope="col">Total vlr.</th>
                         </tr>
                     </thead>
@@ -27,7 +27,7 @@
                                     <fa-icon [icon]="'trash-alt'" class="fa-1x"></fa-icon>
                                 </button>
                             </td>
-                            <td>{{productDetail.description}}</td>
+                            <td>{{productDetail.name | titlecase}}</td>
                             <td class="text-center align-middle">
                                 <div class="wrapper">
                                     <div class="field">
@@ -38,12 +38,12 @@
                                     </div>
                                 </div>
                             </td>
-                            <td class="text-center">{{productDetail.tax?.rate}}</td>
+                            <td class="text-center">{{productDetail.tax?.iva | cmPercent}}</td>
                             <td class="text-right">{{productDetail.price | customCurrency}}</td>
                             <td class="text-center">{{productDetail.discount}}%</td>
                             <td class="text-right">{{productDetail.discountedUnitValue | customCurrency}}</td>
-                            <td class="text-right">{{productDetail.points?.toFixed(2).replace('.', ',')}}</td>
-                            <td class="text-right">{{productDetail.totalPoints?.toFixed(2).replace('.', ',')}}</td>
+                            <!-- <td class="text-right">{{productDetail.points?.toFixed(2).replace('.', ',')}}</td>
+                            <td class="text-right">{{productDetail.totalPoints?.toFixed(2).replace('.', ',')}}</td> -->
                             <td class="text-right">{{productDetail.totalValue | customCurrency}}</td>
                         </tr>
                     </tbody>
@@ -159,10 +159,10 @@
                         <div class="flex-grow-1">Total factura: </div>
                         <div class="text-right d-flex align-items-center">{{(order$ | async)?.totalOrder ?? 0 | customCurrency}}</div>
                     </div>
-                    <div class="d-flex w-100 alert alert-secondary p-1 mb-0">
+                    <!-- <div class="d-flex w-100 alert alert-secondary p-1 mb-0">
                         <div class="flex-grow-1">Total puntos: </div>
                         <div class="text-right">{{(order$ | async)?.totalPoints?.toFixed(2).replace('.', ',')}}</div>
-                    </div>
+                    </div> -->
 
                     <button type="button" class="btn btn-success w-100 my-2" (click)="saveOrder()">Pagar</button>
 

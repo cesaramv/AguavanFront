@@ -9,6 +9,6 @@ import { environment } from '../../../environments/environment';
 export class OrderService extends GenericService<any> {
 
   constructor(readonly http: HttpClient) {
-    super(http, `${environment.HOST}/ordenes`);
+    super(http, `${environment.HOST}/orders`);
   }
 }

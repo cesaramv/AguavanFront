@@ -11,6 +11,7 @@ import { MenuService } from './menu.service';
 export class LoginService {
 
   private url: string = `${environment.HOST}/oauth/token`;
+  private urlAuth: string = `${environment.HOST}/auth/login`;
   private urlLogin: string = `${environment.HOST}/login`;
 
   constructor(
@@ -20,10 +21,15 @@ export class LoginService {
   ) { }
 
   login(userName: string, password: string): Observable<any> {
-    const body = `grant_type=password&username=${encodeURIComponent(userName)}&password=${encodeURIComponent(password)}`;
-    return this.http.post<any>(this.url, body, {
+    /* const body = `grant_type=password&email=${encodeURIComponent(userName)}&password=${encodeURIComponent(password)}`;
+    return this.http.post<any>(this.urlAuth, body, {
       headers: new HttpHeaders().set('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8').set('Authorization', 'Basic ' + btoa(environment.TOKEN_AUTH_USERNAME + ':' + environment.TOKEN_AUTH_PASSWORD))
-    })
+    }) */
+    const params = {
+      email: userName,
+      password
+    }
+    return this.http.post<any>(this.urlAuth, params);
   }
 
   estaLogueado() {
@@ -38,7 +44,7 @@ export class LoginService {
     if (token) {
       forkJoin({
        // _anularToken: this.http.get(`${environment.HOST}/tokens/anular/${token}`),
-        _getMenu: this.menuService.listarPorIdRol()  
+        _getMenu: this.menuService.listar({})  
       }).subscribe((resp: any) => {
         this.menuService.setMenuCambio(resp._getMenu);
         if(url){

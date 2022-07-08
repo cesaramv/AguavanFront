@@ -76,5 +76,11 @@
                 }
             }
         }
+    },
+    "contact": {
+        "name": "Nombres y Apellidos",
+        "email": "Correo",
+        "cellphone": "Celular",
+        "message": "Mensaje"
     }
 }

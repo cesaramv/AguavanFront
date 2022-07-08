@@ -1,16 +1,14 @@
-import { state } from '@angular/animations';
 import { createReducer, on } from '@ngrx/store';
 import { loadOrder, loadOrderSuccess, loadOrderError } from '../actions/order.actions';
+import { pagination, paginationInit } from '../models/pagination';
 
 export interface ordersState {
     orders: any;
     loaded: boolean,
     loading: boolean,
     error: any,
-    filtros: any,    
-    totalElements: number,
-    number: number,
-    totalPages: number,
+    filtros: any,
+    pagination: pagination,
     orderDetail: any
 }
 
@@ -20,9 +18,7 @@ export const ordersInitialState: ordersState = {
     loading: false,
     error: null,
     filtros: null,
-    totalElements: 0,
-    number: 0,
-    totalPages: 0,
+    pagination: paginationInit,
     orderDetail: null
 }
 
@@ -30,15 +26,13 @@ const _ordersReducer = createReducer(ordersInitialState,
 
     on(loadOrder, (state, {filtros}) => ({ ...state, loading: true, filtros })),
 
-    on(loadOrderSuccess, (state, { orders, totalElements, number, totalPages }) => {
+    on(loadOrderSuccess, (state, { orders, pagination }) => {
         return({
         ...state,
         loading: false,
         loaded: true,
         orders: [...orders],
-        totalElements,
-        number,
-        totalPages
+        pagination: { ...pagination }
     })}),
 
     on(loadOrderError, (state, { payload }) => ({

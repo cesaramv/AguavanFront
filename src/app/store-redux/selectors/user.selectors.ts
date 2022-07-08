@@ -10,9 +10,9 @@ export const getState = createFeatureSelector<UserState>(
 
 export const getPaymentMethodsList = createSelector(
     getState,
-    ({
-        loaded, documentsType, departments, statesUsers, user: itemUser
-      }) => {  if(loaded){
-          return ( {documentsType, departments, statesUsers, user: itemUser})
+    ({ //documentsType, departments, statesUsers,
+        loaded, user: itemUser
+      }) => {  if(loaded){ // documentsType, departments, statesUsers, 
+          return ( { user: itemUser})
       } }
   );

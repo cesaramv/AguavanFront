@@ -15,27 +15,22 @@
         <div class="col-12">
             <div class="row pb-2">
                 <div class="col-lg-6 col-ms-12 py-2">
-                    <label for="description" class="form-label">Nombre producto</label>
-                    <input type="text" class="form-control" id="description" formControlName="description" />
+                    <label for="name" class="form-label">Nombre producto</label>
+                    <input type="text" class="form-control" id="name" formControlName="name" />
                 </div>
 
                 <div class="col-lg-6 col-ms-12 py-2">
                     <label for="category" class="form-label">Categoria</label>
-                    <p-dropdown [options]="categories" [inputId]="categoryId" [optionLabel]="'descripcion'"
-                        [name]="categoryId" [showClear]="true" placeholder="{{ 'global.select' | translate }}"
+                    <p-dropdown [options]="categories$ | async" [inputId]="uid" [optionLabel]="'name'"
+                        [name]="category" [showClear]="true" placeholder="{{ 'global.select' | translate }}"
                         [styleClass]="'w-100 p-inputtext-sm'" formControlName="category"></p-dropdown>
                 </div>
 
                 <div class="col-lg-4 col-ms-12 py-2">
                     <label for="department" class="form-label">Impuesto</label>
-                    <p-dropdown [options]="taxes" [inputId]="taxId" [optionLabel]="'description'"
-                        [name]="taxId" [showClear]="true" placeholder="{{ 'global.select' | translate }}"
+                    <p-dropdown [options]="taxes$ | async" [inputId]="uid" [optionLabel]="'name'"
+                        [name]="tax" [showClear]="true" placeholder="{{ 'global.select' | translate }}"
                         [styleClass]="'w-100 p-inputtext-sm'" formControlName="tax"></p-dropdown>
-                </div>
-
-                <div class="col-lg-2 col-ms-6 py-2">
-                    <label for="ratePublic" class="form-label">Tasa publico</label>
-                    <input type="text" class="form-control" id="ratePublic" formControlName="ratePublic" />
                 </div>
 
                 <div class="col-lg-2 col-ms-6 py-2">
@@ -49,21 +44,16 @@
                 </div>
 
                 <div class="col-lg-2 col-ms-6 py-2">
-                    <label for="points" class="form-label">Puntos</label>
-                    <input type="text" class="form-control" id="points" formControlName="points" />
-                </div>
-
-                <div class="col-lg-3 col-ms-6 py-2">
                     <label for="weight" class="form-label">Peso</label>
                     <input type="text" class="form-control" id="weight" formControlName="weight" />
                 </div>
 
-                <div class="col-lg-3 col-ms-6 py-2">
-                    <label for="weightContainer" class="form-label">Peso contenedor</label>
-                    <input type="text" class="form-control" id="weightContainer" formControlName="weightContainer" />
+                <div class="col-lg-2 col-ms-6 py-2">
+                    <label for="containerWeith" class="form-label">Peso cont.</label>
+                    <input type="text" class="form-control" id="containerWeith" formControlName="containerWeith" />
                 </div>
 
-                <div class="col-lg-6 col-ms-12 py-2">
+                <div class="col-lg-5 col-ms-12 py-2">
                     <fieldset class="p-2">
                         <legend class="px-2 mb-0">Estado del documento</legend>
                         <div class="wrapper">
@@ -79,6 +69,18 @@
                             </label>
                         </div>
                     </fieldset>
+
+                    <div class="col-lg-12 col-ms-12 py-3 pl-0">
+                        <label for="image" class="form-label">Imagen del producto</label>
+                        <img [src]="urlImagen" alt="productos" class="form-control imageProduct p-0">
+                        <span class="imgProduct">
+                            <input type="file" (change)="selectFiles($event)" name="imgProduct" id="imgProduct">
+                        </span>
+                        <label for="imgProduct" class="btn btn-outline-secondary btn-sm mt-2">
+                            <fa-icon [icon]="'image'" class="fa-1x pr-1"></fa-icon>
+                            <span>Seleccionar imagen</span>
+                        </label>
+                    </div>
                 </div>
 
                 <!-- <div class="col-lg-6 col-ms-12 py-2">
@@ -87,16 +89,11 @@
                     chooseLabel="Seleccionar" uploadLabel="Subir" cancelLabel="Cancelar"
                     styleClass="p-button-sm" [showUploadButton]="false"></p-fileUpload>
                 </div> -->
-                <div class="col-lg-6 col-ms-12 py-2">
-                    <label for="image" class="form-label">Imagen del producto</label>
-                    <img [src]="urlImagen" alt="productos" class="form-control imageProduct p-0">
-                    <span class="imgProduct">
-                        <input type="file" (change)="selectFiles($event)" name="imgProduct" id="imgProduct">
-                    </span>
-                    <label for="imgProduct" class="btn btn-outline-secondary btn-sm mt-2">
-                        <fa-icon [icon]="'image'" class="fa-1x pr-1"></fa-icon>
-                        <span>Seleccionar imagen</span>
-                    </label>
+                
+
+                <div class="col-lg-7 col-ms-12 py-2">
+                    <label for="detail" class="form-label">Detalle del producto</label>
+                    <textarea rows="9" class="form-control" id="detail" formControlName="detail"></textarea>
                 </div>
 
                 <div class="fixed-bottom bg-white shadow-lg">

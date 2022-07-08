@@ -3,8 +3,6 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { of } from 'rxjs';
 import { map, mergeMap, catchError } from 'rxjs/operators';
 import * as productsActions from '../actions/products.actions';
-import * as productsSelectedActions from '../actions/products-selected.actions';
-//import { CityService } from '../../core/services/city.service';
 import { ProductService } from '../../core/services/product.service';
 
 @Injectable()
@@ -19,12 +17,19 @@ export class ProductsEffects {
         ofType(productsActions.loadProducts),
         mergeMap(({ filtros }) => this.productService.listar(filtros)
             .pipe(
-                map(( datos: any ) => {
+                map((datos: any) => {
                     return productsActions.loadProductsSuccess({
-                        products: datos.content,
-                        totalElements : datos.totalElements,
-                        number : datos.number,
-                        totalPages : datos.totalPages
+                        products: datos.content.map(x => ({ ...x, _state: x.state ? 'Si' : 'No' })),
+                        pagination: {
+                            hasNextPage: datos.hasNextPage,
+                            hasPrevPage: datos.hasPrevPage,
+                            next: datos.next,
+                            page: datos.page,
+                            pagingCounter: datos.pagingCounter,
+                            prev: datos.prev,
+                            totalElements: datos.totalElements,
+                            totalPages: datos.totalPages,
+                        },
                     })
                 }),
                 catchError(err => of(productsActions.loadProductsError({ payload: err })))

@@ -38,14 +38,14 @@
 
                 <div class="col-lg-6 col-ms-12 pt-3">
                     <label for="department" class="form-label">Departamento</label>
-                    <p-dropdown [options]="departments" [inputId]="departmentId" [optionLabel]="'name'"
-                        [name]="departmentId" [showClear]="true" placeholder="{{ 'global.select' | translate }}"
+                    <p-dropdown [options]="this.department$ | async" [inputId]="uid" [optionLabel]="'name'"
+                        [name]="department" [showClear]="true" placeholder="{{ 'global.select' | translate }}"
                         [styleClass]="'w-100 ctrDropdown'" formControlName="department"></p-dropdown>
                 </div>
 
                 <div class="col-lg-6 col-ms-12 pt-3">
                     <fieldset class="p-2">
-                        <legend class="px-2 mb-0">Estado de la categoria</legend>
+                        <legend class="px-2 mb-0">Estado de la ciudad</legend>
                         <div class="wrapper">
                             <input type="radio" name="state" id="option-1" formControlName="state" [value]="true" />
                             <input type="radio" name="state" id="option-2" formControlName="state" [value]="false" />

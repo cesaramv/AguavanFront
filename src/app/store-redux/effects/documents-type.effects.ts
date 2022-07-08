@@ -17,12 +17,19 @@ export class DocumentsTypeEffects {
         ofType(documentsTypeActions.loadDocumentsType),
         mergeMap((action) => this.documentService.listar(action.filtros)
             .pipe(
-                map(( datos: any ) => {
+                map((datos: any) => {
                     return documentsTypeActions.loadDocumentsTypeSuccess({
-                        documentsType: datos.content,
-                        totalElements : datos.totalElements,
-                        number : datos.number,
-                        totalPages : datos.totalPages
+                        documentsType: datos.content.map(x => ({ ...x, _state: x.state ? 'Si' : 'No' })),
+                        pagination: {
+                            hasNextPage: datos.hasNextPage,
+                            hasPrevPage: datos.hasPrevPage,
+                            next: datos.next,
+                            page: datos.page,
+                            pagingCounter: datos.pagingCounter,
+                            prev: datos.prev,
+                            totalElements: datos.totalElements,
+                            totalPages: datos.totalPages,
+                        },
                     })
                 }),
                 catchError(err => of(documentsTypeActions.loadDocumentsTypeError({ payload: err })))

@@ -1,10 +1,10 @@
 <div class="col-md-12">
     <h1 class="my-0">
         <ng-template [ngIf]="esCreacion">
-            Crear estado de la ordenes
+            Crear impuesto
         </ng-template>
         <ng-template [ngIf]="!esCreacion">
-            Editar estado de la ordenes
+            Editar impuesto
         </ng-template>
     </h1>
 </div>
@@ -16,21 +16,16 @@
             <div class="row py-2">
 
                 <div class="col-lg-6 col-ms-12">
-                    <label for="descripcion" class="form-label">Impuesto</label>
-                    <input type="text" class="form-control" id="descripcion" formControlName="description">
+                    <label for="name" class="form-label">Impuesto</label>
+                    <input type="text" class="form-control" id="name" formControlName="name">
                 </div>
 
-                <div class="col-lg-3 col-ms-6">
-                    <label for="tasa" class="form-label">Tasa</label>
-                    <input type="text" class="form-control" id="rate" formControlName="rate">
+                <div class="col-lg-2 col-ms-6">
+                    <label for="iva" class="form-label">Tasa</label>
+                    <input type="number" class="form-control" id="iva" formControlName="iva">
                 </div>
 
-                <div class="col-lg-3 col-ms-6">
-                    <label for="tasa-publico" class="form-label">Tasa publico</label>
-                    <input type="text" class="form-control" id="ratePublic" formControlName="ratePublic">
-                </div>
-
-                <div class="col-lg-6 col-ms-12 py-3">
+                <div class="col-lg-4 col-ms-12">
                     <fieldset class="p-2">
                         <legend class="px-2 mb-0">Estado del estado de la orden</legend>
                         <div class="wrapper">

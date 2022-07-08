@@ -1,4 +1,5 @@
 import { createAction, props } from '@ngrx/store';
+import { pagination } from '../models/pagination';
 
 export const loadDocumentsType = createAction(
     '[Admin Documents type Component] loader documents type',
@@ -8,9 +9,7 @@ export const loadDocumentsTypeSuccess = createAction(
     '[Admin Documents type Component] List documents type',
     props<{
         documentsType: any[],
-        totalElements: number,
-        number: number,
-        totalPages: number
+        pagination: pagination
     }>()
 );
 

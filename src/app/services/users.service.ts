@@ -10,7 +10,7 @@ import { environment } from '../../environments/environment';
 export class UsersService extends GenericService<any> {
 
   constructor(readonly http: HttpClient) { 
-    super(http, `${environment.HOST}/usuarios`);
+    super(http, `${environment.HOST}/users`);
   }
 
   getUserByUsername(username: string): Observable<any>{

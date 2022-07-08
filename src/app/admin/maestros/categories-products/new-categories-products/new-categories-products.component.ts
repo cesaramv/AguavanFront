@@ -1,12 +1,15 @@
+import { getProductCategoryByIdSelector } from './../../../../store-redux/selectors/master.selectors';
+import { AppState } from './../../../../store-redux/app.reducer';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { AlertService } from 'src/app/core/services/alert.service';
-import { CategoryService } from '../../services/category.service';
+import { AlertService, ProductCategoryService } from 'src/app/core/services';
 import { FormValidate } from '@shared/util/form-validate';
 import { Observable } from 'rxjs/internal/Observable';
 import { NgxUiLoaderService } from 'ngx-ui-loader';
 import { TranslateService } from '@ngx-translate/core';
+import { Store } from '@ngrx/store';
+import { filter } from 'rxjs/internal/operators/filter';
 
 @Component({
   selector: 'app-new-categories-products',
@@ -26,8 +29,9 @@ export class NewCategoriesProductsComponent extends FormValidate implements OnIn
     private readonly activatedRouter: ActivatedRoute,
     private readonly formBuilder: FormBuilder,
     private readonly translate: TranslateService,
-    private readonly categoryService: CategoryService,
-    private readonly alertService: AlertService
+    private readonly categoryService: ProductCategoryService,
+    private readonly alertService: AlertService,
+    private readonly store: Store<AppState>
   ) {
     super();
     this.esCreacion = true;
@@ -36,23 +40,24 @@ export class NewCategoriesProductsComponent extends FormValidate implements OnIn
    }
 
   ngOnInit(): void {
-    this.activatedRouter.params.subscribe(async params => {
-      this.categoryId = params.id || null;
-      if(this.categoryId){
-        this.esCreacion = false;
-        const rowCategory = await this.categoryService.listarPorId(this.categoryId).toPromise();
-        this.formInit(rowCategory);
-      } else {
-        this.esCreacion = true;
-        this.formInit();
-      }
-    });
+    this.categoryId = this.activatedRouter.snapshot.params.id;
+    this.esCreacion = !this.categoryId;
+    this.formInit();
+    if (!this.esCreacion) {
+      this.store.select(getProductCategoryByIdSelector, this.categoryId).pipe(
+        filter(documentsType => !!documentsType)
+      ).subscribe(this.preloadData.bind(this))
+    }
+  }
+
+  private preloadData(params: any) {
+    this.form.patchValue(params);
   }
 
   private formInit(params?: any){
     this.isForm = Promise.resolve(
       this.form = this.formBuilder.group({
-        descripcion: [params ? params.descripcion : null, [Validators.required]],
+        name: [params ? params.name : null, [Validators.required]],
         icono: [params ? params.icono : null],
         state: [params ? params.state : true, [Validators.required]]
       })
@@ -60,21 +65,15 @@ export class NewCategoriesProductsComponent extends FormValidate implements OnIn
   }
 
   private getNameCategory() {
-    return this.form.get('descripcion').value;
+    return this.form.get('name').value;
   }
 
   saveCategory() {
     if(this.form.invalid){
       return;
     }
-    const _form = this.form.getRawValue();
-    const params = {
-      descripcion: this.getNameCategory(),
-      icono: _form.icono,
-      state: _form.state
-    }
     if(this.esCreacion){
-      this.categoryService.crear(params).subscribe(resp => {
+      this.categoryService.crear(this.form.value).subscribe(resp => {
         this.translate.get('global.guardadoExitosoMensaje').subscribe(mensaje => {
           this.alertService.success(mensaje).then(() => {
             this.form.reset();
@@ -87,8 +86,7 @@ export class NewCategoriesProductsComponent extends FormValidate implements OnIn
         });
       });
     } else {
-      params['categoryId'] = this.categoryId;
-      this.categoryService.modificar(params).subscribe(resp => {
+      this.categoryService.modificar(this.categoryId, this.form.value).subscribe(resp => {
         this.translate.get('global.actualizacionExitosaMensaje').subscribe(mensaje => {
           this.alertService.success(mensaje).then(() => {
             this.form.reset();

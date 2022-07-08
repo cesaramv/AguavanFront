@@ -1,5 +1,6 @@
 import { createReducer, on } from '@ngrx/store';
 import { loadProducts, loadProductsSuccess, loadProductsError } from '../actions';
+import { pagination, paginationInit } from '../models/pagination';
 
 export interface ProductsState {
     products: any,
@@ -7,9 +8,7 @@ export interface ProductsState {
     loading: boolean,
     error: any,
     filtros: any,
-    totalElements: number,
-    number: number,
-    totalPages: number
+    pagination: pagination
 }
 
 export const productsInitialState: ProductsState = {
@@ -18,23 +17,19 @@ export const productsInitialState: ProductsState = {
     loading: false,
     error: null,
     filtros: null,
-    totalElements: 0,
-    number: 0,
-    totalPages: 0
+    pagination: paginationInit
 }
 
 const _productsReducer = createReducer(productsInitialState,
 
     on(loadProducts, (state, { filtros }) => ({ ...state, loading: true, filtros })),
 
-    on(loadProductsSuccess, (state, { products, totalElements, number, totalPages }) => ({
+    on(loadProductsSuccess, (state, { products, pagination }) => ({
         ...state,
         loading: false,
         loaded: true,
         products: [...products],
-        totalElements,
-        number,
-        totalPages
+        pagination: { ...pagination }
     })),
 
     on(loadProductsError, (state, { payload }) => ({

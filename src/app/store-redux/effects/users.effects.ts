@@ -17,19 +17,27 @@ export class UsersEffects {
         ofType(usersActions.loadUsers),
         mergeMap((action) => this.usersService.listar(action.filtros)
             .pipe(
-                map(( users: any ) => {
-                    const _data = users.content.map(x => {
+                map((datos: any) => {
+                    const _data = datos.content.map(x => {
                         return {
                             ...x,
                             email: x.email.toLowerCase(),
-                            nameFull: (x.firstName + ' ' + x.lastName).toLowerCase()
+                            nameFull: (x.firstName + ' ' + x.lastName).toLowerCase(),
+                            _state: x.state ? 'Si' : 'No'
                         }
                     });
                     return usersActions.loadUsersSuccess({
                         users: _data,
-                        totalElements : users.totalElements,
-                        number : users.number,
-                        totalPages : users.totalPages
+                        pagination: {
+                            hasNextPage: datos.hasNextPage,
+                            hasPrevPage: datos.hasPrevPage,
+                            next: datos.next,
+                            page: datos.page,
+                            pagingCounter: datos.pagingCounter,
+                            prev: datos.prev,
+                            totalElements: datos.totalElements,
+                            totalPages: datos.totalPages,
+                        },
                     })
                 }),
                 catchError(err => of(usersActions.loadUsersError({ payload: err })))

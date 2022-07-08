@@ -5,6 +5,7 @@ import { AppState } from '../app.reducer';
 import { UserState } from '../reducers/user.reducer';
 import { createFeatureSelector, createSelector } from '@ngrx/store';
 import { ordersState } from '../reducers/orders.reducer';
+import { ProductsState } from '../reducers/products.reducer';
 
 
 export const getState = createFeatureSelector<ordersState>('orders');
@@ -12,6 +13,7 @@ export const getProductsSelected = createFeatureSelector<productsSelectedState>(
 export const costTotal = (accumulator, currentValue) => accumulator + currentValue;
 
 export const getStateOrderDetail = createFeatureSelector<orderDetailState>('orderDetail');
+export const getProducts = createFeatureSelector<ProductsState>('products');
 
 //TODO: este no tiene sentido, lo estoy utilizando para obtener order por id pero esta mal. Lo devo eliminar
 export const getOrderById = createSelector(
@@ -48,9 +50,9 @@ export const getProductSelected = createSelector(
 
 export const getProductDetailSelected = createSelector(
   getProductsSelected,
-  ({ products }) => ({
+  ({ products }) =>  products /* ({
     products: products.length > 0 ? [...products].sort((a, b) => a.productId - b.productId) : []
-  }) //.length > 0 ? products.sort((a, b) => a.productId - b.productId) : []
+  }) //.length > 0 ? products.sort((a, b) => a.productId - b.productId) : [] */
 );
 
 export const getProductLoadingSelected = createSelector(
@@ -60,19 +62,23 @@ export const getProductLoadingSelected = createSelector(
 
 export const getOrderDetail = createSelector(
   getStateOrderDetail,
-  ({order}) => ( order ?
+  ({ order }) => (order ?
     {
-    ...order,
-    totalOrder: order.subValor, 
-    totalValorExcento: order.vexcento,
-    totalValorExcluido: order.vexcluido,
-    totalWeight: order.weightTotal,
-    totalPoints: order.points,
-    totalBaseGravada19: order.baseSaved19,
-    totalBaseGravada5: order.baseSaved5,
-  } : null)
+      ...order,
+      totalOrder: order.subValor,
+      totalValorExcento: order.vexcento,
+      totalValorExcluido: order.vexcluido,
+      totalWeight: order.weightTotal,
+      totalPoints: order.points,
+      totalBaseGravada19: order.baseSaved19,
+      totalBaseGravada5: order.baseSaved5,
+    } : null)
 );
 
+export const getProductByUid = createSelector(
+  getProducts,
+  ({ products, loaded }, uid) => loaded ? products.find(x => x.uid === uid) : null
+);
 /* export const getProductSelected = createSelector(
   getProductsSelected,
   ({

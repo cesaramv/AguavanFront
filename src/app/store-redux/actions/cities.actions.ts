@@ -1,4 +1,5 @@
 import { createAction, props } from '@ngrx/store';
+import { pagination } from '../models/pagination';
 
 export const loadCities = createAction(
     '[Component Cities] loadCities',
@@ -9,9 +10,7 @@ export const loadCitiesSuccess = createAction(
     '[Cities Component] List Cities',
     props<{
         cities: any[],
-        totalElements: number,
-        number: number,
-        totalPages: number
+        pagination: pagination
     }>()
 );
 

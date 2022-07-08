@@ -7,14 +7,14 @@ export class ListCategoriesProductsConfig{
         this.gridList.columnas = [
             {
                 title: 'Categorias de productos',
-                field: 'descripcion',
+                field: 'name',
                 configCelda: {
                     width: '400px'
                 }
             },
             {
                 title: 'Estado',
-                field: 'state',
+                field: '_state',
                 configCelda: {
                     width: '100px'
                 }

@@ -33,7 +33,6 @@ export class DetailOrdersComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    debugger
     this.orderId = Number(this.activatedRouter.snapshot.paramMap.get('orderId'));
     if(!this.orderId){
       this.router.navigate([`/admin/maestros/ordenes`]);
@@ -43,10 +42,10 @@ export class DetailOrdersComponent implements OnInit, OnDestroy {
       if(!order){
         this.store.dispatch(loadOrderById({ filtros: this.orderId }))
       }
-      
     }).unsubscribe();
 
-    console.log(this.orderDetail);
+    this.orderDetail$.subscribe(order => console.log("order -> ", order));
+    
 
     //.orderDetail$ = this.store.select(getProductDetailSelected);
     /* this.activatedRouter.params.subscribe(async params => {

@@ -1,3 +1,4 @@
+import { pagination, paginationInit } from './../../../store-redux/models/pagination';
 import { Component, EventEmitter, Input, OnInit, Output, ViewEncapsulation } from '@angular/core';
 import { GridConfiguration } from './grid-configuration';
 
@@ -13,12 +14,10 @@ export class GridComponent implements OnInit {
   listUsers: any;
   firstRange: number = 0;
   lastRange: number = 0;
-  totalRecords: number = 0;
   rows: number = 10;
-  numberPage = 0;
-  totalPages = 0;
   pages: number[] = [];
 
+  pagination: pagination;
   datos: any[] = [];
   @Input() configuracion: GridConfiguration = new GridConfiguration();
 
@@ -36,48 +35,44 @@ export class GridComponent implements OnInit {
   public cargarDatos(datos: object[], options?: any) {
     this.configuracion.datos = datos;
     if (options) {
-      this.totalRecords = options.totalElements;
-      this.numberPage = options.number;
-      this.totalPages = options.totalPages;
+      this.pagination = { ...options };
       this.setPages();
-      this.setRange(this.numberPage);
+      this.setRange(this.pagination.page);
     }
   }
 
   public limpliar() {
     this.cargarDatos([]);
-    this.totalRecords = 0;
-    this.numberPage = 0;
-    this.totalPages = 0;
+    this.pagination = paginationInit
     this.setPages();
   }
 
   next() {
-    if (this.totalPages <= this.numberPage) {
+    if (!this.pagination.hasNextPage) {
       return
     }
-    this.clickPaginador.emit(this.numberPage + 1);
+    this.clickPaginador.emit(this.pagination.next);
   }
 
   prev() {
-    if (this.numberPage <= 0) {
+    if (!this.pagination.hasPrevPage) {
       return;
     }
-    this.clickPaginador.emit(this.numberPage - 1);
+    this.clickPaginador.emit(this.pagination.prev);
   }
 
   firstPage() {
-    if (this.numberPage <= 0) {
+    if (!this.pagination.hasPrevPage) {
       return;
     }
-    this.clickPaginador.emit(0);
+    this.clickPaginador.emit(1);
   }
 
   lastPage() {
-    if (this.totalPages <= this.numberPage) {
+    if (!this.pagination.hasNextPage) {
       return
     }
-    this.clickPaginador.emit(this.totalPages - 1);
+    this.clickPaginador.emit(this.pagination.totalPages);
   }
 
   irPage(page: any) {
@@ -85,27 +80,27 @@ export class GridComponent implements OnInit {
   }
 
   isFirstPage(): boolean {
-    return this.numberPage === 0 ? true : false;
+    return !this.pagination?.hasPrevPage;
   }
 
   isLastPage(): boolean {
-    return this.totalPages - 1 === this.numberPage ? true : false;
+    return !this.pagination?.hasNextPage;
   }
 
   setPages() {
     this.pages = [];
-    if (this.numberPage >= 5) {
-      if (this.totalPages < this.numberPage + 2) {
-        for (let i = this.totalPages - 4; i <= this.totalPages; i++) {
+    if (this.pagination && this.pagination.page >= 5) {
+      if (this.pagination.totalPages < this.pagination.page + 2) {
+        for (let i = this.pagination.totalPages - 4; i <= this.pagination.totalPages; i++) {
           this.pages.push(i);
         }
       } else {
-        for (let i = this.numberPage - 1; i < this.numberPage + 4; i++) {
+        for (let i = this.pagination.page - 1; i < this.pagination.page + 4; i++) {
           this.pages.push(i);
         }
       }
-    } else if (this.totalPages < 5) {
-      for (let i = 1; i <= this.totalPages; i++) {
+    } else if (this.pagination && this.pagination.totalPages < 5) {
+      for (let i = 1; i <= this.pagination.totalPages; i++) {
         this.pages.push(i);
       }
     } else {
@@ -113,9 +108,9 @@ export class GridComponent implements OnInit {
     }
   }
 
-  setRange(page: number){
-    this.lastRange = page + 1 === this.totalPages ? this.totalRecords : (page + 1) * 10;
-    this.firstRange = page < 1 ? 1 : page * 10 + 1;
+  setRange(page: number) {
+    this.lastRange = page === this.pagination.totalPages ? this.pagination.totalElements : (page) * 10;
+    this.firstRange = page === 1 ? 1 : (page - 1) * 10 + 1;
   }
 
   clickCelta(dataRow: any, accion: string) {
@@ -124,14 +119,14 @@ export class GridComponent implements OnInit {
 
   funDisabled() { }
 
-  getValue(rowData: any, colField: string){
+  getValue(rowData: any, colField: string) {
     let obj: object;
-    if(colField.includes('.')){
-      for(const campo of colField.split('.')){
+    if (colField.includes('.')) {
+      for (const campo of colField.split('.')) {
         obj = obj ? obj[campo] : rowData[campo];
-        if(!obj && !rowData[campo]){ break; }
+        if (!obj && !rowData[campo]) { break; }
       }
-      return obj? obj : '-';
+      return obj ? obj : '-';
     } else {
       return rowData[colField];
     }

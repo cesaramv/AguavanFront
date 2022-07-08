@@ -9,13 +9,13 @@
 
   <div class="collapse navbar-collapse" id="navbarSupportedContent">
     <ul class="navbar-nav mr-auto">
-      <ng-container *ngFor="let item of listMenu">
+      <ng-container *ngFor="let item of (menu$ | async)">
         <li class="nav-item">
           <a class="nav-link text-center text-light" routerLink="{{item.url}}">
             <!-- <fa-icon [icon]="['fas', item.icono]" class="fa-1x "></fa-icon> -->
             <!-- <i class="fas fa-home fa-2x display_block color_Ico"></i> -->
             <fa-icon [icon]="item.icono" class="fa-1x"></fa-icon>
-            <span class="pl-1">{{item.nombre}}</span>
+            <span class="pl-1">{{item.name | titlecase}}</span>
           </a>
         </li>
       </ng-container>
@@ -39,43 +39,48 @@
         </li> -->
     </ul>
     <ul class="form-inline navbar-nav my-2 my-lg-0">
-      <ng-container *ngFor="let item of listMenuLast">
-        <li class="nav-item">
+      <!-- <ng-container *ngFor="let item of listMenuLast"> -->
+        <!-- <li class="nav-item">
           <a class="nav-link text-center text-light" routerLink="{{item.url}}">
             <fa-icon [icon]="item.icono" class="fa-1x"></fa-icon>
             <span class="pl-1">{{item.nombre}}</span>
           </a>
-        </li>
+        </li> -->
         <li class="nav-item" *ngIf="!estaIdentificado()">
           <a class="nav-link text-center text-light" routerLink="/login">
             <fa-icon [icon]="'sign-in-alt'" class="fa-1x"></fa-icon>
             <span class="pl-1">Iniciar sesión</span>
           </a>
         </li>
-        <li class="nav-item" *ngIf="!estaIdentificado()">
+        <li class="nav-item">
           <a class="nav-link text-center text-light" routerLink="/store/order-detail">
-            <fa-icon [icon]="'sign-in-alt'" class="fa-1x"></fa-icon>
-            <span class="pl-1">Carrito</span>
+            <fa-icon [icon]="'shopping-cart'" class="fa-1x"></fa-icon>
+            <span class="badge badge-danger products__number">{{productSelectedCount$ | async}}</span>
+            <span class="">Carrito</span>
           </a>
         </li>
-        <li class="nav-item" *ngIf="estaIdentificado()">
+        <!-- <li class="nav-item" *ngIf="estaIdentificado()">
           <a class="nav-link text-center text-light" (click)="cerrarSesion()">
             <fa-icon [icon]="'power-off'" class="fa-1x"></fa-icon>
             <span class="pl-1">Cerrar sesión</span>
           </a>
-        </li>
+        </li> -->
         <li class="nav-item dropdown" *ngIf="estaIdentificado()">
-          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            Dropdown
+          <a class="nav-link dropdown-toggle text-light" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            {{(user$ | async)?.firstName}}
           </a>
-          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+          <div class="dropdown-menu dropdown-menu__navbar" aria-labelledby="navbarDropdown">
             <a class="dropdown-item" href="#">Action</a>
             <a class="dropdown-item" href="#">Another action</a>
             <div class="dropdown-divider"></div>
-            <a class="dropdown-item" href="#">Something else here</a>
+            <!-- <a class="dropdown-item" href="#">Something else here</a> -->
+            <a class="dropdown-item nav-link text-center" (click)="cerrarSesion()">
+              <fa-icon [icon]="'power-off'" class="fa-1x"></fa-icon>
+              <span class="pl-1">Cerrar sesión</span>
+            </a>
           </div>
         </li>
-      </ng-container>
+      <!-- </ng-container> -->
     </ul>
   </div>
 </nav>

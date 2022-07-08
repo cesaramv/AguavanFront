@@ -35,13 +35,14 @@ export class ProductsStoreComponent implements OnInit {
   }
 
   getProducts(){
-    const filtros = { state: true, isPaged: false }
+    const filtros = { page: 1, size: 10 }
     this.store.dispatch(actionsProducts.loadProducts({filtros}));
   }
 
   selectedProduct(producto: any){
     //this.store.dispatch(actionsProductsSelected.loadProductSelected({product: {...producto, quantity: 1}}));
-    this.store.dispatch(actionsProductsSelected.addProductSelected({product: [{...producto, quantity: 1}]}));
+    const { img, ...data} = producto;
+    this.store.dispatch(actionsProductsSelected.addProductSelected({product: [{...data, quantity: 1}]}));
   }
 
 }

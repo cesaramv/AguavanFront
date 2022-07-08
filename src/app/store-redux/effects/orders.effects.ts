@@ -20,9 +20,16 @@ export class OrdersEffects {
                 map((datos: any) => {
                     return orderActions.loadOrderSuccess({
                         orders: datos.content,
-                        totalElements: datos.totalElements,
-                        number: datos.number,
-                        totalPages: datos.totalPages
+                        pagination: {
+                            hasNextPage: datos.hasNextPage,
+                            hasPrevPage: datos.hasPrevPage,
+                            next: datos.next,
+                            page: datos.page,
+                            pagingCounter: datos.pagingCounter,
+                            prev: datos.prev,
+                            totalElements: datos.totalElements,
+                            totalPages: datos.totalPages,
+                        },
                     })
                 }),
                 catchError(err => of(orderActions.loadOrderError({ payload: err })))

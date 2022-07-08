@@ -1,5 +1,5 @@
 export const environment = {
-  HOST: 'http://localhost:8080',
+  HOST: 'https://aguavan-env.eba-w68b2qij.us-east-2.elasticbeanstalk.com',
   production: true,
   
   //Para el logueo

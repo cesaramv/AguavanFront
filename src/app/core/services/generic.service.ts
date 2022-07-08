@@ -21,8 +21,8 @@ export class GenericService<T> {
     return this.http.post(this.url, t);
   }
 
-  modificar(t: T){
-    return this.http.put(this.url, t);
+  modificar(codigo: any, t?: T){
+    return this.http.put(`${this.url}/${codigo}`, t);
   }
 
   eliminar(codigo: any){

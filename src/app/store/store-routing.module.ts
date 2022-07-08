@@ -1,3 +1,4 @@
+import { ProductDetailComponent } from './product-detail/product-detail.component';
 import { OrderDetailComponent } from './order-detail/order-detail.component';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
@@ -17,7 +18,15 @@ const routes: Routes = [
       {
         path: 'order-detail',
         component: OrderDetailComponent
-      }
+      },
+      {
+        path: ':uid/:patrocinador_id',
+        component: ProductDetailComponent
+      },
+      {
+        path: ':uid',
+        component: ProductDetailComponent
+      } 
     ]
   }
 ];
